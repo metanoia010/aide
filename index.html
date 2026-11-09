@@ -65,6 +65,11 @@
         .input-17ch {
             width: 220px !important;
         }
+        
+        /* Lebar khusus untuk kotak input bersyarat di sebelah kanan */
+        .input-custom-width {
+            width: 250px !important;
+        }
 
         textarea {
             resize: vertical;
@@ -191,7 +196,7 @@
                     <label><input type="radio" name="pilihMelati" value="Tidak" checked onclick="toggleMelati(false)"> Tidak</label>
                 </div>
                 <div class="conditional-input" id="containerNomorMelati">
-                    <input type="text" id="nomorTiketMelati" placeholder="Masukkan nomor tiket Melati / Link URL">
+                    <input type="text" id="nomorTiketMelati" class="input-custom-width" placeholder="Masukkan No. Tiket / URL">
                 </div>
             </div>
         </div>
@@ -201,11 +206,11 @@
             <label>Opsi Email:</label>
             <div class="conditional-wrapper">
                 <div class="radio-group">
-                    <label><input type="radio" name="pilihEmail" value="Email Terdaftar" checked onclick="toggleEmail(true)"> Email Terdaftar</label>
-                    <label><input type="radio" name="pilihEmail" value="Email Lainnya" onclick="toggleEmail(false)"> Email Lainnya</label>
+                    <label><input type="radio" name="pilihEmail" value="Email Terdaftar" checked onclick="toggleEmail(false)"> Email Terdaftar</label>
+                    <label><input type="radio" name="pilihEmail" value="Email Lainnya" onclick="toggleEmail(true)"> Email Lainnya</label>
                 </div>
-                <div class="conditional-input" id="containerEmailInput" style="display: block;">
-                    <input type="email" id="inputEmail" placeholder="Masukkan alamat email...">
+                <div class="conditional-input" id="containerEmailInput">
+                    <input type="email" id="inputEmail" class="input-custom-width" placeholder="Masukkan email lainnya...">
                 </div>
             </div>
         </div>
@@ -254,18 +259,19 @@
         }
     }
 
-    // Toggle input email berdasarkan pilihan "Email Terdaftar" atau "Email Lainnya"
-    function toggleEmail(isTerdaftar) {
+    // Toggle input email (hanya muncul jika "Email Lainnya" dipilih)
+    function toggleEmail(isLainnya) {
         const container = document.getElementById('containerEmailInput');
         const inputEmail = document.getElementById('inputEmail');
-        // Jika "Email Terdaftar" dipilih, tetap tampilkan kotak input untuk mengetikkan email terdaftarnya
-        container.style.display = 'block';
-        if (isTerdaftar) {
-            inputEmail.placeholder = "Masukkan email terdaftar...";
+        if (isLainnya) {
+            container.style.display = 'block';
+            inputEmail.required = true;
+            inputEmail.focus();
         } else {
-            inputEmail.placeholder = "Masukkan email lainnya...";
+            container.style.display = 'none';
+            inputEmail.required = false;
+            inputEmail.value = '';
         }
-        inputEmail.focus();
     }
 
     document.getElementById('recordForm').addEventListener('submit', function(e) {
@@ -289,7 +295,7 @@
             tiketMelati: opsiMelati,
             nomorTiketMelati: opsiMelati === 'Ya' ? nomorMelati : '-',
             tipeEmail: opsiEmail,
-            detailEmail: alamatEmail ? alamatEmail : '-',
+            detailEmail: opsiEmail === 'Email Lainnya' ? alamatEmail : '-',
             waktuInput: new Date().toLocaleTimeString()
         };
 
@@ -311,7 +317,7 @@
         toggleMelati(false);
 
         document.querySelector('input[name="pilihEmail"][value="Email Terdaftar"]').checked = true;
-        toggleEmail(true);
+        toggleEmail(false);
         
         document.getElementById('urutanPencatatan').focus();
     });
