@@ -864,14 +864,30 @@
         listPencatatan.push(dataBaru);
         renderTable();
 
-        // Reset form
-        document.getElementById('recordForm').reset();
+        // Kosongkan form secara manual (menghindari error bawaan form.reset() pada elemen dinamis)
+        document.getElementById('urutanPencatatan').value = '';
         if (currentSubTab === 'Informasi') {
-            toggleMelati('Tidak');
+            document.getElementById('nomorTicket').value = '';
+            document.getElementById('pilihPap').value = 'Tidak';
             togglePapWarning('Tidak');
+            document.getElementById('namaDirekam').value = '';
+            document.getElementById('pencatatanPercakapan').value = '';
+            document.getElementById('kesimpulanPercakapan').value = '';
+            document.getElementById('pilihMelati').value = 'Tidak';
+            toggleMelati('Tidak');
         } else {
+            document.getElementById('jenisAduan').selectedIndex = 0;
+            document.getElementById('pilihAnonim').value = 'Tidak';
             toggleAnonimFields('Tidak');
             document.getElementById('anonimSection').style.display = 'none';
+            document.getElementById('aduanPelaporNama').value = '';
+            document.getElementById('aduanPelaporNikNpwp').value = '';
+            document.getElementById('aduanPelaporTelp').value = '';
+            document.getElementById('aduanPelaporEmail').value = '';
+            document.getElementById('aduanTerlaporNama').value = '';
+            document.getElementById('aduanTerlaporNikNpwp').value = '';
+            document.getElementById('aduanTerlaporAlamat').value = '';
+            document.getElementById('aduanInformasiKejadian').value = '';
             document.getElementById('chronologyListContainer').innerHTML = `
                 <div class="chronology-item">
                     <input type="text" class="chrono-date" placeholder="Tanggal (Cth: 1/1/2026)" style="width: 180px;">
