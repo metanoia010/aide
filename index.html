@@ -26,6 +26,25 @@
             border-bottom: 2px solid #eaeaea;
             padding-bottom: 10px;
         }
+        /* Styling untuk widget jam real-time di atas form */
+        .live-clock-container {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #495057;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .live-clock-container span {
+            font-weight: 600;
+            font-family: monospace;
+            color: #2c3e50;
+        }
+
         .form-group {
             margin-bottom: 15px;
         }
@@ -156,6 +175,12 @@
 <div class="container">
     <h2>Pencatatan Percakapan Harian</h2>
     
+    <!-- Widget Jam Real-Time -->
+    <div class="live-clock-container">
+        <span>Waktu Sistem Saat Ini:</span>
+        <span id="liveClock">-</span>
+    </div>
+
     <form id="recordForm">
         <!-- Input Inline: Urutan Pencatatan -->
         <div class="form-group-inline">
@@ -242,6 +267,39 @@
 <script>
     let listPencatatan = [];
 
+    // Fungsi untuk memperbarui jam real-time setiap milidetik
+    function updateLiveClock() {
+        const now = new Date();
+        
+        // Komponen tanggal & waktu
+        const day = String(now.getDate()).padStart(2, '0');
+        const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+        const mmm = months[now.getMonth()];
+        const yyyy = now.getFullYear();
+        
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+        
+        // Timezone offset (Z atau format +HH:mm/-HH:mm)
+        const tzOffsetMinutes = -now.getTimezoneOffset();
+        const sign = tzOffsetMinutes >= 0 ? '+' : '-';
+        const absOffsetMin = Math.abs(tzOffsetMinutes);
+        const tzHours = String(Math.floor(absOffsetMin / 60)).padStart(2, '0');
+        const tzMins = String(absOffsetMin % 60).padStart(2, '0');
+        const tzString = tzOffsetMinutes === 0 ? 'Z' : `${sign}${tzHours}:${tzMins}`;
+
+        // Format: DD Mmmm YYYY  HH:mm:ss.SSSZ
+        const formattedString = `${day} ${mmm} ${yyyy}  ${hours}:${minutes}:${seconds}.${milliseconds}${tzString}`;
+        
+        document.getElementById('liveClock').innerText = formattedString;
+    }
+
+    // Jalankan timer setiap 50 milidetik agar presisi milidetik terlihat mulus
+    setInterval(updateLiveClock, 50);
+    updateLiveClock(); // Panggil langsung saat load
+
     function toggleMelati(value) {
         const container = document.getElementById('containerNomorMelati');
         const inputMelati = document.getElementById('nomorTiketMelati');
@@ -278,6 +336,24 @@
         const opsiEmail = document.getElementById('pilihEmail').value;
         const alamatEmail = document.getElementById('inputEmail').value;
 
+        // Ambil timestamp presisi tinggi saat data ditambahkan ke list
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+        const mmm = months[now.getMonth()];
+        const yyyy = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+        const tzOffsetMinutes = -now.getTimezoneOffset();
+        const sign = tzOffsetMinutes >= 0 ? '+' : '-';
+        const absOffsetMin = Math.abs(tzOffsetMinutes);
+        const tzHours = String(Math.floor(absOffsetMin / 60)).padStart(2, '0');
+        const tzMins = String(absOffsetMin % 60).padStart(2, '0');
+        const tzString = tzOffsetMinutes === 0 ? 'Z' : `${sign}${tzHours}:${tzMins}`;
+        const timestampInput = `${day} ${mmm} ${yyyy}  ${hours}:${minutes}:${seconds}.${milliseconds}${tzString}`;
+
         const dataBaru = {
             urutanPencatatan: document.getElementById('urutanPencatatan').value,
             nomorTicket: document.getElementById('nomorTicket').value,
@@ -288,7 +364,7 @@
             nomorTiketMelati: opsiMelati === 'Ya' ? nomorMelati : '-',
             tipeEmail: opsiEmail,
             detailEmail: opsiEmail === 'Email Lainnya' ? alamatEmail : '-',
-            waktuInput: new Date().toLocaleTimeString()
+            waktuInput: timestampInput
         };
 
         listPencatatan.push(dataBaru);
@@ -335,7 +411,7 @@
                         <strong>Kesimpulan:</strong> ${item.kesimpulanPercakapan}<br>
                         <strong>Tiket Melati/URL:</strong> ${item.tiketMelati} ${item.tiketMelati === 'Ya' ? '(' + item.nomorTiketMelati + ')' : ''}<br>
                         <strong>Email:</strong> ${infoEmail}<br>
-                        <small style="color: #888;">Jam: ${item.waktuInput}</small>
+                        <small style="color: #888;">Waktu: ${item.waktuInput}</small>
                     </td>
                 </tr>
             `;
@@ -351,11 +427,12 @@
 
         let textContent = "=========================================\n";
         textContent += `BACKUP PENCATATAN PERCAKAPAN\n`;
-        textContent += `Tanggal: ${new Date().toLocaleDateString()}\n`;
+        textContent += `Waktu Export: ${new Date().toISOString()}\n`;
         textContent += "=========================================\n\n";
 
         listPencatatan.forEach((item, index) => {
             textContent += `--- Data ke-${index + 1} ---\n`;
+            textContent += `Waktu Input         : ${item.waktuInput}\n`;
             textContent += `Urutan Pencatatan   : ${item.urutanPencatatan}\n`;
             textContent += `Nomor Ticket        : ${item.nomorTicket}\n`;
             textContent += `Nama yang Direkam   : ${item.namaDirekam}\n`;
