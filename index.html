@@ -29,7 +29,6 @@
         .form-group {
             margin-bottom: 15px;
         }
-        /* Tata letak horizontal untuk input pendek (label di kiri, input di kanan) */
         .form-group-inline {
             display: flex;
             align-items: center;
@@ -41,14 +40,12 @@
             font-weight: 600;
             font-size: 14px;
         }
-        
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
             font-size: 14px;
         }
-        
         input[type="text"],
         input[type="number"],
         input[type="email"],
@@ -60,18 +57,13 @@
             box-sizing: border-box;
             font-size: 14px;
         }
-        
-        /* Lebar khusus untuk input pendek (17 karakter / sejenisnya) */
         .input-custom-width {
             width: 250px !important;
         }
-
         textarea {
             resize: vertical;
             height: 80px;
         }
-
-        /* Styling untuk opsi pilihan dengan input bersyarat */
         .conditional-wrapper {
             display: flex;
             align-items: center;
@@ -84,10 +76,9 @@
             min-width: 160px;
         }
         .conditional-input {
-            display: none; /* Sembunyikan default */
+            display: none;
             flex-grow: 1;
         }
-
         .btn-container {
             display: flex;
             gap: 10px;
@@ -101,27 +92,12 @@
             font-weight: bold;
             font-size: 14px;
         }
-        .btn-add {
-            background-color: #3498db;
-            color: white;
-        }
-        .btn-add:hover {
-            background-color: #2980b9;
-        }
-        .btn-download {
-            background-color: #2ecc71;
-            color: white;
-        }
-        .btn-download:hover {
-            background-color: #27ae60;
-        }
-        .btn-clear {
-            background-color: #e74c3c;
-            color: white;
-        }
-        .btn-clear:hover {
-            background-color: #c0392b;
-        }
+        .btn-add { background-color: #3498db; color: white; }
+        .btn-add:hover { background-color: #2980b9; }
+        .btn-download { background-color: #2ecc71; color: white; }
+        .btn-download:hover { background-color: #27ae60; }
+        .btn-clear { background-color: #e74c3c; color: white; }
+        .btn-clear:hover { background-color: #c0392b; }
         .preview-section {
             margin-top: 30px;
             border-top: 1px solid #eaeaea;
@@ -133,21 +109,10 @@
             margin-top: 10px;
             font-size: 13px;
         }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f8f9fa;
-        }
-        .empty-row {
-            text-align: center;
-            color: #777;
-            font-style: italic;
-        }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 8px; text-align: left; }
+        th { background-color: #f8f9fa; }
+        .empty-row { text-align: center; color: #777; font-style: italic; }
     </style>
 </head>
 <body>
@@ -156,13 +121,11 @@
     <h2>Pencatatan Percakapan Harian</h2>
     
     <form id="recordForm">
-        <!-- Input Inline: Urutan Pencatatan -->
         <div class="form-group-inline">
             <label for="urutanPencatatan">Urutan Pencatatan (Sesi/Ke-):</label>
             <input type="number" id="urutanPencatatan" class="input-custom-width" required placeholder="Contoh: 1">
         </div>
 
-        <!-- Input Inline: Nomor Ticket -->
         <div class="form-group-inline">
             <label for="nomorTicket">Nomor Ticket (max 17):</label>
             <input type="text" id="nomorTicket" class="input-custom-width" maxlength="17" required placeholder="Maks 17 karakter">
@@ -183,7 +146,6 @@
             <textarea id="kesimpulanPercakapan" required placeholder="Tuliskan kesimpulan dari percakapan..."></textarea>
         </div>
 
-        <!-- Input: Tiket Melati/Link URL -->
         <div class="form-group">
             <label>Tiket Melati / Link URL?</label>
             <div class="conditional-wrapper">
@@ -197,7 +159,6 @@
             </div>
         </div>
 
-        <!-- Input: Opsi Email -->
         <div class="form-group">
             <label>Opsi Email:</label>
             <div class="conditional-wrapper">
@@ -237,11 +198,9 @@
         </table>
     </div>
 </div>
-
 <script>
     let listPencatatan = [];
 
-    // Toggle input nomor tiket Melati
     function toggleMelati(isYa) {
         const container = document.getElementById('containerNomorMelati');
         const inputMelati = document.getElementById('nomorTiketMelati');
@@ -255,7 +214,6 @@
         }
     }
 
-    // Toggle input email (hanya muncul jika "Email Lainnya" dipilih)
     function toggleEmail(isLainnya) {
         const container = document.getElementById('containerEmailInput');
         const inputEmail = document.getElementById('inputEmail');
@@ -273,15 +231,12 @@
     document.getElementById('recordForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // Ambil nilai opsi Melati
         const opsiMelati = document.querySelector('input[name="pilihMelati"]:checked').value;
         const nomorMelati = document.getElementById('nomorTiketMelati').value;
 
-        // Ambil nilai opsi Email
         const opsiEmail = document.querySelector('input[name="pilihEmail"]:checked').value;
         const alamatEmail = document.getElementById('inputEmail').value;
 
-        // Ambil nilai dari input
         const dataBaru = {
             urutanPencatatan: document.getElementById('urutanPencatatan').value,
             nomorTicket: document.getElementById('nomorTicket').value,
@@ -295,13 +250,9 @@
             waktuInput: new Date().toLocaleTimeString()
         };
 
-        // Masukkan ke array
         listPencatatan.push(dataBaru);
-
-        // Update tampilan tabel
         renderTable();
 
-        // Reset form input (mengembalikan ke kondisi default)
         document.getElementById('urutanPencatatan').value = '';
         document.getElementById('nomorTicket').value = '';
         document.getElementById('namaDirekam').value = '';
@@ -380,12 +331,10 @@
             textContent += `-----------------------------------------\n\n`;
         });
 
-        // Buat file blob untuk di-download
         const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         
-        // Format nama file berdasarkan tanggal hari ini
         const tgl = new Date().toISOString().slice(0, 10);
         a.href = url;
         a.download = `backup-pencatatan-${tgl}.txt`;
@@ -403,6 +352,5 @@
         }
     }
 </script>
-
 </body>
 </html>
