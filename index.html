@@ -51,7 +51,7 @@
             color: white;
         }
 
-        /* Styling Navigasi Sub-Tab */
+        /* Styling Navigasi Sub-Tab (Informasi & Aduan) agar rata berdampingan */
         .sub-tabs {
             display: flex;
             gap: 10px;
@@ -79,14 +79,15 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.15);
         }
 
-        .tab-pane {
+        /* Konten Tab */
+        .tab-content {
             display: none;
         }
-        .tab-pane.active {
+        .tab-content.active {
             display: block;
         }
 
-        /* Widget Jam Real-Time */
+        /* Styling untuk widget jam real-time di atas form */
         .live-clock-container {
             background-color: #f8f9fa;
             border: 1px solid #e9ecef;
@@ -108,15 +109,6 @@
             font-weight: 700;
             margin-left: 15px;
             color: #e67e22;
-        }
-
-        .form-section-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: #2c3e50;
-            border-left: 4px solid #3498db;
-            padding-left: 8px;
-            margin: 20px 0 10px 0;
         }
 
         .form-group {
@@ -144,7 +136,6 @@
         input[type="text"],
         input[type="number"],
         input[type="email"],
-        input[type="date"],
         select,
         textarea {
             width: 100%;
@@ -178,7 +169,7 @@
             flex-grow: 1;
         }
 
-        /* Styling PAP */
+        /* Styling khusus untuk pertanyaan PAP dan Keterangan Warning */
         .pap-container {
             background: #fdfdfd;
             border: 1px solid #e5e7eb;
@@ -202,7 +193,7 @@
             margin: 0 0 4px 0;
         }
         .pap-sub-text {
-            font-size: 10px;
+            font-size: 10px; /* Dinaikkan 2 size dari sebelumnya (7px) */
             color: #6b7280;
             margin: 0;
             line-height: 1.4;
@@ -218,17 +209,6 @@
             font-weight: 500;
             margin-top: 10px;
             line-height: 1.4;
-        }
-
-        .info-note-box {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            color: #166534;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            margin-bottom: 15px;
-            line-height: 1.5;
         }
 
         .btn-container {
@@ -318,16 +298,16 @@
 <div class="container">
     <h2>Kairos - Sistem Pencatatan & Produktivitas</h2>
 
-    <!-- NAVIGASI TAB UTAMA -->
+    <!-- NAVIGASI TAB UTAMA (4 TAB) -->
     <div class="main-tabs">
-        <button class="main-tab-btn tab-btn active" type="button" onclick="switchMainTab('tabIntro', this)">1. Intro</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">2. Percakapan</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">3. Buku Saku</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">4. Tautan Lainnya</button>
+        <button class="tab-btn active" onclick="switchTab(event, 'tabIntro')">1. Intro</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tabPercakapan')">2. Percakapan</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tabBukuSaku')">3. Buku Saku</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tabTautan')">4. Tautan Lainnya</button>
     </div>
 
     <!-- TAB 1: INTRO -->
-    <div id="tabIntro" class="tab-pane active">
+    <div id="tabIntro" class="tab-content active">
         <div class="welcome-box">
             <h3>Selamat Datang di Aplikasi Kairos</h3>
             <p>Aplikasi ini dirancang khusus untuk mendokumentasikan percakapan harian, penanganan informasi, aduan, serta manajemen tugas secara presisi dan terstruktur secara lokal di browser Anda.</p>
@@ -342,7 +322,7 @@
     </div>
 
     <!-- TAB 2: PERCAKAPAN -->
-    <div id="tabPercakapan" class="tab-pane">
+    <div id="tabPercakapan" class="tab-content">
         <!-- Widget Jam Real-Time -->
         <div class="live-clock-container">
             <span>Waktu Sistem Saat Ini:</span>
@@ -352,10 +332,10 @@
             </div>
         </div>
 
-        <!-- NAVIGASI SUB-TAB -->
+        <!-- NAVIGASI SUB-TAB (Informasi & Aduan) -->
         <div class="sub-tabs">
-            <button class="sub-tab-btn active" type="button" onclick="switchSubTab(event, 'Informasi')">Informasi</button>
-            <button class="sub-tab-btn" type="button" onclick="switchSubTab(event, 'Aduan')">Aduan</button>
+            <button class="sub-tab-btn active" onclick="switchSubTab(event, 'Informasi')">Informasi</button>
+            <button class="sub-tab-btn" onclick="switchSubTab(event, 'Aduan')">Aduan</button>
         </div>
 
         <form id="recordForm">
@@ -365,15 +345,15 @@
                 <input type="number" id="urutanPencatatan" class="input-17ch" required placeholder="Contoh: 1">
             </div>
 
-            <!-- Input Dinamis Berdasarkan Sub-Tab -->
+            <!-- Input Dinamis Berdasarkan Sub-Tab: Nomor Ticket CRM (Informasi) atau Jenis Aduan (Aduan) -->
             <div class="form-group-inline" id="dynamicFieldGroup">
-                <label id="dynamicLabel" for="nomorTicket">Nomor Ticket CRM:</label>
+                <label id="dynamicLabel" for="dynamicInput">Nomor Ticket CRM:</label>
                 <div id="dynamicContainer" style="flex-grow: 1;">
                     <input type="text" id="nomorTicket" class="input-17ch" required placeholder="Masukkan No. Ticket CRM">
                 </div>
             </div>
 
-            <!-- FORM INFORMASI: Pertanyaan PAP -->
+            <!-- Pertanyaan Tambahan PAP (Hanya tampil di Sub-Tab Informasi) -->
             <div class="pap-container" id="papSection">
                 <div class="pap-question-row">
                     <div class="pap-label-wrap">
@@ -391,80 +371,386 @@
                     ⚠️ Layanan yang hanya dapat dilakukan pada Layanan Informasi, silakan di transfer dan diinformasikan kebutuhan data yang diperlukan.
                 </div>
             </div>
+            
+            <div class="form-group">
+                <label for="namaDirekam">Nama yang Direkam:</label>
+                <input type="text" id="namaDirekam" required placeholder="Masukkan nama narasumber/lawan bicara">
+            </div>
+            
+            <div class="form-group">
+                <label for="pencatatanPercakapan">Pencatatan Percakapan:</label>
+                <textarea id="pencatatanPercakapan" required placeholder="Tuliskan detail poin percakapan di sini..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="kesimpulanPercakapan">Kesimpulan Percakapan:</label>
+                <textarea id="kesimpulanPercakapan" required placeholder="Tuliskan kesimpulan dari percakapan..."></textarea>
+            </div>
 
-            <!-- FORM INFORMASI: Elemen Standar -->
-            <div id="standardInfoFields">
-                <div class="form-group">
-                    <label for="namaDirekam">Nama yang Direkam:</label>
-                    <input type="text" id="namaDirekam" placeholder="Masukkan nama narasumber/lawan bicara">
-                </div>
-                
-                <div class="form-group">
-                    <label for="pencatatanPercakapan">Pencatatan Percakapan:</label>
-                    <textarea id="pencatatanPercakapan" placeholder="Tuliskan detail poin percakapan di sini..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="kesimpulanPercakapan">Kesimpulan Percakapan:</label>
-                    <textarea id="kesimpulanPercakapan" placeholder="Tuliskan kesimpulan dari percakapan..."></textarea>
-                </div>
-
-                <!-- Dropdown Inline: Tiket Melati/Link URL -->
-                <div class="form-group-inline">
-                    <label for="pilihMelati">Tiket Melati / Link URL?</label>
-                    <div class="conditional-wrapper">
-                        <select id="pilihMelati" class="input-17ch" onchange="toggleMelati(this.value)">
-                            <option value="Tidak">Tidak</option>
-                            <option value="Ya">Ya</option>
-                        </select>
-                        <div class="conditional-input" id="containerNomorMelati">
-                            <input type="text" id="nomorTiketMelati" class="input-conditional-width" placeholder="Masukkan No. Tiket / URL">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dropdown Inline: Opsi Email -->
-                <div class="form-group-inline">
-                    <label for="pilihEmail">Opsi Email:</label>
-                    <div class="conditional-wrapper">
-                        <select id="pilihEmail" class="input-17ch" onchange="toggleEmail(this.value)">
-                            <option value="Email Terdaftar">Email Terdaftar</option>
-                            <option value="Email Lainnya">Email Lainnya</option>
-                        </select>
-                        <div class="conditional-input" id="containerEmailInput">
-                            <input type="email" id="inputEmail" class="input-conditional-width" placeholder="Masukkan email lainnya...">
-                        </div>
+            <!-- Dropdown Inline: Tiket Melati/Link URL -->
+            <div class="form-group-inline">
+                <label for="pilihMelati">Tiket Melati / Link URL?</label>
+                <div class="conditional-wrapper">
+                    <select id="pilihMelati" class="input-17ch" onchange="toggleMelati(this.value)">
+                        <option value="Tidak">Tidak</option>
+                        <option value="Ya">Ya</option>
+                    </select>
+                    <div class="conditional-input" id="containerNomorMelati">
+                        <input type="text" id="nomorTiketMelati" class="input-conditional-width" placeholder="Masukkan No. Tiket / URL">
                     </div>
                 </div>
             </div>
 
-            <!-- FORM ADUAN: Detail Khusus Pengaduan -->
-            <div id="aduanFields" style="display: none;">
-                
-                <div class="form-section-title">Identitas Pelapor</div>
-                <div class="form-group">
-                    <label for="aduanPelaporNama">Nama Pelapor:</label>
-                    <input type="text" id="aduanPelaporNama" placeholder="Masukkan nama pelapor">
+            <!-- Dropdown Inline: Opsi Email -->
+            <div class="form-group-inline">
+                <label for="pilihEmail">Opsi Email:</label>
+                <div class="conditional-wrapper">
+                    <select id="pilihEmail" class="input-17ch" onchange="toggleEmail(this.value)">
+                        <option value="Email Terdaftar">Email Terdaftar</option>
+                        <option value="Email Lainnya">Email Lainnya</option>
+                    </select>
+                    <div class="conditional-input" id="containerEmailInput">
+                        <input type="email" id="inputEmail" class="input-conditional-width" placeholder="Masukkan email lainnya...">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="aduanPelaporNikNpwp">NIK / NPWP Pelapor (16 angka):</label>
-                    <input type="text" id="aduanPelaporNikNpwp" maxlength="16" pattern="[0-9]{16}" placeholder="Masukkan 16 angka NIK/NPWP">
-                </div>
-                <div class="form-group">
-                    <label for="aduanPelaporTelp">Nomor Telepon:</label>
-                    <input type="text" id="aduanPelaporTelp" placeholder="Masukkan nomor telepon yang dapat dihubungi">
-                </div>
-                <div class="form-group">
-                    <label for="aduanPelaporEmail">Email Konfirmasi:</label>
-                    <input type="email" id="aduanPelaporEmail" placeholder="Masukkan email yang dapat dikonfirmasikan kembali">
-                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button type="submit" class="btn-add">Tambah ke Daftar</button>
+                <button type="button" class="btn-download" onclick="downloadBackup()">Download Backup Notepad (.txt)</button>
+                <button type="button" class="btn-clear" onclick="clearData()">Reset Sesi</button>
+            </div>
+        </form>
 
-                <div class="form-section-title">Identitas Terlapor</div>
-                <div class="form-group">
-                    <label for="aduanTerlaporNama">Nama Terlapor:</label>
-                    <input type="text" id="aduanTerlaporNama" placeholder="Masukkan nama pihak yang dilaporkan">
-                </div>
-                <div class="form-group">
-                    <label for="aduanTerlaporNikNpwp">NIK / NPWP Terlapor:</label>
-                    <input type="text" id="aduanTerlaporNikNpwp" placeholder="Masukkan NIK/NPWP yang diadukan">
-                </div>
+        <div class="preview-section">
+            <h3>Daftar Catatan Hari Ini (<span id="totalData">0</span> data)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sub-Kategori</th>
+                        <th>Urutan</th>
+                        <th id="tableColHeader">Nomor Ticket CRM</th>
+                        <th>Nama</th>
+                        <th>Pencatatan, Kesimpulan & Info Tambahan</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="5" class="empty-row">Belum ada data yang dimasukkan.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB 3: BUKU SAKU -->
+    <div id="tabBukuSaku" class="tab-content">
+        <div class="bukusaku-box">
+            <h3>Buku Saku & Panduan Operasional</h3>
+            <p>Halaman ini berisi catatan panduan cepat, standar operasional prosedur (SOP), atau rangkuman informasi penting yang dapat diakses dengan cepat selama bertugas.</p>
+            <ul>
+                <li><strong>Prosedur Penanganan Informasi:</strong> Pastikan validasi identitas dan pencatatan nomor tiket CRM terinput dengan benar.</li>
+                <li><strong>Penanganan Aduan Khusus:</strong> Klasifikasikan aduan secara tepat ke dalam kategori Tindak Pidana Perpajakan, Sarpras, atau Kode Etik Pegawai.</li>
+                <li><strong>Kebijakan PAP:</strong> Layanan seperti Perubahan Data WP, Pengaktifan Kembali WP Nonaktif, Pendaftaran NPWP OP, dan Aktivasi NIK OP wajib dialihkan ke Layanan Informasi.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- TAB 4: TAUTAN LAINNYA -->
+    <div id="tabTautan" class="tab-content">
+        <div class="link-box">
+            <h3>Tautan Lainnya & Referensi</h3>
+            <p>Gunakan tautan cepat di bawah ini untuk mencari informasi pendukung atau regulasi:</p>
+            <ul class="link-list">
+                <li>🔗 <a href="https://www.google.com" target="_blank">Google Search - Mesin Pencari Utama</a></li>
+                <li>🔗 <a href="https://jdih.kemenkeu.go.id" target="_blank">JDIH Kementerian Keuangan (Regulasi)</a></li>
+                <li>🔗 <a href="https://github.com" target="_blank">GitHub - Repository & Hosting</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    let listPencatatan = [];
+    let currentSubTab = "Informasi"; // Default sub-tab aktif
+
+    // Fungsi Navigasi Tab Utama (Sudah disinkronkan ID-nya)
+    function switchTab(evt, tabId) {
+        const contents = document.getElementsByClassName('tab-content');
+        for (let c of contents) {
+            c.classList.remove('active');
+        }
+        const buttons = document.getElementsByClassName('tab-btn');
+        for (let b of buttons) {
+            b.classList.remove('active');
+        }
+        document.getElementById(tabId).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
+
+    function switchSubTab(evt, subName) {
+        const buttons = document.getElementsByClassName('sub-tab-btn');
+        for (let b of buttons) b.classList.remove('active');
+        evt.currentTarget.classList.add('active');
+        currentSubTab = subName;
+
+        const dynamicLabel = document.getElementById('dynamicLabel');
+        const dynamicContainer = document.getElementById('dynamicContainer');
+        const tableColHeader = document.getElementById('tableColHeader');
+        const papSection = document.getElementById('papSection');
+
+        if (subName === 'Informasi') {
+            dynamicLabel.innerText = "Nomor Ticket CRM:";
+            dynamicContainer.innerHTML = `<input type="text" id="nomorTicket" class="input-17ch" required placeholder="Masukkan No. Ticket CRM">`;
+            tableColHeader.innerText = "Nomor Ticket CRM";
+            papSection.style.display = "block";
+        } else {
+            dynamicLabel.innerText = "Jenis Aduan:";
+            dynamicContainer.innerHTML = `
+                <select id="jenisAduan" class="input-conditional-width" required>
+                    <option value="" disabled selected>-- Pilih Jenis Aduan --</option>
+                    <option value="Tindak Pidana di Bidang Perpajakan">Tindak Pidana di Bidang Perpajakan</option>
+                    <option value="Sarana dan Prasarana">Sarana dan Prasarana</option>
+                    <option value="Kode Etik Pegawai">Kode Etik Pegawai</option>
+                </select>
+            `;
+            tableColHeader.innerText = "Jenis Aduan";
+            papSection.style.display = "none";
+        }
+    }
+
+    function togglePapWarning(value) {
+        const warningBox = document.getElementById('papWarningBox');
+        if (value === 'Ya') {
+            warningBox.style.display = 'block';
+        } else {
+            warningBox.style.display = 'none';
+        }
+    }
+
+    function updateLiveClock() {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+        const mmm = months[now.getMonth()];
+        const yyyy = now.getFullYear();
+        
+        const hoursNum = now.getHours();
+        const minsNum = now.getMinutes();
+
+        const hours = String(hoursNum).padStart(2, '0');
+        const minutes = String(minsNum).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+        
+        let period = "";
+        const totalMinutes = hoursNum * 60 + minsNum;
+
+        if (totalMinutes >= 1 && totalMinutes <= 659) period = "Pagi";
+        else if (totalMinutes >= 660 && totalMinutes <= 899) period = "Siang";
+        else if (totalMinutes >= 900 && totalMinutes <= 1139) period = "Sore";
+        else period = "Malam";
+
+        const formattedString = `${day} ${mmm} ${yyyy}  ${hours}:${minutes}:${seconds}.${milliseconds}`;
+        
+        const clockEl = document.getElementById('liveClock');
+        const periodEl = document.getElementById('timePeriod');
+        if(clockEl) clockEl.innerText = formattedString;
+        if(periodEl) periodEl.innerHTML = `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${period}`;
+    }
+
+    setInterval(updateLiveClock, 50);
+    updateLiveClock();
+
+    function toggleMelati(value) {
+        const container = document.getElementById('containerNomorMelati');
+        const inputMelati = document.getElementById('nomorTiketMelati');
+        if (value === 'Ya') {
+            container.style.display = 'block';
+            inputMelati.required = true;
+        } else {
+            container.style.display = 'none';
+            inputMelati.required = false;
+            inputMelati.value = '';
+        }
+    }
+
+    function toggleEmail(value) {
+        const container = document.getElementById('containerEmailInput');
+        const inputEmail = document.getElementById('inputEmail');
+        if (value === 'Email Lainnya') {
+            container.style.display = 'block';
+            inputEmail.required = true;
+            inputEmail.focus();
+        } else {
+            container.style.display = 'none';
+            inputEmail.required = false;
+            inputEmail.value = '';
+        }
+    }
+
+    document.getElementById('recordForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const opsiMelati = document.getElementById('pilihMelati').value;
+        const nomorMelati = document.getElementById('nomorTiketMelati').value;
+        const opsiEmail = document.getElementById('pilihEmail').value;
+        const alamatEmail = document.getElementById('inputEmail').value;
+
+        let identifierValue = "";
+        let papInfo = "";
+
+        if (currentSubTab === 'Informasi') {
+            identifierValue = document.getElementById('nomorTicket').value;
+            const pilihPap = document.getElementById('pilihPap').value;
+            papInfo = `PAP Tidak Diperbolehkan: ${pilihPap}`;
+        } else {
+            identifierValue = document.getElementById('jenisAduan').value;
+        }
+
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+        const mmm = months[now.getMonth()];
+        const yyyy = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+        const timestampInput = `${day} ${mmm} ${yyyy}  ${hours}:${minutes}:${seconds}.${milliseconds}`;
+
+        const dataBaru = {
+            subTab: currentSubTab,
+            urutanPencatatan: document.getElementById('urutanPencatatan').value,
+            identifier: identifierValue,
+            papInfo: papInfo,
+            namaDirekam: document.getElementById('namaDirekam').value,
+            pencatatanPercakapan: document.getElementById('pencatatanPercakapan').value,
+            kesimpulanPercakapan: document.getElementById('kesimpulanPercakapan').value,
+            tiketMelati: opsiMelati,
+            nomorTiketMelati: opsiMelati === 'Ya' ? nomorMelati : '-',
+            tipeEmail: opsiEmail,
+            detailEmail: opsiEmail === 'Email Lainnya' ? alamatEmail : '-',
+            waktuInput: timestampInput
+        };
+
+        listPencatatan.push(dataBaru);
+        renderTable();
+
+        // Reset form
+        document.getElementById('urutanPencatatan').value = '';
+        if (currentSubTab === 'Informasi') {
+            document.getElementById('nomorTicket').value = '';
+            document.getElementById('pilihPap').value = 'Tidak';
+            togglePapWarning('Tidak');
+        } else {
+            document.getElementById('jenisAduan').selectedIndex = 0;
+        }
+        document.getElementById('namaDirekam').value = '';
+        document.getElementById('pencatatanPercakapan').value = '';
+        document.getElementById('kesimpulanPercakapan').value = '';
+        
+        document.getElementById('pilihMelati').value = 'Tidak';
+        toggleMelati('Tidak');
+
+        document.getElementById('pilihEmail').value = 'Email Terdaftar';
+        toggleEmail('Email Terdaftar');
+        
+        document.getElementById('urutanPencatatan').focus();
+    });
+
+    function renderTable() {
+        const tbody = document.getElementById('tableBody');
+        document.getElementById('totalData').innerText = listPencatatan.length;
+
+        if (listPencatatan.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="empty-row">Belum ada data yang dimasukkan.</td></tr>`;
+            return;
+        }
+
+        let html = '';
+        listPencatatan.forEach((item) => {
+            let infoEmail = item.tipeEmail;
+            if (item.tipeEmail === 'Email Lainnya') {
+                infoEmail += ` (${item.detailEmail})`;
+            }
+
+            let papDetailHtml = item.subTab === 'Informasi' ? `<br><strong>${item.papInfo}</strong>` : '';
+
+            html += `
+                <tr>
+                    <td><span style="background: #eef2f7; padding: 3px 6px; border-radius: 4px; font-weight: 600; font-size: 11px;">${item.subTab}</span></td>
+                    <td>${item.urutanPencatatan}</td>
+                    <td><strong>${item.identifier}</strong></td>
+                    <td>${item.namaDirekam}</td>
+                    <td>
+                        <strong>Pencatatan:</strong> ${item.pencatatanPercakapan}<br>
+                        <strong>Kesimpulan:</strong> ${item.kesimpulanPercakapan}${papDetailHtml}<br>
+                        <strong>Tiket Melati/URL:</strong> ${item.tiketMelati} ${item.tiketMelati === 'Ya' ? '(' + item.nomorTiketMelati + ')' : ''}<br>
+                        <strong>Email:</strong> ${infoEmail}<br>
+                        <small style="color: #888;">Waktu: ${item.waktuInput}</small>
+                    </td>
+                </tr>
+            `;
+        });
+        tbody.innerHTML = html;
+    }
+
+    function downloadBackup() {
+        if (listPencatatan.length === 0) {
+            alert("Belum ada data untuk di-backup!");
+            return;
+        }
+
+        let textContent = "=========================================\n";
+        textContent += `BACKUP KAIROS - REKAPITULASI HARIAN\n`;
+        textContent += `Waktu Export: ${new Date().toISOString()}\n`;
+        textContent += "=========================================\n\n";
+
+        listPencatatan.forEach((item, index) => {
+            let labelField = item.subTab === 'Informasi' ? 'Nomor Ticket CRM' : 'Jenis Aduan';
+            textContent += `--- Data ke-${index + 1} [-- Sub-Tab: ${item.subTab} --]\n`;
+            textContent += `Waktu Input         : ${item.waktuInput}\n`;
+            textContent += `Urutan Pencatatan   : ${item.urutanPencatatan}\n`;
+            textContent += `${labelField.padEnd(20, ' ')}: ${item.identifier}\n`;
+            if (item.subTab === 'Informasi') {
+                textContent += `Info PAP            : ${item.papInfo}\n`;
+            }
+            textContent += `Nama yang Direkam   : ${item.namaDirekam}\n`;
+            textContent += `Pencatatan Percakapan:\n${item.pencatatanPercakapan}\n\n`;
+            textContent += `Kesimpulan Percakapan:\n${item.kesimpulanPercakapan}\n`;
+            textContent += `Tiket Melati/URL    : ${item.tiketMelati}\n`;
+            if(item.tiketMelati === 'Ya') {
+                textContent += `No. Tiket Melati/URL: ${item.nomorTiketMelati}\n`;
+            }
+            textContent += `Opsi Email          : ${item.tipeEmail}\n`;
+            if(item.tipeEmail === 'Email Lainnya') {
+                textContent += `Alamat Email Lainnya: ${item.detailEmail}\n`;
+            }
+            textContent += `-----------------------------------------\n\n`;
+        });
+
+        const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        
+        const tgl = new Date().toISOString().slice(0, 10);
+        a.href = url;
+        a.download = `backup-kairos-${tgl}.txt`;
+        
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function clearData() {
+        if (confirm("Apakah Anda yakin ingin mereset semua data sesi ini?")) {
+            listPencatatan = [];
+            renderTable();
+        }
+    }
+</script>
+
+</body>
+</html>
