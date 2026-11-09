@@ -13,7 +13,7 @@
             color: #333;
         }
         .container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto;
             background: #fff;
             padding: 30px;
@@ -50,29 +50,32 @@
             color: white;
         }
 
-        /* Styling Navigasi Sub-Tab untuk Pencatatan */
+        /* Styling Navigasi Sub-Tab (Informasi & Aduan) agar rata berdampingan */
         .sub-tabs {
             display: flex;
-            gap: 5px;
+            gap: 10px;
             margin-bottom: 20px;
             background: #f1f2f6;
-            padding: 5px;
-            border-radius: 5px;
-            flex-wrap: wrap;
+            padding: 8px;
+            border-radius: 6px;
         }
         .sub-tab-btn {
-            padding: 8px 15px;
+            flex: 1;
+            padding: 10px 15px;
             border: none;
-            background: transparent;
-            color: #555;
+            background: #e4e7eb;
+            color: #4b5563;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
             border-radius: 4px;
             cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
         }
         .sub-tab-btn.active {
             background-color: #2c3e50;
             color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
         }
 
         /* Konten Tab */
@@ -165,6 +168,48 @@
             flex-grow: 1;
         }
 
+        /* Styling khusus untuk pertanyaan PAP dan Keterangan Warning */
+        .pap-container {
+            background: #fdfdfd;
+            border: 1px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        .pap-question-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .pap-label-wrap {
+            flex-grow: 1;
+        }
+        .pap-main-question {
+            font-weight: 600;
+            font-size: 14px;
+            color: #2c3e50;
+            margin: 0 0 4px 0;
+        }
+        .pap-sub-text {
+            font-size: 7px; /* Setengah dari 14px */
+            color: #6b7280;
+            margin: 0;
+            line-height: 1.3;
+        }
+        .pap-warning-box {
+            display: none;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
         .btn-container {
             display: flex;
             gap: 10px;
@@ -226,7 +271,6 @@
             font-style: italic;
         }
 
-        /* Styling Sambutan & Referensi */
         .welcome-box, .link-box {
             line-height: 1.6;
             color: #555;
@@ -275,7 +319,7 @@
         </div>
     </div>
 
-    <!-- TAB 2: PENCATATAN PERCAKAPAN (DENGAN 2 SUB-TAB: Informasi & Aduan) -->
+    <!-- TAB 2: PENCATATAN PERCAKAPAN -->
     <div id="tabPencatatan" class="tab-content">
         <!-- Widget Jam Real-Time -->
         <div class="live-clock-container">
@@ -286,7 +330,7 @@
             </div>
         </div>
 
-        <!-- NAVIGASI SUB-TAB -->
+        <!-- NAVIGASI SUB-TAB (Rata berdampingan) -->
         <div class="sub-tabs">
             <button class="sub-tab-btn active" onclick="switchSubTab(event, 'Informasi')">Informasi</button>
             <button class="sub-tab-btn" onclick="switchSubTab(event, 'Aduan')">Aduan</button>
@@ -299,12 +343,30 @@
                 <input type="number" id="urutanPencatatan" class="input-17ch" required placeholder="Contoh: 1">
             </div>
 
-            <!-- Input Dinamis Berdasarkan Sub-Tab: Nomor Ticket (Informasi) atau Jenis Aduan (Aduan) -->
+            <!-- Input Dinamis Berdasarkan Sub-Tab: Nomor Ticket CRM (Informasi) atau Jenis Aduan (Aduan) -->
             <div class="form-group-inline" id="dynamicFieldGroup">
-                <label id="dynamicLabel" for="dynamicInput">Nomor Ticket (max 17):</label>
+                <label id="dynamicLabel" for="dynamicInput">Nomor Ticket CRM:</label>
                 <div id="dynamicContainer" style="flex-grow: 1;">
-                    <!-- Akan diubah via JavaScript (Input Text vs Dropdown) -->
-                    <input type="text" id="nomorTicket" class="input-17ch" maxlength="17" required placeholder="Maks 17 karakter">
+                    <input type="text" id="nomorTicket" class="input-17ch" required placeholder="Masukkan No. Ticket CRM">
+                </div>
+            </div>
+
+            <!-- Pertanyaan Tambahan PAP (Hanya tampil di Sub-Tab Informasi) -->
+            <div class="pap-container" id="papSection">
+                <div class="pap-question-row">
+                    <div class="pap-label-wrap">
+                        <p class="pap-main-question">Apakah PAP yang tidak diperbolehkan?</p>
+                        <p class="pap-sub-text">seperti Perubahan Data WP, Pengaktifan Kembali WP Nonaktif, Pendaftaran NPWP OP, Aktivasi NIK OP</p>
+                    </div>
+                    <div style="width: 220px;">
+                        <select id="pilihPap" class="input-17ch" onchange="togglePapWarning(this.value)">
+                            <option value="Tidak">Tidak</option>
+                            <option value="Ya">Ya</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pap-warning-box" id="papWarningBox">
+                    ⚠️ Layanan yang hanya dapat dilakukan pada Layanan Informasi, silakan di transfer dan diinformasikan kebutuhan data yang diperlukan.
                 </div>
             </div>
             
@@ -365,7 +427,7 @@
                     <tr>
                         <th>Sub-Kategori</th>
                         <th>Urutan</th>
-                        <th id="tableColHeader">No. Ticket</th>
+                        <th id="tableColHeader">Nomor Ticket CRM</th>
                         <th>Nama</th>
                         <th>Pencatatan, Kesimpulan & Info Tambahan</th>
                     </tr>
@@ -397,37 +459,31 @@
     let listPencatatan = [];
     let currentSubTab = "Informasi"; // Default sub-tab aktif
 
-    // Fungsi Navigasi Tab Utama
     function switchTab(evt, tabId) {
         const contents = document.getElementsByClassName('tab-content');
-        for (let c of contents) {
-            c.classList.remove('active');
-        }
+        for (let c of contents) c.classList.remove('active');
         const buttons = document.getElementsByClassName('tab-btn');
-        for (let b of buttons) {
-            b.classList.remove('active');
-        }
+        for (let b of buttons) b.classList.remove('active');
         document.getElementById(tabId).classList.add('active');
         evt.currentTarget.classList.add('active');
     }
 
-    // Fungsi Navigasi Sub-Tab (Informasi / Aduan)
     function switchSubTab(evt, subName) {
         const buttons = document.getElementsByClassName('sub-tab-btn');
-        for (let b of buttons) {
-            b.classList.remove('active');
-        }
+        for (let b of buttons) b.classList.remove('active');
         evt.currentTarget.classList.add('active');
         currentSubTab = subName;
 
         const dynamicLabel = document.getElementById('dynamicLabel');
         const dynamicContainer = document.getElementById('dynamicContainer');
         const tableColHeader = document.getElementById('tableColHeader');
+        const papSection = document.getElementById('papSection');
 
         if (subName === 'Informasi') {
-            dynamicLabel.innerText = "Nomor Ticket (max 17):";
-            dynamicContainer.innerHTML = `<input type="text" id="nomorTicket" class="input-17ch" maxlength="17" required placeholder="Maks 17 karakter">`;
-            tableColHeader.innerText = "No. Ticket";
+            dynamicLabel.innerText = "Nomor Ticket CRM:";
+            dynamicContainer.innerHTML = `<input type="text" id="nomorTicket" class="input-17ch" required placeholder="Masukkan No. Ticket CRM">`;
+            tableColHeader.innerText = "Nomor Ticket CRM";
+            papSection.style.display = "block";
         } else {
             dynamicLabel.innerText = "Jenis Aduan:";
             dynamicContainer.innerHTML = `
@@ -439,10 +495,19 @@
                 </select>
             `;
             tableColHeader.innerText = "Jenis Aduan";
+            papSection.style.display = "none";
         }
     }
 
-    // Fungsi untuk memperbarui jam real-time & indikator waktu (Pagi/Siang/Sore/Malam)
+    function togglePapWarning(value) {
+        const warningBox = document.getElementById('papWarningBox');
+        if (value === 'Ya') {
+            warningBox.style.display = 'block';
+        } else {
+            warningBox.style.display = 'none';
+        }
+    }
+
     function updateLiveClock() {
         const now = new Date();
         const day = String(now.getDate()).padStart(2, '0');
@@ -512,10 +577,13 @@
         const opsiEmail = document.getElementById('pilihEmail').value;
         const alamatEmail = document.getElementById('inputEmail').value;
 
-        // Ambil nilai identifier (No. Ticket atau Jenis Aduan tergantung sub-tab aktif)
         let identifierValue = "";
+        let papInfo = "";
+
         if (currentSubTab === 'Informasi') {
             identifierValue = document.getElementById('nomorTicket').value;
+            const pilihPap = document.getElementById('pilihPap').value;
+            papInfo = `PAP Tidak Diperbolehkan: ${pilihPap}`;
         } else {
             identifierValue = document.getElementById('jenisAduan').value;
         }
@@ -535,6 +603,7 @@
             subTab: currentSubTab,
             urutanPencatatan: document.getElementById('urutanPencatatan').value,
             identifier: identifierValue,
+            papInfo: papInfo,
             namaDirekam: document.getElementById('namaDirekam').value,
             pencatatanPercakapan: document.getElementById('pencatatanPercakapan').value,
             kesimpulanPercakapan: document.getElementById('kesimpulanPercakapan').value,
@@ -548,12 +617,14 @@
         listPencatatan.push(dataBaru);
         renderTable();
 
-        // Reset form input
+        // Reset form
         document.getElementById('urutanPencatatan').value = '';
         if (currentSubTab === 'Informasi') {
             document.getElementById('nomorTicket').value = '';
+            document.getElementById('pilihPap').value = 'Tidak';
+            togglePapWarning('Tidak');
         } else {
-            document.getElementById('jenisAduan.selectedIndex = 0');
+            document.getElementById('jenisAduan').selectedIndex = 0;
         }
         document.getElementById('namaDirekam').value = '';
         document.getElementById('pencatatanPercakapan').value = '';
@@ -584,6 +655,8 @@
                 infoEmail += ` (${item.detailEmail})`;
             }
 
+            let papDetailHtml = item.subTab === 'Informasi' ? `<br><strong>${item.papInfo}</strong>` : '';
+
             html += `
                 <tr>
                     <td><span style="background: #eef2f7; padding: 3px 6px; border-radius: 4px; font-weight: 600; font-size: 11px;">${item.subTab}</span></td>
@@ -592,7 +665,7 @@
                     <td>${item.namaDirekam}</td>
                     <td>
                         <strong>Pencatatan:</strong> ${item.pencatatanPercakapan}<br>
-                        <strong>Kesimpulan:</strong> ${item.kesimpulanPercakapan}<br>
+                        <strong>Kesimpulan:</strong> ${item.kesimpulanPercakapan}${papDetailHtml}<br>
                         <strong>Tiket Melati/URL:</strong> ${item.tiketMelati} ${item.tiketMelati === 'Ya' ? '(' + item.nomorTiketMelati + ')' : ''}<br>
                         <strong>Email:</strong> ${infoEmail}<br>
                         <small style="color: #888;">Waktu: ${item.waktuInput}</small>
@@ -615,11 +688,14 @@
         textContent += "=========================================\n\n";
 
         listPencatatan.forEach((item, index) => {
-            let labelField = item.subTab === 'Informasi' ? 'Nomor Ticket' : 'Jenis Aduan';
+            let labelField = item.subTab === 'Informasi' ? 'Nomor Ticket CRM' : 'Jenis Aduan';
             textContent += `--- Data ke-${index + 1} [-- Sub-Tab: ${item.subTab} --]\n`;
             textContent += `Waktu Input         : ${item.waktuInput}\n`;
             textContent += `Urutan Pencatatan   : ${item.urutanPencatatan}\n`;
             textContent += `${labelField.padEnd(20, ' ')}: ${item.identifier}\n`;
+            if (item.subTab === 'Informasi') {
+                textContent += `Info PAP            : ${item.papInfo}\n`;
+            }
             textContent += `Nama yang Direkam   : ${item.namaDirekam}\n`;
             textContent += `Pencatatan Percakapan:\n${item.pencatatanPercakapan}\n\n`;
             textContent += `Kesimpulan Percakapan:\n${item.kesimpulanPercakapan}\n`;
