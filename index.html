@@ -82,12 +82,6 @@
         .tab-content.active {
             display: block;
         }
-        .sub-tab-content {
-            display: none;
-        }
-        .sub-tab-content.active {
-            display: block;
-        }
 
         /* Styling untuk widget jam real-time di atas form */
         .live-clock-container {
@@ -270,18 +264,18 @@
     <div id="tabWelcome" class="tab-content active">
         <div class="welcome-box">
             <h3>Selamat Datang di Aplikasi Kairos</h3>
-            <p>Aplikasi ini dirancang khusus untuk mendokumentasikan percakapan harian, penanganan aduan, serta manajemen tugas secara presisi dan terstruktur secara lokal di browser Anda.</p>
+            <p>Aplikasi ini dirancang khusus untuk mendokumentasikan percakapan harian, penanganan informasi, aduan, serta manajemen tugas secara presisi dan terstruktur secara lokal di browser Anda.</p>
             <p><strong>Fitur Utama:</strong></p>
             <ul>
                 <li>Widget waktu real-time dengan presisi milidetik dan indikator waktu (Pagi/Siang/Sore/Malam).</li>
-                <li>Pencatatan terintegrasi untuk Percakapan Biasa dan berbagai Kategori Aduan.</li>
+                <li>Pencatatan terintegrasi untuk kategori Informasi dan Aduan khusus.</li>
                 <li>Backup data lengkap secara instan ke dalam file Notepad (.txt).</li>
             </ul>
             <p>Silakan gunakan menu navigasi di atas untuk mulai melakukan pencatatan.</p>
         </div>
     </div>
 
-    <!-- TAB 2: PENCATATAN PERCAKAPAN (DENGAN 4 SUB-TAB) -->
+    <!-- TAB 2: PENCATATAN PERCAKAPAN (DENGAN 2 SUB-TAB: Informasi & Aduan) -->
     <div id="tabPencatatan" class="tab-content">
         <!-- Widget Jam Real-Time -->
         <div class="live-clock-container">
@@ -294,10 +288,8 @@
 
         <!-- NAVIGASI SUB-TAB -->
         <div class="sub-tabs">
-            <button class="sub-tab-btn active" onclick="switchSubTab(event, 'subPercakapanBiasa')">Percakapan Biasa</button>
-            <button class="sub-tab-btn" onclick="switchSubTab(event, 'subAduanPajak')">Aduan: Tipikor Pajak</button>
-            <button class="sub-tab-btn" onclick="switchSubTab(event, 'subAduanSarpras')">Aduan: Sarpras</button>
-            <button class="sub-tab-btn" onclick="switchSubTab(event, 'subAduanKodeEtik')">Aduan: Kode Etik</button>
+            <button class="sub-tab-btn active" onclick="switchSubTab(event, 'Informasi')">Informasi</button>
+            <button class="sub-tab-btn" onclick="switchSubTab(event, 'Aduan')">Aduan</button>
         </div>
 
         <form id="recordForm">
@@ -307,10 +299,13 @@
                 <input type="number" id="urutanPencatatan" class="input-17ch" required placeholder="Contoh: 1">
             </div>
 
-            <!-- Input Inline: Nomor Ticket -->
-            <div class="form-group-inline">
-                <label for="nomorTicket">Nomor Ticket (max 17):</label>
-                <input type="text" id="nomorTicket" class="input-17ch" maxlength="17" required placeholder="Maks 17 karakter">
+            <!-- Input Dinamis Berdasarkan Sub-Tab: Nomor Ticket (Informasi) atau Jenis Aduan (Aduan) -->
+            <div class="form-group-inline" id="dynamicFieldGroup">
+                <label id="dynamicLabel" for="dynamicInput">Nomor Ticket (max 17):</label>
+                <div id="dynamicContainer" style="flex-grow: 1;">
+                    <!-- Akan diubah via JavaScript (Input Text vs Dropdown) -->
+                    <input type="text" id="nomorTicket" class="input-17ch" maxlength="17" required placeholder="Maks 17 karakter">
+                </div>
             </div>
             
             <div class="form-group">
@@ -368,9 +363,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Kategori</th>
+                        <th>Sub-Kategori</th>
                         <th>Urutan</th>
-                        <th>No. Ticket</th>
+                        <th id="tableColHeader">No. Ticket</th>
                         <th>Nama</th>
                         <th>Pencatatan, Kesimpulan & Info Tambahan</th>
                     </tr>
@@ -400,7 +395,7 @@
 
 <script>
     let listPencatatan = [];
-    let currentSubCategory = "Percakapan Biasa"; // Default kategori sub-tab aktif
+    let currentSubTab = "Informasi"; // Default sub-tab aktif
 
     // Fungsi Navigasi Tab Utama
     function switchTab(evt, tabId) {
@@ -416,19 +411,35 @@
         evt.currentTarget.classList.add('active');
     }
 
-    // Fungsi Navigasi Sub-Tab Pencatatan
-    function switchSubTab(evt, subId) {
+    // Fungsi Navigasi Sub-Tab (Informasi / Aduan)
+    function switchSubTab(evt, subName) {
         const buttons = document.getElementsByClassName('sub-tab-btn');
         for (let b of buttons) {
             b.classList.remove('active');
         }
         evt.currentTarget.classList.add('active');
+        currentSubTab = subName;
 
-        // Tentukan label kategori berdasarkan tombol sub-tab yang dipilih
-        if (subId === 'subPercakapanBiasa') currentSubCategory = "Percakapan Biasa";
-        else if (subId === 'subAduanPajak') currentSubCategory = "Aduan: Tindak Pidana di Bidang Perpajakan";
-        else if (subId === 'subAduanSarpras') currentSubCategory = "Aduan: Sarana dan Prasarana";
-        else if (subId === 'subAduanKodeEtik') currentSubCategory = "Aduan: Kode Etik Pegawai";
+        const dynamicLabel = document.getElementById('dynamicLabel');
+        const dynamicContainer = document.getElementById('dynamicContainer');
+        const tableColHeader = document.getElementById('tableColHeader');
+
+        if (subName === 'Informasi') {
+            dynamicLabel.innerText = "Nomor Ticket (max 17):";
+            dynamicContainer.innerHTML = `<input type="text" id="nomorTicket" class="input-17ch" maxlength="17" required placeholder="Maks 17 karakter">`;
+            tableColHeader.innerText = "No. Ticket";
+        } else {
+            dynamicLabel.innerText = "Jenis Aduan:";
+            dynamicContainer.innerHTML = `
+                <select id="jenisAduan" class="input-conditional-width" required>
+                    <option value="" disabled selected>-- Pilih Jenis Aduan --</option>
+                    <option value="Tindak Pidana di Bidang Perpajakan">Tindak Pidana di Bidang Perpajakan</option>
+                    <option value="Sarana dan Prasarana">Sarana dan Prasarana</option>
+                    <option value="Kode Etik Pegawai">Kode Etik Pegawai</option>
+                </select>
+            `;
+            tableColHeader.innerText = "Jenis Aduan";
+        }
     }
 
     // Fungsi untuk memperbarui jam real-time & indikator waktu (Pagi/Siang/Sore/Malam)
@@ -441,11 +452,10 @@
         
         const hoursNum = now.getHours();
         const minsNum = now.getMinutes();
-        const secsNum = now.getSeconds();
 
         const hours = String(hoursNum).padStart(2, '0');
         const minutes = String(minsNum).padStart(2, '0');
-        const seconds = String(secsNum).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
         const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
         
         let period = "";
@@ -502,6 +512,14 @@
         const opsiEmail = document.getElementById('pilihEmail').value;
         const alamatEmail = document.getElementById('inputEmail').value;
 
+        // Ambil nilai identifier (No. Ticket atau Jenis Aduan tergantung sub-tab aktif)
+        let identifierValue = "";
+        if (currentSubTab === 'Informasi') {
+            identifierValue = document.getElementById('nomorTicket').value;
+        } else {
+            identifierValue = document.getElementById('jenisAduan').value;
+        }
+
         const now = new Date();
         const day = String(now.getDate()).padStart(2, '0');
         const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
@@ -514,9 +532,9 @@
         const timestampInput = `${day} ${mmm} ${yyyy}  ${hours}:${minutes}:${seconds}.${milliseconds}`;
 
         const dataBaru = {
-            kategori: currentSubCategory,
+            subTab: currentSubTab,
             urutanPencatatan: document.getElementById('urutanPencatatan').value,
-            nomorTicket: document.getElementById('nomorTicket').value,
+            identifier: identifierValue,
             namaDirekam: document.getElementById('namaDirekam').value,
             pencatatanPercakapan: document.getElementById('pencatatanPercakapan').value,
             kesimpulanPercakapan: document.getElementById('kesimpulanPercakapan').value,
@@ -530,8 +548,13 @@
         listPencatatan.push(dataBaru);
         renderTable();
 
+        // Reset form input
         document.getElementById('urutanPencatatan').value = '';
-        document.getElementById('nomorTicket').value = '';
+        if (currentSubTab === 'Informasi') {
+            document.getElementById('nomorTicket').value = '';
+        } else {
+            document.getElementById('jenisAduan.selectedIndex = 0');
+        }
         document.getElementById('namaDirekam').value = '';
         document.getElementById('pencatatanPercakapan').value = '';
         document.getElementById('kesimpulanPercakapan').value = '';
@@ -563,9 +586,9 @@
 
             html += `
                 <tr>
-                    <td><span style="background: #eef2f7; padding: 3px 6px; border-radius: 4px; font-weight: 600; font-size: 11px;">${item.kategori}</span></td>
+                    <td><span style="background: #eef2f7; padding: 3px 6px; border-radius: 4px; font-weight: 600; font-size: 11px;">${item.subTab}</span></td>
                     <td>${item.urutanPencatatan}</td>
-                    <td><strong>${item.nomorTicket}</strong></td>
+                    <td><strong>${item.identifier}</strong></td>
                     <td>${item.namaDirekam}</td>
                     <td>
                         <strong>Pencatatan:</strong> ${item.pencatatanPercakapan}<br>
@@ -592,10 +615,11 @@
         textContent += "=========================================\n\n";
 
         listPencatatan.forEach((item, index) => {
-            textContent += `--- Data ke-${index + 1} [-- Kategori: ${item.kategori} --]\n`;
+            let labelField = item.subTab === 'Informasi' ? 'Nomor Ticket' : 'Jenis Aduan';
+            textContent += `--- Data ke-${index + 1} [-- Sub-Tab: ${item.subTab} --]\n`;
             textContent += `Waktu Input         : ${item.waktuInput}\n`;
             textContent += `Urutan Pencatatan   : ${item.urutanPencatatan}\n`;
-            textContent += `Nomor Ticket        : ${item.nomorTicket}\n`;
+            textContent += `${labelField.padEnd(20, ' ')}: ${item.identifier}\n`;
             textContent += `Nama yang Direkam   : ${item.namaDirekam}\n`;
             textContent += `Pencatatan Percakapan:\n${item.pencatatanPercakapan}\n\n`;
             textContent += `Kesimpulan Percakapan:\n${item.kesimpulanPercakapan}\n`;
