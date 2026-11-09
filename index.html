@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kairos - Aplikasi Pencatatan & Backup</title>
+    <title>Daily Work Notes</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -22,7 +22,27 @@
             --warning-bg: #fffbeb;
             --warning-border: #fde68a;
             --warning-text: #92400e;
+            --input-bg: #ffffff;
             --radius: 8px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --secondary: #94a3b8;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --success: #059669;
+            --success-hover: #047857;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+            --warning-bg: #451a03;
+            --warning-border: #78350f;
+            --warning-text: #fde68a;
+            --input-bg: #0f172a;
         }
 
         * {
@@ -35,50 +55,77 @@
             font-family: 'Inter', 'Segoe UI', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding: 30px 15px;
+            padding: 20px 10px;
             line-height: 1.5;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .container {
             max-width: 1000px;
             margin: 0 auto;
             background: var(--card-bg);
-            padding: 32px;
+            padding: 24px;
             border-radius: 12px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
-        h2 {
-            margin-bottom: 24px;
-            color: var(--text-main);
-            font-size: 24px;
-            font-weight: 700;
+        /* Header & Theme Toggle */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 12px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        h2 {
+            color: var(--text-main);
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            flex-grow: 1;
+        }
+        .theme-toggle-btn {
+            background: var(--border-color);
+            border: none;
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .theme-toggle-btn:hover {
+            opacity: 0.8;
         }
 
+        /* Navigasi Tab Utama (Rata Tengah & Proporsional) */
         .main-tabs {
             display: flex;
-            gap: 8px;
+            justify-content: center;
+            gap: 10px;
             margin-bottom: 24px;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
+            padding-bottom: 12px;
             flex-wrap: wrap;
         }
         .tab-btn {
-            padding: 10px 18px;
+            padding: 10px 16px;
             border: none;
-            background-color: transparent;
+            background-color: var(--border-color);
             color: var(--text-muted);
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             border-radius: var(--radius);
             cursor: pointer;
             transition: all 0.2s ease;
         }
         .tab-btn:hover {
-            background-color: #f1f5f9;
+            opacity: 0.8;
             color: var(--text-main);
         }
         .tab-btn.active {
@@ -90,7 +137,7 @@
             display: flex;
             gap: 8px;
             margin-bottom: 24px;
-            background: #f1f5f9;
+            background: var(--border-color);
             padding: 6px;
             border-radius: var(--radius);
         }
@@ -100,653 +147,4 @@
             border: none;
             background: transparent;
             color: var(--text-muted);
-            font-weight: 600;
-            font-size: 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
-        .sub-tab-btn.active {
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .tab-pane {
-            display: none;
-        }
-        .tab-pane.active {
-            display: block;
-        }
-
-        .live-clock-container {
-            background-color: #f8fafc;
-            border: 1px solid var(--border-color);
-            padding: 12px 18px;
-            border-radius: var(--radius);
-            margin-bottom: 24px;
-            font-size: 14px;
-            color: var(--text-muted);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .live-clock-container span {
-            font-weight: 600;
-            font-family: monospace;
-            color: var(--text-main);
-        }
-        .time-period {
-            font-weight: 700;
-            margin-left: 15px;
-            color: #d97706;
-            background: #fef3c7;
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-
-        .form-section-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-main);
-            border-left: 4px solid var(--primary);
-            padding-left: 10px;
-            margin: 24px 0 16px 0;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-        .form-group-inline {
-            display: flex;
-            align-items: center;
-            margin-bottom: 18px;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .form-group-inline label {
-            width: 230px;
-            margin-bottom: 0;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--text-main);
-        }
-        
-        input[type="text"],
-        input[type="number"],
-        input[type="email"],
-        input[type="date"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            box-sizing: border-box;
-            font-size: 14px;
-            font-family: inherit;
-            color: var(--text-main);
-            background-color: #fff;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-        }
-        
-        .input-17ch { max-width: 260px; }
-        .input-conditional-width { max-width: 320px; }
-        textarea { resize: vertical; min-height: 80px; }
-
-        .conditional-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-grow: 1;
-            flex-wrap: wrap;
-        }
-        .conditional-input { display: none; flex-grow: 1; }
-
-        .pap-container {
-            background: #fafafa;
-            border: 1px solid var(--border-color);
-            padding: 16px;
-            border-radius: var(--radius);
-            margin-bottom: 18px;
-        }
-        .pap-question-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .pap-label-wrap { flex: 1; min-width: 280px; }
-        .pap-main-question { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
-        .pap-sub-text { font-size: 12px; color: var(--text-muted); }
-        .pap-warning-box {
-            display: none;
-            background: var(--warning-bg);
-            border: 1px solid var(--warning-border);
-            color: var(--warning-text);
-            padding: 10px 14px;
-            border-radius: var(--radius);
-            font-size: 13px;
-            margin-top: 12px;
-        }
-
-        .info-note-box {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            color: #166534;
-            padding: 12px 16px;
-            border-radius: var(--radius);
-            font-size: 13px;
-            margin-bottom: 18px;
-        }
-
-        .chronology-item {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-        .btn-small { padding: 8px 12px; font-size: 12px; }
-        .btn-danger { background-color: var(--danger); color: white; }
-        .btn-secondary { background-color: var(--secondary); color: white; }
-
-        .btn-container {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-            flex-wrap: wrap;
-        }
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.2s ease;
-        }
-        .btn-add { background-color: var(--primary); color: white; }
-        .btn-download { background-color: var(--success); color: white; }
-        .btn-clear { background-color: transparent; color: var(--danger); border: 1px solid var(--danger); }
-        
-        .preview-section {
-            margin-top: 40px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 24px;
-        }
-        .table-responsive { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
-        th { background-color: #f8fafc; color: var(--text-muted); font-weight: 600; }
-        .empty-row { text-align: center; color: var(--text-muted); font-style: italic; padding: 20px; }
-
-        .link-list { list-style: none; padding: 0; }
-        .link-list li { margin-bottom: 12px; }
-        .link-list a { color: var(--primary); text-decoration: none; font-weight: 600; }
-
-        .action-btn-danger {
-            background: #fef2f2;
-            color: var(--danger);
-            border: 1px solid #fecaca;
-            padding: 4px 8px;
-            font-size: 12px;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h2>Kairos - Sistem Pencatatan & Produktivitas</h2>
-
-    <div class="main-tabs">
-        <button class="main-tab-btn tab-btn active" type="button" onclick="switchMainTab('tabIntro', this)">1. Intro</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">2. Percakapan</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">3. Buku Saku</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">4. Tautan Lainnya</button>
-    </div>
-
-    <!-- TAB 1: INTRO -->
-    <div id="tabIntro" class="tab-pane active">
-        <div class="welcome-box">
-            <h3>Selamat Datang di Aplikasi Kairos</h3>
-            <p>Aplikasi ini dirancang khusus untuk mendokumentasikan percakapan harian, penanganan informasi, aduan, serta manajemen tugas secara presisi dan terstruktur secara lokal di browser Anda.</p>
-            <p><strong>Fitur Utama:</strong></p>
-            <ul>
-                <li>Widget waktu real-time dengan presisi milidetik dan indikator waktu (Pagi/Siang/Sore/Malam).</li>
-                <li>Pencatatan terintegrasi untuk kategori Informasi dan Aduan khusus.</li>
-                <li>Backup data lengkap secara instan ke dalam file Notepad (.txt).</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- TAB 2: PERCAKAPAN -->
-    <div id="tabPercakapan" class="tab-pane">
-        <div class="live-clock-container">
-            <span>Waktu Sistem Saat Ini:</span>
-            <div>
-                <span id="liveClock">-</span>
-                <span id="timePeriod" class="time-period">-</span>
-            </div>
-        </div>
-
-        <div class="sub-tabs">
-            <button class="sub-tab-btn active" type="button" onclick="switchSubTab(event, 'Informasi')">Informasi</button>
-            <button class="sub-tab-btn" type="button" onclick="switchSubTab(event, 'Aduan')">Aduan</button>
-        </div>
-
-        <form id="recordForm">
-            <div class="form-group-inline">
-                <label for="urutanPencatatan">Urutan Pencatatan (Sesi/Ke-):</label>
-                <input type="number" id="urutanPencatatan" class="input-17ch" required placeholder="Contoh: 1">
-            </div>
-
-            <div class="form-group-inline" id="dynamicFieldGroup">
-                <label id="dynamicLabel" for="nomorTicket">Nomor Ticket CRM:</label>
-                <div id="dynamicContainer" style="flex-grow: 1;">
-                    <input type="text" id="nomorTicket" class="input-17ch" placeholder="Masukkan No. Ticket CRM">
-                </div>
-            </div>
-
-            <div class="pap-container" id="papSection">
-                <div class="pap-question-row">
-                    <div class="pap-label-wrap">
-                        <p class="pap-main-question">Apakah percakapan terkait PAP yang tidak diperbolehkan?</p>
-                        <p class="pap-sub-text">seperti Perubahan Data WP, Pengaktifan Kembali WP Nonaktif, dll</p>
-                    </div>
-                    <div style="width: 220px;">
-                        <select id="pilihPap" class="input-17ch" onchange="togglePapWarning(this.value)">
-                            <option value="Tidak">Tidak</option>
-                            <option value="Ya">Ya</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="pap-warning-box" id="papWarningBox">
-                    ⚠️ <strong>Perhatian:</strong> Layanan yang hanya dapat dilakukan pada Layanan Informasi, silakan di-transfer.
-                </div>
-            </div>
-
-            <div id="standardInfoFields">
-                <div class="form-group">
-                    <label for="namaDirekam">Nama yang Direkam:</label>
-                    <input type="text" id="namaDirekam" placeholder="Masukkan nama narasumber">
-                </div>
-                
-                <div class="form-group">
-                    <label for="pencatatanPercakapan">Pencatatan Percakapan:</label>
-                    <textarea id="pencatatanPercakapan" placeholder="Tuliskan detail poin percakapan..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="kesimpulanPercakapan">Kesimpulan Percakapan:</label>
-                    <textarea id="kesimpulanPercakapan" placeholder="Tuliskan kesimpulan..."></textarea>
-                </div>
-
-                <div class="form-group-inline">
-                    <label for="pilihMelati">Tiket Melati / Link URL?</label>
-                    <div class="conditional-wrapper">
-                        <select id="pilihMelati" class="input-17ch" onchange="toggleMelati(this.value)">
-                            <option value="Tidak">Tidak</option>
-                            <option value="Ya">Ya</option>
-                        </select>
-                        <div class="conditional-input" id="containerNomorMelati">
-                            <input type="text" id="nomorTiketMelati" class="input-conditional-width" placeholder="No. Tiket / URL">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group-inline" id="containerOpsiEmail" style="display: none;">
-                    <label for="pilihEmail">Opsi Email:</label>
-                    <div class="conditional-wrapper">
-                        <select id="pilihEmail" class="input-17ch" onchange="toggleEmail(this.value)">
-                            <option value="Email Terdaftar">Email Terdaftar</option>
-                            <option value="Email Lainnya">Email Lainnya</option>
-                        </select>
-                        <div class="conditional-input" id="containerEmailInput">
-                            <input type="email" id="inputEmail" class="input-conditional-width" placeholder="Masukkan email lainnya...">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="aduanFields" style="display: none;">
-                <div class="form-section-title">Identitas Pelapor</div>
-                
-                <div class="pap-container" id="anonimSection" style="display: none; margin-bottom: 15px;">
-                    <div class="pap-question-row">
-                        <div class="pap-label-wrap"><p class="pap-main-question">Memilih sebagai Anonim?</p></div>
-                        <div style="width: 220px;">
-                            <select id="pilihAnonim" class="input-17ch" onchange="toggleAnonimFields(this.value)">
-                                <option value="Tidak">Tidak</option>
-                                <option value="Ya">Ya</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group" id="groupPelaporNama">
-                    <label for="aduanPelaporNama">Nama Pelapor:</label>
-                    <input type="text" id="aduanPelaporNama" placeholder="Nama pelapor">
-                </div>
-                <div class="form-group" id="groupPelaporNik">
-                    <label for="aduanPelaporNikNpwp">NIK / NPWP Pelapor:</label>
-                    <input type="text" id="aduanPelaporNikNpwp" placeholder="NIK/NPWP Pelapor">
-                </div>
-                <div class="form-group">
-                    <label for="aduanPelaporTelp">Nomor Telepon:</label>
-                    <input type="text" id="aduanPelaporTelp" placeholder="Nomor telepon">
-                </div>
-                <div class="form-group">
-                    <label for="aduanPelaporEmail">Email Konfirmasi:</label>
-                    <input type="email" id="aduanPelaporEmail" placeholder="Email konfirmasi">
-                </div>
-
-                <div class="form-section-title">Identitas Terlapor</div>
-                <div class="form-group">
-                    <label for="aduanTerlaporNama">Nama Terlapor:</label>
-                    <input type="text" id="aduanTerlaporNama" placeholder="Nama terlapor">
-                </div>
-                <div class="form-group">
-                    <label for="aduanTerlaporNikNpwp">NIK / NPWP Terlapor:</label>
-                    <input type="text" id="aduanTerlaporNikNpwp" placeholder="NIK/NPWP Terlapor">
-                </div>
-                <div class="form-group">
-                    <label for="aduanTerlaporAlamat">Alamat Terlapor:</label>
-                    <textarea id="aduanTerlaporAlamat" placeholder="Alamat terlapor..."></textarea>
-                </div>
-
-                <div class="form-section-title">Uraian Pengaduan</div>
-                <div class="form-group">
-                    <label>Daftar Kronologi Kejadian:</label>
-                    <div id="chronologyListContainer">
-                        <div class="chronology-item">
-                            <input type="text" class="chrono-date" placeholder="Tanggal (Cth: 1/1/2026)" style="width: 180px;">
-                            <input type="text" class="chrono-detail" placeholder="Detail kronologi..." style="flex-grow: 1;">
-                            <button type="button" class="btn-small btn-danger" onclick="removeChronologyRow(this)" style="display:none;">Hapus</button>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-small btn-secondary" onclick="addChronologyRow()" style="margin-top: 5px;">+ Tambah Kronologi</button>
-                    <button type="button" class="btn-small btn-add" onclick="generateChronologySummary()" style="margin-top: 5px; background-color: #059669;">Gabungkan Kronologi</button>
-                </div>
-
-                <div class="form-group">
-                    <label for="aduanInformasiKejadian">Hasil Rekapitulasi Uraian Pengaduan:</label>
-                    <textarea id="aduanInformasiKejadian" placeholder="Gabungan kronologi akan tampil di sini..."></textarea>
-                </div>
-            </div>
-            
-            <div class="btn-container">
-                <button type="submit" class="btn-add">Tambah ke Daftar</button>
-                <button type="button" class="btn-download" onclick="downloadBackup()">Download Backup (.txt)</button>
-                <button type="button" class="btn-clear" onclick="clearData()">Reset Sesi</button>
-            </div>
-        </form>
-
-        <div class="preview-section">
-            <h3>Daftar Catatan Hari Ini (<span id="totalData">0</span> data)</h3>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Sub-Kategori</th>
-                            <th>Urutan</th>
-                            <th id="tableColHeader">Nomor Ticket CRM</th>
-                            <th>Nama / Identitas</th>
-                            <th>Detail Pencatatan / Pengaduan</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <tr>
-                            <td colspan="6" class="empty-row">Belum ada data yang dimasukkan.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- TAB 3: BUKU SAKU -->
-    <div id="tabBukuSaku" class="tab-pane">
-        <div class="bukusaku-box">
-            <h3>Buku Saku & Panduan Operasional</h3>
-            <p>Halaman ini berisi catatan panduan cepat dan standar operasional prosedur (SOP).</p>
-        </div>
-    </div>
-
-    <!-- TAB 4: TAUTAN -->
-    <div id="tabTautan" class="tab-pane">
-        <div class="link-box">
-            <h3>Tautan Lainnya & Referensi</h3>
-            <ul class="link-list">
-                <li>🔗 <a href="https://www.google.com" target="_blank">Google Search</a></li>
-                <li>🔗 <a href="https://jdih.kemenkeu.go.id" target="_blank">JDIH Kementerian Keuangan</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<script>
-    let listPencatatan = [];
-    let currentSubTab = "Informasi";
-
-    function switchMainTab(paneId, btnElement) {
-        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(paneId).classList.add('active');
-        btnElement.classList.add('active');
-    }
-
-    function switchSubTab(evt, subName) {
-        document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
-        evt.currentTarget.classList.add('active');
-        currentSubTab = subName;
-
-        const dynamicLabel = document.getElementById('dynamicLabel');
-        const dynamicContainer = document.getElementById('dynamicContainer');
-        const tableColHeader = document.getElementById('tableColHeader');
-        const papSection = document.getElementById('papSection');
-        const standardInfoFields = document.getElementById('standardInfoFields');
-        const aduanFields = document.getElementById('aduanFields');
-
-        if (subName === 'Informasi') {
-            dynamicLabel.innerText = "Nomor Ticket CRM:";
-            dynamicContainer.innerHTML = `<input type="text" id="nomorTicket" class="input-17ch" placeholder="Masukkan No. Ticket CRM">`;
-            tableColHeader.innerText = "Nomor Ticket CRM";
-            papSection.style.display = "block";
-            standardInfoFields.style.display = "block";
-            aduanFields.style.display = "none";
-        } else {
-            dynamicLabel.innerText = "Jenis Aduan:";
-            dynamicContainer.innerHTML = `
-                <select id="jenisAduan" class="input-conditional-width" onchange="checkJenisAduan(this.value)">
-                    <option value="" disabled selected>-- Pilih Jenis Aduan --</option>
-                    <option value="Tindak Pidana di Bidang Perpajakan">Tindak Pidana di Bidang Perpajakan</option>
-                    <option value="Sarana dan Prasarana">Sarana dan Prasarana</option>
-                    <option value="Kode Etik Pegawai">Kode Etik Pegawai</option>
-                </select>
-            `;
-            tableColHeader.innerText = "Jenis Aduan";
-            papSection.style.display = "none";
-            standardInfoFields.style.display = "none";
-            aduanFields.style.display = "block";
-        }
-    }
-
-    function checkJenisAduan(val) {
-        const anonimSection = document.getElementById('anonimSection');
-        if (val === 'Tindak Pidana di Bidang Perpajakan') {
-            anonimSection.style.display = 'block';
-        } else {
-            anonimSection.style.display = 'none';
-            document.getElementById('pilihAnonim').value = 'Tidak';
-        }
-    }
-
-    function toggleAnonimFields(val) {
-        const groupNama = document.getElementById('groupPelaporNama');
-        const groupNik = document.getElementById('groupPelaporNik');
-        if (val === 'Ya') {
-            groupNama.style.display = 'none';
-            groupNik.style.display = 'none';
-            document.getElementById('aduanPelaporNama').value = 'Anonim';
-            document.getElementById('aduanPelaporNikNpwp').value = '-';
-        } else {
-            groupNama.style.display = 'block';
-            groupNik.style.display = 'block';
-            document.getElementById('aduanPelaporNama').value = '';
-            document.getElementById('aduanPelaporNikNpwp').value = '';
-        }
-    }
-
-    function addChronologyRow() {
-        const container = document.getElementById('chronologyListContainer');
-        const newRow = document.createElement('div');
-        newRow.className = 'chronology-item';
-        newRow.innerHTML = `
-            <input type="text" class="chrono-date" placeholder="Tanggal" style="width: 180px;">
-            <input type="text" class="chrono-detail" placeholder="Detail kronologi..." style="flex-grow: 1;">
-            <button type="button" class="btn-small btn-danger" onclick="removeChronologyRow(this)">Hapus</button>
-        `;
-        container.appendChild(newRow);
-    }
-
-    function removeChronologyRow(btn) {
-        btn.parentElement.remove();
-    }
-
-    function generateChronologySummary() {
-        const rows = document.querySelectorAll('.chronology-item');
-        let summaryText = "";
-        rows.forEach((row, index) => {
-            const dateVal = row.querySelector('.chrono-date').value.trim();
-            const detailVal = row.querySelector('.chrono-detail').value.trim();
-            if (dateVal && detailVal) {
-                summaryText += `${dateVal}, ${detailVal}\n`;
-            }
-        });
-        document.getElementById('aduanInformasiKejadian').value = summaryText.trim();
-    }
-
-    function togglePapWarning(value) {
-        document.getElementById('papWarningBox').style.display = (value === 'Ya') ? 'block' : 'none';
-    }
-
-    function updateLiveClock() {
-        const now = new Date();
-        const formattedString = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) + `  ` + now.toTimeString().split(' ')[0] + `.` + String(now.getMilliseconds()).padStart(3, '0');
-        const hoursNum = now.getHours();
-        let period = "Malam";
-        if (hoursNum >= 1 && hoursNum < 11) period = "Pagi";
-        else if (hoursNum >= 11 && hoursNum < 15) period = "Siang";
-        else if (hoursNum >= 15 && hoursNum < 19) period = "Sore";
-
-        const clockEl = document.getElementById('liveClock');
-        const periodEl = document.getElementById('timePeriod');
-        if (clockEl) clockEl.innerText = formattedString;
-        if (periodEl) periodEl.innerText = period;
-    }
-    setInterval(updateLiveClock, 50);
-
-    function toggleMelati(value) {
-        document.getElementById('containerNomorMelati').style.display = (value === 'Ya') ? 'block' : 'none';
-        document.getElementById('containerOpsiEmail').style.display = (value === 'Ya') ? 'flex' : 'none';
-    }
-
-    function toggleEmail(value) {
-        document.getElementById('containerEmailInput').style.display = (value === 'Email Lainnya') ? 'block' : 'none';
-    }
-
-    document.getElementById('recordForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (currentSubTab === 'Aduan') generateChronologySummary();
-
-        let dataBaru = {
-            subTab: currentSubTab,
-            urutanPencatatan: document.getElementById('urutanPencatatan').value,
-            waktuInput: new Date().toLocaleString()
-        };
-
-        if (currentSubTab === 'Informasi') {
-            dataBaru.identifier = document.getElementById('nomorTicket') ? document.getElementById('nomorTicket').value : '-';
-            dataBaru.papInfo = `PAP: ${document.getElementById('pilihPap').value}`;
-            dataBaru.namaDirekam = document.getElementById('namaDirekam').value;
-            dataBaru.pencatatanPercakapan = document.getElementById('pencatatanPercakapan').value;
-            dataBaru.kesimpulanPercakapan = document.getElementById('kesimpulanPercakapan').value;
-        } else {
-            dataBaru.identifier = document.getElementById('jenisAduan') ? document.getElementById('jenisAduan').value : '-';
-            dataBaru.pelaporNama = document.getElementById('aduanPelaporNama').value;
-            dataBaru.pelaporTelp = document.getElementById('aduanPelaporTelp').value;
-            dataBaru.terlaporNama = document.getElementById('aduanTerlaporNama').value;
-            dataBaru.informasiKejadian = document.getElementById('aduanInformasiKejadian').value;
-        }
-
-        listPencatatan.push(dataBaru);
-        renderTable();
-        document.getElementById('recordForm').reset();
-    });
-
-    function deleteItem(index) {
-        if (confirm("Hapus data ini?")) {
-            listPencatatan.splice(index, 1);
-            renderTable();
-        }
-    }
-
-    function renderTable() {
-        const tbody = document.getElementById('tableBody');
-        document.getElementById('totalData').innerText = listPencatatan.length;
-        if (listPencatatan.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" class="empty-row">Belum ada data yang dimasukkan.</td></tr>`;
-            return;
-        }
-        let html = '';
-        listPencatatan.forEach((item, idx) => {
-            html += `
-                <tr>
-                    <td>${item.subTab}</td>
-                    <td>${item.urutanPencatatan}</td>
-                    <td><strong>${item.identifier}</strong></td>
-                    <td>${item.subTab === 'Informasi' ? item.namaDirekam : item.pelaporNama}</td>
-                    <td>${item.subTab === 'Informasi' ? item.kesimpulanPercakapan : item.informasiKejadian}</td>
-                    <td><button class="action-btn-danger" onclick="deleteItem(${idx})">Hapus</button></td>
-                </tr>
-            `;
-        });
-        tbody.innerHTML = html;
-    }
-
-    function downloadBackup() {
-        if (listPencatatan.length === 0) { alert("Belum ada data!"); return; }
-        let textContent = JSON.stringify(listPencatatan, null, 2);
-        const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `backup-kairos.txt`;
-        a.click();
-    }
-
-    function clearData() {
-        if (confirm("Reset semua data?")) {
-            listPencatatan = [];
-            renderTable();
-        }
-    }
-</script>
-
-</body>
-</html>
+            font-weight: 600
