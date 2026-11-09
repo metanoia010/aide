@@ -79,10 +79,10 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.15);
         }
 
-        .tab-content {
+        .tab-pane {
             display: none;
         }
-        .tab-content.active {
+        .tab-pane.active {
             display: block;
         }
 
@@ -320,14 +320,14 @@
 
     <!-- NAVIGASI TAB UTAMA -->
     <div class="main-tabs">
-        <button class="tab-btn active" onclick="switchTab(event, 'tabIntro')">1. Intro</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tabPercakapan')">2. Percakapan</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tabBukuSaku')">3. Buku Saku</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tabTautan')">4. Tautan Lainnya</button>
+        <button class="main-tab-btn tab-btn active" type="button" onclick="switchMainTab('tabIntro', this)">1. Intro</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">2. Percakapan</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">3. Buku Saku</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">4. Tautan Lainnya</button>
     </div>
 
     <!-- TAB 1: INTRO -->
-    <div id="tabIntro" class="tab-content active">
+    <div id="tabIntro" class="tab-pane active">
         <div class="welcome-box">
             <h3>Selamat Datang di Aplikasi Kairos</h3>
             <p>Aplikasi ini dirancang khusus untuk mendokumentasikan percakapan harian, penanganan informasi, aduan, serta manajemen tugas secara presisi dan terstruktur secara lokal di browser Anda.</p>
@@ -342,7 +342,7 @@
     </div>
 
     <!-- TAB 2: PERCAKAPAN -->
-    <div id="tabPercakapan" class="tab-content">
+    <div id="tabPercakapan" class="tab-pane">
         <!-- Widget Jam Real-Time -->
         <div class="live-clock-container">
             <span>Waktu Sistem Saat Ini:</span>
@@ -354,8 +354,8 @@
 
         <!-- NAVIGASI SUB-TAB -->
         <div class="sub-tabs">
-            <button class="sub-tab-btn active" onclick="switchSubTab(event, 'Informasi')">Informasi</button>
-            <button class="sub-tab-btn" onclick="switchSubTab(event, 'Aduan')">Aduan</button>
+            <button class="sub-tab-btn active" type="button" onclick="switchSubTab(event, 'Informasi')">Informasi</button>
+            <button class="sub-tab-btn" type="button" onclick="switchSubTab(event, 'Aduan')">Aduan</button>
         </div>
 
         <form id="recordForm">
@@ -365,9 +365,9 @@
                 <input type="number" id="urutanPencatatan" class="input-17ch" required placeholder="Contoh: 1">
             </div>
 
-            <!-- Input Dinamis Berdasarkan Sub-Tab: Nomor Ticket CRM (Informasi) atau Jenis Aduan (Aduan) -->
+            <!-- Input Dinamis Berdasarkan Sub-Tab -->
             <div class="form-group-inline" id="dynamicFieldGroup">
-                <label id="dynamicLabel" for="dynamicInput">Nomor Ticket CRM:</label>
+                <label id="dynamicLabel" for="nomorTicket">Nomor Ticket CRM:</label>
                 <div id="dynamicContainer" style="flex-grow: 1;">
                     <input type="text" id="nomorTicket" class="input-17ch" required placeholder="Masukkan No. Ticket CRM">
                 </div>
@@ -468,37 +468,3 @@
                     <label for="aduanTerlaporNikNpwp">NIK / NPWP Terlapor:</label>
                     <input type="text" id="aduanTerlaporNikNpwp" placeholder="Masukkan NIK/NPWP yang diadukan">
                 </div>
-                <div class="form-group">
-                    <label for="aduanTerlaporAlamat">Alamat Terlapor:</label>
-                    <textarea id="aduanTerlaporAlamat" placeholder="Masukkan alamat terlapor..."></textarea>
-                </div>
-
-                <div class="form-section-title">Uraian Pengaduan</div>
-                <div class="form-group">
-                    <label for="aduanTanggalKejadian">Tanggal Kejadian (bisa berurutan/rentang):</label>
-                    <input type="text" id="aduanTanggalKejadian" placeholder="Contoh: 01 Nov 2026 - 05 Nov 2026 atau tanggal spesifik">
-                </div>
-                <div class="form-group">
-                    <label for="aduanInformasiKejadian">Informasi Kejadian:</label>
-                    <textarea id="aduanInformasiKejadian" placeholder="Tuliskan uraian informasi kejadian..."></textarea>
-                </div>
-                <div class="info-note-box">
-                    💡 <strong>Catatan:</strong> Untuk kronologi lebih detail, dapat juga dituliskan pada email yang nanti dapat dikirimkan ke email <strong>pengaduan@pajak.go.id</strong>
-                </div>
-
-                <div class="form-section-title">Bukti-Bukti Pelanggaran</div>
-                <div class="info-note-box" style="background: #f8fafc; border-color: #cbd5e1; color: #334155;">
-                    📎 Bukti-bukti pelanggaran yang dilakukan (dapat dilampirkan dalam bentuk file, dapat berupa laporan keuangan, bukti transaksi, bukti adanya pembayaran ke rekening pribadi, dan bukti-bukti lainnya yang Saudara miliki sebagai pendukung pengaduan yang Saudara sampaikan) ke email <strong>pengaduan@pajak.go.id</strong>
-                </div>
-
-            </div>
-            
-            <div class="btn-container">
-                <button type="submit" class="btn-add">Tambah ke Daftar</button>
-                <button type="button" class="btn-download" onclick="downloadBackup()">Download Backup Notepad (.txt)</button>
-                <button type="button" class="btn-clear" onclick="clearData()">Reset Sesi</button>
-            </div>
-        </form>
-
-        <div class="preview-section">
-            <h3>Daftar Catatan Hari Ini (<span id="totalData">0</span> data)</h3>
