@@ -389,7 +389,7 @@
             <div class="form-group-inline" id="dynamicFieldGroup">
                 <label id="dynamicLabel" for="nomorTicket">Nomor Ticket CRM:</label>
                 <div id="dynamicContainer" style="flex-grow: 1;">
-                    <input type="text" id="nomorTicket" class="input-17ch" required placeholder="Masukkan No. Ticket CRM">
+                    <input type="text" id="nomorTicket" class="input-17ch" placeholder="Masukkan No. Ticket CRM">
                 </div>
             </div>
 
@@ -526,7 +526,7 @@
 
                 <div class="form-group">
                     <label for="aduanInformasiKejadian">Hasil Rekapitulasi Uraian Pengaduan:</label>
-                    <textarea id="aduanInformasiKejadian" placeholder="Gabungan kronologi akan tampil di sini setelah tombol 'Gabungkan Semua Kronologi' diklik..." required></textarea>
+                    <textarea id="aduanInformasiKejadian" placeholder="Gabungan kronologi akan tampil di sini setelah tombol 'Gabungkan Semua Kronologi' diklik..."></textarea>
                 </div>
                 <div class="info-note-box">
                     💡 <strong>Catatan:</strong> Untuk kronologi lebih detail, dapat juga dituliskan pada email yang nanti dapat dikirimkan ke email <strong>pengaduan@pajak.go.id</strong>
@@ -598,7 +598,13 @@
     let listPencatatan = [];
     let currentSubTab = "Informasi"; // Default sub-tab aktif
 
-    // Fungsi Navigasi Tab Utama yang bersih dan independen
+    // Inisialisasi awal saat halaman dimuat
+    window.onload = function() {
+        const dynContainer = document.getElementById('dynamicContainer');
+        dynContainer.innerHTML = `<input type="text" id="nomorTicket" class="input-17ch" placeholder="Masukkan No. Ticket CRM">`;
+    };
+
+    // Fungsi Navigasi Tab Utama
     function switchMainTab(paneId, btnElement) {
         const panes = document.getElementsByClassName('tab-pane');
         for (let p of panes) {
@@ -630,7 +636,7 @@
 
         if (subName === 'Informasi') {
             dynamicLabel.innerText = "Nomor Ticket CRM:";
-            dynamicContainer.innerHTML = `<input type="text" id="nomorTicket" class="input-17ch" placeholder="Masukkan No. Ticket CRM" required>`;
+            dynamicContainer.innerHTML = `<input type="text" id="nomorTicket" class="input-17ch" placeholder="Masukkan No. Ticket CRM">`;
             tableColHeader.innerText = "Nomor Ticket CRM";
             papSection.style.display = "block";
             standardInfoFields.style.display = "block";
@@ -639,7 +645,7 @@
         } else {
             dynamicLabel.innerText = "Jenis Aduan:";
             dynamicContainer.innerHTML = `
-                <select id="jenisAduan" class="input-conditional-width" onchange="checkJenisAduan(this.value)" required>
+                <select id="jenisAduan" class="input-conditional-width" onchange="checkJenisAduan(this.value)">
                     <option value="" disabled selected>-- Pilih Jenis Aduan --</option>
                     <option value="Tindak Pidana di Bidang Perpajakan">Tindak Pidana di Bidang Perpajakan</option>
                     <option value="Sarana dan Prasarana">Sarana dan Prasarana</option>
@@ -654,19 +660,17 @@
         }
     }
 
-    // Fungsi untuk menampilkan/menyembunyikan opsi Anonim berdasarkan jenis aduan
     function checkJenisAduan(val) {
         const anonimSection = document.getElementById('anonimSection');
         if (val === 'Tindak Pidana di Bidang Perpajakan') {
             anonimSection.style.display = 'block';
         } else {
             anonimSection.style.display = 'none';
-            toggleAnonimFields('Tidak'); // Reset ke kondisi normal
+            toggleAnonimFields('Tidak');
             document.getElementById('pilihAnonim').value = 'Tidak';
         }
     }
 
-    // Fungsi mengatur visibilitas field pelapor jika memilih anonim
     function toggleAnonimFields(val) {
         const groupNama = document.getElementById('groupPelaporNama');
         const groupNik = document.getElementById('groupPelaporNik');
@@ -686,7 +690,6 @@
         }
     }
 
-    // Fungsi Tambah/Hapus Baris Kronologi Dinamis
     function addChronologyRow() {
         const container = document.getElementById('chronologyListContainer');
         const newRow = document.createElement('div');
@@ -808,6 +811,7 @@
         }
     }
 
+    // Event Submit Form yang Aman
     document.getElementById('recordForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -849,7 +853,8 @@
             dataBaru.tipeEmail = opsiEmail;
             dataBaru.detailEmail = opsiEmail === 'Email Lainnya' ? alamatEmail : '-';
         } else {
-            dataBaru.identifier = document.getElementById('jenisAduan').value;
+            const jenisAduanEl = document.getElementById('jenisAduan');
+            dataBaru.identifier = jenisAduanEl ? jenisAduanEl.value : '-';
             dataBaru.isAnonim = document.getElementById('pilihAnonim').value;
             dataBaru.pelaporNama = document.getElementById('aduanPelaporNama').value;
             dataBaru.pelaporNikNpwp = document.getElementById('aduanPelaporNikNpwp').value;
@@ -864,7 +869,7 @@
         listPencatatan.push(dataBaru);
         renderTable();
 
-        // Kosongkan form secara manual (menghindari error bawaan form.reset() pada elemen dinamis)
+        // Reset manual form input
         document.getElementById('urutanPencatatan').value = '';
         if (currentSubTab === 'Informasi') {
             document.getElementById('nomorTicket').value = '';
@@ -876,7 +881,8 @@
             document.getElementById('pilihMelati').value = 'Tidak';
             toggleMelati('Tidak');
         } else {
-            document.getElementById('jenisAduan').selectedIndex = 0;
+            const jenisAduanEl = document.getElementById('jenisAduan');
+            if(jenisAduanEl) jenisAduanEl.selectedIndex = 0;
             document.getElementById('pilihAnonim').value = 'Tidak';
             toggleAnonimFields('Tidak');
             document.getElementById('anonimSection').style.display = 'none';
