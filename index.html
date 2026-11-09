@@ -44,6 +44,11 @@
             font-family: monospace;
             color: #2c3e50;
         }
+        .time-period {
+            font-weight: 700;
+            margin-left: 15px;
+            color: #e67e22;
+        }
 
         .form-group {
             margin-bottom: 15px;
@@ -178,7 +183,10 @@
     <!-- Widget Jam Real-Time -->
     <div class="live-clock-container">
         <span>Waktu Sistem Saat Ini:</span>
-        <span id="liveClock">-</span>
+        <div>
+            <span id="liveClock">-</span>
+            <span id="timePeriod" class="time-period">-</span>
+        </div>
     </div>
 
     <form id="recordForm">
@@ -267,38 +275,49 @@
 <script>
     let listPencatatan = [];
 
-    // Fungsi untuk memperbarui jam real-time setiap milidetik
+    // Fungsi untuk memperbarui jam real-time & indikator waktu (Pagi/Siang/Sore/Malam)
     function updateLiveClock() {
         const now = new Date();
         
-        // Komponen tanggal & waktu
         const day = String(now.getDate()).padStart(2, '0');
         const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
         const mmm = months[now.getMonth()];
         const yyyy = now.getFullYear();
         
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const hoursNum = now.getHours();
+        const minsNum = now.getMinutes();
+        const secsNum = now.getSeconds();
+
+        const hours = String(hoursNum).padStart(2, '0');
+        const minutes = String(minsNum).padStart(2, '0');
+        const seconds = String(secsNum).padStart(2, '0');
         const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
         
-        // Timezone offset (Z atau format +HH:mm/-HH:mm)
-        const tzOffsetMinutes = -now.getTimezoneOffset();
-        const sign = tzOffsetMinutes >= 0 ? '+' : '-';
-        const absOffsetMin = Math.abs(tzOffsetMinutes);
-        const tzHours = String(Math.floor(absOffsetMin / 60)).padStart(2, '0');
-        const tzMins = String(absOffsetMin % 60).padStart(2, '0');
-        const tzString = tzOffsetMinutes === 0 ? 'Z' : `${sign}${tzHours}:${tzMins}`;
+        // Penentuan Pagi, Siang, Sore, Malam berdasarkan format 24 jam
+        // Pagi: 00:01 - 10:59, Siang: 11:00 - 14:59, Sore: 15:00 - 18:59, Malam: 19:00 - 23:59 (serta 00:00)
+        let period = "";
+        const totalMinutes = hoursNum * 60 + minsNum;
 
-        // Format: DD Mmmm YYYY  HH:mm:ss.SSSZ
-        const formattedString = `${day} ${mmm} ${yyyy}  ${hours}:${minutes}:${seconds}.${milliseconds}${tzString}`;
+        if (totalMinutes >= 1 && totalMinutes <= 659) { // 00:01 - 10:59
+            period = "Pagi";
+        } else if (totalMinutes >= 660 && totalMinutes <= 899) { // 11:00 - 14:59
+            period = "Siang";
+        } else if (totalMinutes >= 900 && totalMinutes <= 1139) { // 15:00 - 18:59
+            period = "Sore";
+        } else { // 19:00 - 00:00
+            period = "Malam";
+        }
+
+        // Format: DD Mmmm YYYY  HH:mm:ss.SSS
+        const formattedString = `${day} ${mmm} ${yyyy}  ${hours}:${minutes}:${seconds}.${milliseconds}`;
         
         document.getElementById('liveClock').innerText = formattedString;
+        document.getElementById('timePeriod').innerHTML = `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${period}`;
     }
 
-    // Jalankan timer setiap 50 milidetik agar presisi milidetik terlihat mulus
+    // Jalankan timer setiap 50 milidetik agar pergerakan milidetik & waktu mulus
     setInterval(updateLiveClock, 50);
-    updateLiveClock(); // Panggil langsung saat load
+    updateLiveClock();
 
     function toggleMelati(value) {
         const container = document.getElementById('containerNomorMelati');
@@ -346,13 +365,7 @@
         const minutes = String(now.getMinutes()).padStart(2, '0');
         const seconds = String(now.getSeconds()).padStart(2, '0');
         const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
-        const tzOffsetMinutes = -now.getTimezoneOffset();
-        const sign = tzOffsetMinutes >= 0 ? '+' : '-';
-        const absOffsetMin = Math.abs(tzOffsetMinutes);
-        const tzHours = String(Math.floor(absOffsetMin / 60)).padStart(2, '0');
-        const tzMins = String(absOffsetMin % 60).padStart(2, '0');
-        const tzString = tzOffsetMinutes === 0 ? 'Z' : `${sign}${tzHours}:${tzMins}`;
-        const timestampInput = `${day} ${mmm} ${yyyy}  ${hours}:${minutes}:${seconds}.${milliseconds}${tzString}`;
+        const timestampInput = `${day} ${mmm} ${yyyy}  ${hours}:${minutes}:${seconds}.${milliseconds}`;
 
         const dataBaru = {
             urutanPencatatan: document.getElementById('urutanPencatatan').value,
