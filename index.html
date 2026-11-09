@@ -461,8 +461,10 @@
             <!-- FORM ADUAN: Detail Khusus Pengaduan -->
             <div id="aduanFields" style="display: none;">
                 
-                <!-- Opsi Anonim khusus Tindak Pidana di Bidang Perpajakan -->
-                <div class="pap-container" id="anonimSection" style="display: none;">
+                <div class="form-section-title" id="identitasPelaporTitle">Identitas Pelapor</div>
+                
+                <!-- Opsi Anonim khusus Tindak Pidana di Bidang Perpajakan (Berada di antara Identitas Pelapor dan Nama Pelapor) -->
+                <div class="pap-container" id="anonimSection" style="display: none; margin-bottom: 15px;">
                     <div class="pap-question-row">
                         <div class="pap-label-wrap">
                             <p class="pap-main-question">Memilih sebagai Anonim?</p>
@@ -476,7 +478,6 @@
                     </div>
                 </div>
 
-                <div class="form-section-title" id="identitasPelaporTitle">Identitas Pelapor</div>
                 <div class="form-group" id="groupPelaporNama">
                     <label for="aduanPelaporNama">Nama Pelapor:</label>
                     <input type="text" id="aduanPelaporNama" placeholder="Masukkan nama pelapor">
@@ -508,7 +509,7 @@
                     <textarea id="aduanTerlaporAlamat" placeholder="Masukkan alamat terlapor..."></textarea>
                 </div>
 
-                <div class="form-section-title">Uraian Pengaduan (Kronologi Kejadian)</div>
+                <div class="form-section-title">Uraian Pengaduan</div>
                 <div class="form-group">
                     <label>Daftar Kronologi Kejadian:</label>
                     <div id="chronologyListContainer">
@@ -524,7 +525,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="aduanInformasiKejadian">Hasil Rekapitulasi Informasi Kejadian (Otomatis / Manual):</label>
+                    <label for="aduanInformasiKejadian">Hasil Rekapitulasi Uraian Pengaduan:</label>
                     <textarea id="aduanInformasiKejadian" placeholder="Gabungan kronologi akan tampil di sini setelah tombol 'Gabungkan Semua Kronologi' diklik..."></textarea>
                 </div>
                 <div class="info-note-box">
@@ -669,18 +670,15 @@
     function toggleAnonimFields(val) {
         const groupNama = document.getElementById('groupPelaporNama');
         const groupNik = document.getElementById('groupPelaporNik');
-        const titlePelapor = document.getElementById('identitasPelaporTitle');
 
         if (val === 'Ya') {
             groupNama.style.display = 'none';
             groupNik.style.display = 'none';
-            titlePelapor.style.display = 'none';
             document.getElementById('aduanPelaporNama').value = 'Anonim';
             document.getElementById('aduanPelaporNikNpwp').value = '-';
         } else {
             groupNama.style.display = 'block';
             groupNik.style.display = 'block';
-            titlePelapor.style.display = 'block';
             if(document.getElementById('aduanPelaporNama').value === 'Anonim') {
                 document.getElementById('aduanPelaporNama').value = '';
                 document.getElementById('aduanPelaporNikNpwp').value = '';
@@ -726,9 +724,9 @@
             const dateVal = row.querySelector('.chrono-date').value.trim();
             const detailVal = row.querySelector('.chrono-detail').value.trim();
             if (dateVal && detailVal) {
-                summaryText += `Tanggal ${dateVal} dengan kronologi ${detailVal}`;
+                summaryText += `${dateVal}, ${detailVal}`;
                 if (index < rows.length - 1) {
-                    summaryText += ", lalu ";
+                    summaryText += "\n";
                 }
             }
         });
@@ -927,6 +925,7 @@
                 `;
             } else {
                 let infoPelapor = item.pelaporNama === 'Anonim' ? '<em>(Anonim)</em>' : `${item.pelaporNama} (${item.pelaporNikNpwp})`;
+                let formattedInfoKejadian = item.informasiKejadian.replace(/\n/g, '<br>');
                 html += `
                     <tr>
                         <td><span style="background: #eef2f7; padding: 3px 6px; border-radius: 4px; font-weight: 600; font-size: 11px;">${item.subTab}</span></td>
@@ -937,7 +936,7 @@
                             <strong>Telp/Email Pelapor:</strong> ${item.pelaporTelp} / ${item.pelaporEmail}<br>
                             <strong>Terlapor:</strong> ${item.terlaporNama} (NIK/NPWP: ${item.terlaporNikNpwp})<br>
                             <strong>Alamat Terlapor:</strong> ${item.terlaporAlamat}<br>
-                            <strong>Uraian Kejadian:</strong> ${item.informasiKejadian}<br>
+                            <strong>Uraian Pengaduan:</strong><br>${formattedInfoKejadian}<br>
                             <em>(Catatan: Kronologi detail & bukti dukung dikirim ke pengaduan@pajak.go.id)</em><br>
                             <small style="color: #888;">Waktu: ${item.waktuInput}</small>
                         </td>
@@ -994,7 +993,7 @@
                 textContent += `NIK/NPWP Terlapor   : ${item.terlaporNikNpwp}\n`;
                 textContent += `Alamat Terlapor     : ${item.terlaporAlamat}\n`;
                 textContent += `\n[ URAIAN PENGADUAN ]\n`;
-                textContent += `Informasi Kejadian  :\n${item.informasiKejadian}\n`;
+                textContent += `${item.informasiKejadian}\n`;
                 textContent += `Catatan Pengiriman  : Kronologi lebih detail & bukti-bukti pelanggaran (laporan keuangan, bukti transaksi, bukti transfer rekening pribadi, dll) dikirimkan ke email pengaduan@pajak.go.id\n`;
             }
             textContent += `-----------------------------------------\n\n`;
