@@ -29,7 +29,7 @@
         .form-group {
             margin-bottom: 15px;
         }
-        /* Tata letak horizontal untuk input pendek (label di kiri, input di kanan) */
+        /* Tata letak horizontal untuk input pendek (label di kiri, input/dropdown di kanan) */
         .form-group-inline {
             display: flex;
             align-items: center;
@@ -62,15 +62,12 @@
             font-size: 14px;
         }
         
-        /* Lebar khusus untuk input 17 karakter */
+        /* Lebar khusus untuk input 17 karakter / dropdown */
         .input-17ch {
             width: 220px !important;
         }
         
-        /* Lebar khusus untuk dropdown dan kotak input bersyarat di sebelah kanan */
-        .input-custom-width {
-            width: 220px !important;
-        }
+        /* Lebar kotak input tambahan di sebelah kanan */
         .input-conditional-width {
             width: 260px !important;
         }
@@ -80,11 +77,12 @@
             height: 80px;
         }
 
-        /* Styling untuk opsi dropdown bersampingan dengan input tambahan */
+        /* Styling untuk wadah elemen bersyarat di sebelah kanan */
         .conditional-wrapper {
             display: flex;
             align-items: center;
             gap: 15px;
+            flex-grow: 1;
         }
         .conditional-input {
             display: none; /* Sembunyikan default */
@@ -186,11 +184,11 @@
             <textarea id="kesimpulanPercakapan" required placeholder="Tuliskan kesimpulan dari percakapan..."></textarea>
         </div>
 
-        <!-- Dropdown: Tiket Melati/Link URL -->
-        <div class="form-group">
+        <!-- Dropdown Inline: Tiket Melati/Link URL -->
+        <div class="form-group-inline">
             <label for="pilihMelati">Tiket Melati / Link URL?</label>
             <div class="conditional-wrapper">
-                <select id="pilihMelati" class="input-custom-width" onchange="toggleMelati(this.value)">
+                <select id="pilihMelati" class="input-17ch" onchange="toggleMelati(this.value)">
                     <option value="Tidak">Tidak</option>
                     <option value="Ya">Ya</option>
                 </select>
@@ -200,11 +198,11 @@
             </div>
         </div>
 
-        <!-- Dropdown: Opsi Email -->
-        <div class="form-group">
+        <!-- Dropdown Inline: Opsi Email -->
+        <div class="form-group-inline">
             <label for="pilihEmail">Opsi Email:</label>
             <div class="conditional-wrapper">
-                <select id="pilihEmail" class="input-custom-width" onchange="toggleEmail(this.value)">
+                <select id="pilihEmail" class="input-17ch" onchange="toggleEmail(this.value)">
                     <option value="Email Terdaftar">Email Terdaftar</option>
                     <option value="Email Lainnya">Email Lainnya</option>
                 </select>
@@ -244,7 +242,6 @@
 <script>
     let listPencatatan = [];
 
-    // Toggle input nomor tiket Melati berdasarkan dropdown
     function toggleMelati(value) {
         const container = document.getElementById('containerNomorMelati');
         const inputMelati = document.getElementById('nomorTiketMelati');
@@ -258,7 +255,6 @@
         }
     }
 
-    // Toggle input email berdasarkan dropdown
     function toggleEmail(value) {
         const container = document.getElementById('containerEmailInput');
         const inputEmail = document.getElementById('inputEmail');
@@ -276,14 +272,12 @@
     document.getElementById('recordForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // Ambil nilai dari dropdown
         const opsiMelati = document.getElementById('pilihMelati').value;
         const nomorMelati = document.getElementById('nomorTiketMelati').value;
 
         const opsiEmail = document.getElementById('pilihEmail').value;
         const alamatEmail = document.getElementById('inputEmail').value;
 
-        // Ambil nilai dari input
         const dataBaru = {
             urutanPencatatan: document.getElementById('urutanPencatatan').value,
             nomorTicket: document.getElementById('nomorTicket').value,
@@ -297,13 +291,9 @@
             waktuInput: new Date().toLocaleTimeString()
         };
 
-        // Masukkan ke array
         listPencatatan.push(dataBaru);
-
-        // Update tampilan tabel
         renderTable();
 
-        // Reset form input
         document.getElementById('urutanPencatatan').value = '';
         document.getElementById('nomorTicket').value = '';
         document.getElementById('namaDirekam').value = '';
