@@ -29,12 +29,26 @@
         .form-group {
             margin-bottom: 15px;
         }
+        /* Tata letak horizontal untuk input pendek (label di kiri, input di kanan) */
+        .form-group-inline {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group-inline label {
+            width: 230px;
+            margin-bottom: 0;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
             font-size: 14px;
         }
+        
         input[type="text"],
         input[type="number"],
         textarea {
@@ -45,10 +59,33 @@
             box-sizing: border-box;
             font-size: 14px;
         }
+        
+        /* Lebar khusus untuk input 17 karakter */
+        .input-17ch {
+            width: 220px !important; /* Kurang lebih pas untuk 17 karakter */
+        }
+
         textarea {
             resize: vertical;
             height: 80px;
         }
+
+        /* Styling untuk bagian Tiket Melati / Link URL */
+        .melati-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .conditional-input {
+            display: none; /* Sembunyikan default */
+            flex-grow: 1;
+        }
+
         .btn-container {
             display: flex;
             gap: 10px;
@@ -117,14 +154,16 @@
     <h2>Pencatatan Percakapan Harian</h2>
     
     <form id="recordForm">
-        <div class="form-group">
-            <label for="nomorUrutCatatan">Nomor Urut Catatan:</label>
-            <input type="text" id="nomorUrutCatatan" required placeholder="Contoh: CAT-001">
-        </div>
-        
-        <div class="form-group">
+        <!-- Input Inline: Urutan Pencatatan -->
+        <div class="form-group-inline">
             <label for="urutanPencatatan">Urutan Pencatatan (Sesi/Ke-):</label>
-            <input type="number" id="urutanPencatatan" required placeholder="Contoh: 1">
+            <input type="number" id="urutanPencatatan" class="input-17ch" required placeholder="Contoh: 1">
+        </div>
+
+        <!-- Input Inline: Nomor Ticket -->
+        <div class="form-group-inline">
+            <label for="nomorTicket">Nomor Ticket (max 17):</label>
+            <input type="text" id="nomorTicket" class="input-17ch" maxlength="17" required placeholder="Maks 17 karakter">
         </div>
         
         <div class="form-group">
@@ -141,6 +180,20 @@
             <label for="kesimpulanPercakapan">Kesimpulan Percakapan:</label>
             <textarea id="kesimpulanPercakapan" required placeholder="Tuliskan kesimpulan dari percakapan..."></textarea>
         </div>
+
+        <!-- Input Baru: Tiket Melati/Link URL dengan Opsi Ya/Tidak -->
+        <div class="form-group">
+            <label>Tiket Melati / Link URL?</label>
+            <div class="melati-wrapper">
+                <div class="radio-group">
+                    <label><input type="radio" name="pilihMelati" value="Ya" onclick="toggleMelati(true)"> Ya</label>
+                    <label><input type="radio" name="pilihMelati" value="Tidak" checked onclick="toggleMelati(false)"> Tidak</label>
+                </div>
+                <div class="conditional-input" id="containerNomorMelati">
+                    <input type="text" id="nomorTiketMelati" placeholder="Masukkan nomor tiket Melati / Link URL">
+                </div>
+            </div>
+        </div>
         
         <div class="btn-container">
             <button type="submit" class="btn-add">Tambah ke Daftar</button>
@@ -154,10 +207,10 @@
         <table>
             <thead>
                 <tr>
-                    <th>No. Catatan</th>
                     <th>Urutan</th>
+                    <th>No. Ticket</th>
                     <th>Nama</th>
-                    <th>Pencatatan & Kesimpulan</th>
+                    <th>Pencatatan, Kesimpulan & Info Melati</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -172,105 +225,34 @@
 <script>
     let listPencatatan = [];
 
+    // Fungsi untuk menampilkan atau menyembunyikan input nomor tiket melati berdasarkan pilihan Ya/Tidak
+    function toggleMelati(isYa) {
+        const container = document.getElementById('containerNomorMelati');
+        const inputMelati = document.getElementById('nomorTiketMelati');
+        if (isYa) {
+            container.style.display = 'block';
+            inputMelati.required = true;
+        } else {
+            container.style.display = 'none';
+            inputMelati.required = false;
+            inputMelati.value = '';
+        }
+    }
+
     document.getElementById('recordForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
+        // Ambil nilai opsi Melati
+        const opsiMelati = document.querySelector('input[name="pilihMelati"]:checked').value;
+        const nomorMelati = document.getElementById('nomorTiketMelati').value;
+
         // Ambil nilai dari input
         const dataBaru = {
-            nomorUrutCatatan: document.getElementById('nomorUrutCatatan').value,
             urutanPencatatan: document.getElementById('urutanPencatatan').value,
+            nomorTicket: document.getElementById('nomorTicket').value,
             namaDirekam: document.getElementById('namaDirekam').value,
             pencatatanPercakapan: document.getElementById('pencatatanPercakapan').value,
             kesimpulanPercakapan: document.getElementById('kesimpulanPercakapan').value,
+            tiketMelati: opsiMelati,
+            nomorTiketMelati: opsiMelati === 'Ya' ? nomorMelati : '-',
             waktuInput: new Date().toLocaleTimeString()
-        };
-
-        // Masukkan ke array
-        listPencatatan.push(dataBaru);
-
-        // Update tampilan tabel
-        renderTable();
-
-        // Reset form input (kecuali mungkin nomor urut bisa disesuaikan otomatis jika mau)
-        document.getElementById('pencatatanPercakapan').value = '';
-        document.getElementById('kesimpulanPercakapan').value = '';
-        document.getElementById('namaDirekam').value = '';
-        document.getElementById('urutanPencatatan').value = '';
-        document.getElementById('nomorUrutCatatan').value = '';
-        document.getElementById('nomorUrutCatatan').focus();
-    });
-
-    function renderTable() {
-        const tbody = document.getElementById('tableBody');
-        document.getElementById('totalData').innerText = listPencatatan.length;
-
-        if (listPencatatan.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="empty-row">Belum ada data yang dimasukkan.</td></tr>`;
-            return;
-        }
-
-        let html = '';
-        listPencatatan.forEach((item, index) => {
-            html += `
-                <tr>
-                    <td><strong>${item.nomorUrutCatatan}</strong></td>
-                    <td>${item.urutanPencatatan}</td>
-                    <td>${item.namaDirekam}</td>
-                    <td>
-                        <strong>Pencatatan:</strong> ${item.pencatatanPercakapan}<br>
-                        <strong>Kesimpulan:</strong> ${item.kesimpulanPercakapan}<br>
-                        <small style="color: #888;">Jam: ${item.waktuInput}</small>
-                    </td>
-                </tr>
-            `;
-        });
-        tbody.innerHTML = html;
-    }
-
-    function downloadBackup() {
-        if (listPencatatan.length === 0) {
-            alert("Belum ada data untuk di-backup!");
-            return;
-        }
-
-        let textContent = "=========================================\n";
-        textContent += `BACKUP PENCATATAN PERCAKAPAN\n`;
-        textContent += `Tanggal: ${new Date().toLocaleDateString()}\n`;
-        textContent += "=========================================\n\n";
-
-        listPencatatan.forEach((item, index) => {
-            textContent += `--- Data ke-${index + 1} ---\n`;
-            textContent += `Nomor Urut Catatan  : ${item.nomorUrutCatatan}\n`;
-            textContent += `Urutan Pencatatan   : ${item.urutanPencatatan}\n`;
-            textContent += `Nama yang Direkam   : ${item.namaDirekam}\n`;
-            textContent += `Pencatatan Percakapan:\n${item.pencatatanPercakapan}\n\n`;
-            textContent += `Kesimpulan Percakapan:\n${item.kesimpulanPercakapan}\n`;
-            textContent += `-----------------------------------------\n\n`;
-        });
-
-        // Buat file blob untuk di-download
-        const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        
-        // Format nama file berdasarkan tanggal hari ini
-        const tgl = new Date().toISOString().slice(0, 10);
-        a.href = url;
-        a.download = `backup-pencatatan-${tgl}.txt`;
-        
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
-
-    function clearData() {
-        if (confirm("Apakah Anda yakin ingin mereset semua data sesi ini?")) {
-            listPencatatan = [];
-            renderTable();
-        }
-    }
-</script>
-
-</body>
-</html>
