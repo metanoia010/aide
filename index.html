@@ -231,6 +231,26 @@
             line-height: 1.5;
         }
 
+        /* Styling Timeline Kronologi Dinamis */
+        .chronology-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
         .btn-container {
             display: flex;
             gap: 10px;
@@ -334,7 +354,7 @@
             <p><strong>Fitur Utama:</strong></p>
             <ul>
                 <li>Widget waktu real-time dengan presisi milidetik dan indikator waktu (Pagi/Siang/Sore/Malam).</li>
-                <li>Pencatatan terintegrasi untuk kategori Informasi dan Aduan khusus.</li>
+                <li>Pencatatan terintegrasi untuk kategori Informasi dan Aduan khusus (termasuk Opsi Anonim dan Rekap Kronologi Dinamis).</li>
                 <li>Backup data lengkap secara instan ke dalam file Notepad (.txt).</li>
             </ul>
             <p>Silakan gunakan menu navigasi di atas untuk mulai mengeksplorasi aplikasi.</p>
@@ -441,14 +461,29 @@
             <!-- FORM ADUAN: Detail Khusus Pengaduan -->
             <div id="aduanFields" style="display: none;">
                 
-                <div class="form-section-title">Identitas Pelapor</div>
-                <div class="form-group">
+                <!-- Opsi Anonim khusus Tindak Pidana di Bidang Perpajakan -->
+                <div class="pap-container" id="anonimSection" style="display: none;">
+                    <div class="pap-question-row">
+                        <div class="pap-label-wrap">
+                            <p class="pap-main-question">Memilih sebagai Anonim?</p>
+                        </div>
+                        <div style="width: 220px;">
+                            <select id="pilihAnonim" class="input-17ch" onchange="toggleAnonimFields(this.value)">
+                                <option value="Tidak">Tidak</option>
+                                <option value="Ya">Ya</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section-title" id="identitasPelaporTitle">Identitas Pelapor</div>
+                <div class="form-group" id="groupPelaporNama">
                     <label for="aduanPelaporNama">Nama Pelapor:</label>
                     <input type="text" id="aduanPelaporNama" placeholder="Masukkan nama pelapor">
                 </div>
-                <div class="form-group">
-                    <label for="aduanPelaporNikNpwp">NIK / NPWP Pelapor (16 angka):</label>
-                    <input type="text" id="aduanPelaporNikNpwp" maxlength="16" pattern="[0-9]{16}" placeholder="Masukkan 16 angka NIK/NPWP">
+                <div class="form-group" id="groupPelaporNik">
+                    <label for="aduanPelaporNikNpwp">NIK / NPWP Pelapor:</label>
+                    <input type="text" id="aduanPelaporNikNpwp" placeholder="Masukkan NIK/NPWP Pelapor">
                 </div>
                 <div class="form-group">
                     <label for="aduanPelaporTelp">Nomor Telepon:</label>
@@ -473,14 +508,24 @@
                     <textarea id="aduanTerlaporAlamat" placeholder="Masukkan alamat terlapor..."></textarea>
                 </div>
 
-                <div class="form-section-title">Uraian Pengaduan</div>
+                <div class="form-section-title">Uraian Pengaduan (Kronologi Kejadian)</div>
                 <div class="form-group">
-                    <label for="aduanTanggalKejadian">Tanggal Kejadian (bisa berurutan/rentang):</label>
-                    <input type="text" id="aduanTanggalKejadian" placeholder="Contoh: 01 Nov 2026 - 05 Nov 2026 atau tanggal spesifik">
+                    <label>Daftar Kronologi Kejadian:</label>
+                    <div id="chronologyListContainer">
+                        <!-- Baris Kronologi Dinamis Pertama -->
+                        <div class="chronology-item">
+                            <input type="text" class="chrono-date" placeholder="Tanggal (Cth: 1/1/2026)" style="width: 180px;" required>
+                            <input type="text" class="chrono-detail" placeholder="Detail kronologi kejadian..." style="flex-grow: 1;" required>
+                            <button type="button" class="btn-small btn-danger" onclick="removeChronologyRow(this)" style="display:none;">Hapus</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-small btn-secondary" onclick="addChronologyRow()" style="margin-top: 5px;">+ Tambah Kronologi Berikutnya</button>
+                    <button type="button" class="btn-small btn-add" onclick="generateChronologySummary()" style="margin-top: 5px; background-color: #27ae60;">Gabungkan Semua Kronologi</button>
                 </div>
+
                 <div class="form-group">
-                    <label for="aduanInformasiKejadian">Informasi Kejadian:</label>
-                    <textarea id="aduanInformasiKejadian" placeholder="Tuliskan uraian informasi kejadian..."></textarea>
+                    <label for="aduanInformasiKejadian">Hasil Rekapitulasi Informasi Kejadian (Otomatis / Manual):</label>
+                    <textarea id="aduanInformasiKejadian" placeholder="Gabungan kronologi akan tampil di sini setelah tombol 'Gabungkan Semua Kronologi' diklik..."></textarea>
                 </div>
                 <div class="info-note-box">
                     💡 <strong>Catatan:</strong> Untuk kronologi lebih detail, dapat juga dituliskan pada email yang nanti dapat dikirimkan ke email <strong>pengaduan@pajak.go.id</strong>
@@ -554,19 +599,16 @@
 
     // Fungsi Navigasi Tab Utama yang bersih dan independen
     function switchMainTab(paneId, btnElement) {
-        // Sembunyikan semua tab-pane
         const panes = document.getElementsByClassName('tab-pane');
         for (let p of panes) {
             p.classList.remove('active');
         }
 
-        // Hilangkan kelas active dari semua tombol tab utama
         const buttons = document.getElementsByClassName('main-tab-btn');
         for (let b of buttons) {
             b.classList.remove('active');
         }
 
-        // Tampilkan tab yang dituju dan aktifkan tombolnya
         document.getElementById(paneId).classList.add('active');
         btnElement.classList.add('active');
     }
@@ -583,7 +625,6 @@
         const papSection = document.getElementById('papSection');
         const standardInfoFields = document.getElementById('standardInfoFields');
         const aduanFields = document.getElementById('aduanFields');
-
         const inputUrutan = document.getElementById('urutanPencatatan');
 
         if (subName === 'Informasi') {
@@ -597,7 +638,7 @@
         } else {
             dynamicLabel.innerText = "Jenis Aduan:";
             dynamicContainer.innerHTML = `
-                <select id="jenisAduan" class="input-conditional-width">
+                <select id="jenisAduan" class="input-conditional-width" onchange="checkJenisAduan(this.value)">
                     <option value="" disabled selected>-- Pilih Jenis Aduan --</option>
                     <option value="Tindak Pidana di Bidang Perpajakan">Tindak Pidana di Bidang Perpajakan</option>
                     <option value="Sarana dan Prasarana">Sarana dan Prasarana</option>
@@ -610,6 +651,88 @@
             aduanFields.style.display = "block";
             if(inputUrutan) inputUrutan.required = true;
         }
+    }
+
+    // Fungsi untuk menampilkan/menyembunyikan opsi Anonim berdasarkan jenis aduan
+    function checkJenisAduan(val) {
+        const anonimSection = document.getElementById('anonimSection');
+        if (val === 'Tindak Pidana di Bidang Perpajakan') {
+            anonimSection.style.display = 'block';
+        } else {
+            anonimSection.style.display = 'none';
+            toggleAnonimFields('Tidak'); // Reset ke kondisi normal
+            document.getElementById('pilihAnonim').value = 'Tidak';
+        }
+    }
+
+    // Fungsi mengatur visibilitas field pelapor jika memilih anonim
+    function toggleAnonimFields(val) {
+        const groupNama = document.getElementById('groupPelaporNama');
+        const groupNik = document.getElementById('groupPelaporNik');
+        const titlePelapor = document.getElementById('identitasPelaporTitle');
+
+        if (val === 'Ya') {
+            groupNama.style.display = 'none';
+            groupNik.style.display = 'none';
+            titlePelapor.style.display = 'none';
+            document.getElementById('aduanPelaporNama').value = 'Anonim';
+            document.getElementById('aduanPelaporNikNpwp').value = '-';
+        } else {
+            groupNama.style.display = 'block';
+            groupNik.style.display = 'block';
+            titlePelapor.style.display = 'block';
+            if(document.getElementById('aduanPelaporNama').value === 'Anonim') {
+                document.getElementById('aduanPelaporNama').value = '';
+                document.getElementById('aduanPelaporNikNpwp').value = '';
+            }
+        }
+    }
+
+    // Fungsi Tambah/Hapus Baris Kronologi Dinamis
+    function addChronologyRow() {
+        const container = document.getElementById('chronologyListContainer');
+        const newRow = document.createElement('div');
+        newRow.className = 'chronology-item';
+        newRow.innerHTML = `
+            <input type="text" class="chrono-date" placeholder="Tanggal (Cth: 2/2/2026)" style="width: 180px;" required>
+            <input type="text" class="chrono-detail" placeholder="Detail kronologi lanjutan..." style="flex-grow: 1;" required>
+            <button type="button" class="btn-small btn-danger" onclick="removeChronologyRow(this)">Hapus</button>
+        `;
+        container.appendChild(newRow);
+        updateDeleteButtons();
+    }
+
+    function removeChronologyRow(btn) {
+        btn.parentElement.remove();
+        updateDeleteButtons();
+    }
+
+    function updateDeleteButtons() {
+        const rows = document.querySelectorAll('.chronology-item');
+        rows.forEach((row, index) => {
+            const deleteBtn = row.querySelector('.btn-danger');
+            if (rows.length > 1) {
+                deleteBtn.style.display = 'inline-block';
+            } else {
+                deleteBtn.style.display = 'none';
+            }
+        });
+    }
+
+    function generateChronologySummary() {
+        const rows = document.querySelectorAll('.chronology-item');
+        let summaryText = "";
+        rows.forEach((row, index) => {
+            const dateVal = row.querySelector('.chrono-date').value.trim();
+            const detailVal = row.querySelector('.chrono-detail').value.trim();
+            if (dateVal && detailVal) {
+                summaryText += `Tanggal ${dateVal} dengan kronologi ${detailVal}`;
+                if (index < rows.length - 1) {
+                    summaryText += ", lalu ";
+                }
+            }
+        });
+        document.getElementById('aduanInformasiKejadian').value = summaryText;
     }
 
     function togglePapWarning(value) {
@@ -681,6 +804,9 @@
     document.getElementById('recordForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
+        // Pastikan rekap kronologi ter-generate sebelum submit jika belum diklik
+        generateChronologySummary();
+
         const now = new Date();
         const day = String(now.getDate()).padStart(2, '0');
         const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
@@ -716,6 +842,7 @@
             dataBaru.detailEmail = opsiEmail === 'Email Lainnya' ? alamatEmail : '-';
         } else {
             dataBaru.identifier = document.getElementById('jenisAduan').value;
+            dataBaru.isAnonim = document.getElementById('pilihAnonim').value;
             dataBaru.pelaporNama = document.getElementById('aduanPelaporNama').value;
             dataBaru.pelaporNikNpwp = document.getElementById('aduanPelaporNikNpwp').value;
             dataBaru.pelaporTelp = document.getElementById('aduanPelaporTelp').value;
@@ -723,7 +850,6 @@
             dataBaru.terlaporNama = document.getElementById('aduanTerlaporNama').value;
             dataBaru.terlaporNikNpwp = document.getElementById('aduanTerlaporNikNpwp').value;
             dataBaru.terlaporAlamat = document.getElementById('aduanTerlaporAlamat').value;
-            dataBaru.tanggalKejadian = document.getElementById('aduanTanggalKejadian').value;
             dataBaru.informasiKejadian = document.getElementById('aduanInformasiKejadian').value;
         }
 
@@ -745,6 +871,9 @@
             toggleEmail('Email Terdaftar');
         } else {
             document.getElementById('jenisAduan').selectedIndex = 0;
+            document.getElementById('pilihAnonim').value = 'Tidak';
+            toggleAnonimFields('Tidak');
+            document.getElementById('anonimSection').style.display = 'none';
             document.getElementById('aduanPelaporNama').value = '';
             document.getElementById('aduanPelaporNikNpwp').value = '';
             document.getElementById('aduanPelaporTelp').value = '';
@@ -752,8 +881,15 @@
             document.getElementById('aduanTerlaporNama').value = '';
             document.getElementById('aduanTerlaporNikNpwp').value = '';
             document.getElementById('aduanTerlaporAlamat').value = '';
-            document.getElementById('aduanTanggalKejadian').value = '';
             document.getElementById('aduanInformasiKejadian').value = '';
+            // Reset kronologi input ke 1 baris
+            document.getElementById('chronologyListContainer').innerHTML = `
+                <div class="chronology-item">
+                    <input type="text" class="chrono-date" placeholder="Tanggal (Cth: 1/1/2026)" style="width: 180px;" required>
+                    <input type="text" class="chrono-detail" placeholder="Detail kronologi kejadian..." style="flex-grow: 1;" required>
+                    <button type="button" class="btn-small btn-danger" onclick="removeChronologyRow(this)" style="display:none;">Hapus</button>
+                </div>
+            `;
         }
         
         document.getElementById('urutanPencatatan').focus();
@@ -773,7 +909,6 @@
             if (item.subTab === 'Informasi') {
                 let infoEmail = item.tipeEmail;
                 if (item.tipeEmail === 'Email Lainnya') infoEmail += ` (${item.detailEmail})`;
-
                 html += `
                     <tr>
                         <td><span style="background: #eef2f7; padding: 3px 6px; border-radius: 4px; font-weight: 600; font-size: 11px;">${item.subTab}</span></td>
@@ -791,17 +926,17 @@
                     </tr>
                 `;
             } else {
+                let infoPelapor = item.pelaporNama === 'Anonim' ? '<em>(Anonim)</em>' : `${item.pelaporNama} (${item.pelaporNikNpwp})`;
                 html += `
                     <tr>
                         <td><span style="background: #eef2f7; padding: 3px 6px; border-radius: 4px; font-weight: 600; font-size: 11px;">${item.subTab}</span></td>
                         <td>${item.urutanPencatatan}</td>
                         <td><strong>${item.identifier}</strong></td>
-                        <td><strong>Pelapor:</strong> ${item.pelaporNama} (${item.pelaporNikNpwp})</td>
+                        <td><strong>Pelapor:</strong> ${infoPelapor}</td>
                         <td>
                             <strong>Telp/Email Pelapor:</strong> ${item.pelaporTelp} / ${item.pelaporEmail}<br>
                             <strong>Terlapor:</strong> ${item.terlaporNama} (NIK/NPWP: ${item.terlaporNikNpwp})<br>
                             <strong>Alamat Terlapor:</strong> ${item.terlaporAlamat}<br>
-                            <strong>Tanggal Kejadian:</strong> ${item.tanggalKejadian}<br>
                             <strong>Uraian Kejadian:</strong> ${item.informasiKejadian}<br>
                             <em>(Catatan: Kronologi detail & bukti dukung dikirim ke pengaduan@pajak.go.id)</em><br>
                             <small style="color: #888;">Waktu: ${item.waktuInput}</small>
@@ -849,6 +984,7 @@
                 textContent += `Urutan Pencatatan   : ${item.urutanPencatatan}\n`;
                 textContent += `Jenis Aduan         : ${item.identifier}\n`;
                 textContent += `\n[ IDENTITAS PELAPOR ]\n`;
+                textContent += `Status Anonim       : ${item.isAnonim || 'Tidak'}\n`;
                 textContent += `Nama Pelapor        : ${item.pelaporNama}\n`;
                 textContent += `NIK/NPWP Pelapor    : ${item.pelaporNikNpwp}\n`;
                 textContent += `Nomor Telepon       : ${item.pelaporTelp}\n`;
@@ -858,7 +994,6 @@
                 textContent += `NIK/NPWP Terlapor   : ${item.terlaporNikNpwp}\n`;
                 textContent += `Alamat Terlapor     : ${item.terlaporAlamat}\n`;
                 textContent += `\n[ URAIAN PENGADUAN ]\n`;
-                textContent += `Tanggal Kejadian    : ${item.tanggalKejadian}\n`;
                 textContent += `Informasi Kejadian  :\n${item.informasiKejadian}\n`;
                 textContent += `Catatan Pengiriman  : Kronologi lebih detail & bukti-bukti pelanggaran (laporan keuangan, bukti transaksi, bukti transfer rekening pribadi, dll) dikirimkan ke email pengaduan@pajak.go.id\n`;
             }
