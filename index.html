@@ -79,10 +79,10 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.15);
         }
 
-        .tab-content {
+        .tab-pane {
             display: none;
         }
-        .tab-content.active {
+        .tab-pane.active {
             display: block;
         }
 
@@ -320,14 +320,14 @@
 
     <!-- NAVIGASI TAB UTAMA -->
     <div class="main-tabs">
-        <button class="tab-btn active" onclick="switchTab(event, 'tabIntro')">1. Intro</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tabPercakapan')">2. Percakapan</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tabBukuSaku')">3. Buku Saku</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tabTautan')">4. Tautan Lainnya</button>
+        <button class="main-tab-btn tab-btn active" type="button" onclick="switchMainTab('tabIntro', this)">1. Intro</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">2. Percakapan</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">3. Buku Saku</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">4. Tautan Lainnya</button>
     </div>
 
     <!-- TAB 1: INTRO -->
-    <div id="tabIntro" class="tab-content active">
+    <div id="tabIntro" class="tab-pane active">
         <div class="welcome-box">
             <h3>Selamat Datang di Aplikasi Kairos</h3>
             <p>Aplikasi ini dirancang khusus untuk mendokumentasikan percakapan harian, penanganan informasi, aduan, serta manajemen tugas secara presisi dan terstruktur secara lokal di browser Anda.</p>
@@ -342,7 +342,7 @@
     </div>
 
     <!-- TAB 2: PERCAKAPAN -->
-    <div id="tabPercakapan" class="tab-content">
+    <div id="tabPercakapan" class="tab-pane">
         <!-- Widget Jam Real-Time -->
         <div class="live-clock-container">
             <span>Waktu Sistem Saat Ini:</span>
@@ -354,8 +354,8 @@
 
         <!-- NAVIGASI SUB-TAB -->
         <div class="sub-tabs">
-            <button class="sub-tab-btn active" onclick="switchSubTab(event, 'Informasi')">Informasi</button>
-            <button class="sub-tab-btn" onclick="switchSubTab(event, 'Aduan')">Aduan</button>
+            <button class="sub-tab-btn active" type="button" onclick="switchSubTab(event, 'Informasi')">Informasi</button>
+            <button class="sub-tab-btn" type="button" onclick="switchSubTab(event, 'Aduan')">Aduan</button>
         </div>
 
         <form id="recordForm">
@@ -365,9 +365,9 @@
                 <input type="number" id="urutanPencatatan" class="input-17ch" required placeholder="Contoh: 1">
             </div>
 
-            <!-- Input Dinamis Berdasarkan Sub-Tab: Nomor Ticket CRM (Informasi) atau Jenis Aduan (Aduan) -->
+            <!-- Input Dinamis Berdasarkan Sub-Tab -->
             <div class="form-group-inline" id="dynamicFieldGroup">
-                <label id="dynamicLabel" for="dynamicInput">Nomor Ticket CRM:</label>
+                <label id="dynamicLabel" for="nomorTicket">Nomor Ticket CRM:</label>
                 <div id="dynamicContainer" style="flex-grow: 1;">
                     <input type="text" id="nomorTicket" class="input-17ch" required placeholder="Masukkan No. Ticket CRM">
                 </div>
@@ -522,7 +522,7 @@
     </div>
 
     <!-- TAB 3: BUKU SAKU -->
-    <div id="tabBukuSaku" class="tab-content">
+    <div id="tabBukuSaku" class="tab-pane">
         <div class="bukusaku-box">
             <h3>Buku Saku & Panduan Operasional</h3>
             <p>Halaman ini berisi catatan panduan cepat, standar operasional prosedur (SOP), atau rangkuman informasi penting yang dapat diakses dengan cepat selama bertugas.</p>
@@ -535,7 +535,7 @@
     </div>
 
     <!-- TAB 4: TAUTAN LAINNYA -->
-    <div id="tabTautan" class="tab-content">
+    <div id="tabTautan" class="tab-pane">
         <div class="link-box">
             <h3>Tautan Lainnya & Referensi</h3>
             <p>Gunakan tautan cepat di bawah ini untuk mencari informasi pendukung atau regulasi:</p>
@@ -552,13 +552,23 @@
     let listPencatatan = [];
     let currentSubTab = "Informasi"; // Default sub-tab aktif
 
-    function switchTab(evt, tabId) {
-        const contents = document.getElementsByClassName('tab-content');
-        for (let c of contents) c.classList.remove('active');
-        const buttons = document.getElementsByClassName('tab-btn');
-        for (let b of buttons) b.classList.remove('active');
-        document.getElementById(tabId).classList.add('active');
-        evt.currentTarget.classList.add('active');
+    // Fungsi Navigasi Tab Utama yang bersih dan independen
+    function switchMainTab(paneId, btnElement) {
+        // Sembunyikan semua tab-pane
+        const panes = document.getElementsByClassName('tab-pane');
+        for (let p of panes) {
+            p.classList.remove('active');
+        }
+
+        // Hilangkan kelas active dari semua tombol tab utama
+        const buttons = document.getElementsByClassName('main-tab-btn');
+        for (let b of buttons) {
+            b.classList.remove('active');
+        }
+
+        // Tampilkan tab yang dituju dan aktifkan tombolnya
+        document.getElementById(paneId).classList.add('active');
+        btnElement.classList.add('active');
     }
 
     function switchSubTab(evt, subName) {
@@ -574,17 +584,20 @@
         const standardInfoFields = document.getElementById('standardInfoFields');
         const aduanFields = document.getElementById('aduanFields');
 
+        const inputUrutan = document.getElementById('urutanPencatatan');
+
         if (subName === 'Informasi') {
             dynamicLabel.innerText = "Nomor Ticket CRM:";
-            dynamicContainer.innerHTML = `<input type="text" id="nomorTicket" class="input-17ch" required placeholder="Masukkan No. Ticket CRM">`;
+            dynamicContainer.innerHTML = `<input type="text" id="nomorTicket" class="input-17ch" placeholder="Masukkan No. Ticket CRM">`;
             tableColHeader.innerText = "Nomor Ticket CRM";
             papSection.style.display = "block";
             standardInfoFields.style.display = "block";
             aduanFields.style.display = "none";
+            if(inputUrutan) inputUrutan.required = true;
         } else {
             dynamicLabel.innerText = "Jenis Aduan:";
             dynamicContainer.innerHTML = `
-                <select id="jenisAduan" class="input-conditional-width" required>
+                <select id="jenisAduan" class="input-conditional-width">
                     <option value="" disabled selected>-- Pilih Jenis Aduan --</option>
                     <option value="Tindak Pidana di Bidang Perpajakan">Tindak Pidana di Bidang Perpajakan</option>
                     <option value="Sarana dan Prasarana">Sarana dan Prasarana</option>
@@ -595,6 +608,7 @@
             papSection.style.display = "none";
             standardInfoFields.style.display = "none";
             aduanFields.style.display = "block";
+            if(inputUrutan) inputUrutan.required = true;
         }
     }
 
@@ -646,10 +660,8 @@
         const inputMelati = document.getElementById('nomorTiketMelati');
         if (value === 'Ya') {
             container.style.display = 'block';
-            inputMelati.required = true;
         } else {
             container.style.display = 'none';
-            inputMelati.required = false;
             inputMelati.value = '';
         }
     }
@@ -659,11 +671,9 @@
         const inputEmail = document.getElementById('inputEmail');
         if (value === 'Email Lainnya') {
             container.style.display = 'block';
-            inputEmail.required = true;
             inputEmail.focus();
         } else {
             container.style.display = 'none';
-            inputEmail.required = false;
             inputEmail.value = '';
         }
     }
