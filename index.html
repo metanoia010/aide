@@ -51,6 +51,7 @@
         
         input[type="text"],
         input[type="number"],
+        input[type="email"],
         textarea {
             width: 100%;
             padding: 10px;
@@ -62,7 +63,7 @@
         
         /* Lebar khusus untuk input 17 karakter */
         .input-17ch {
-            width: 220px !important; /* Kurang lebih pas untuk 17 karakter */
+            width: 220px !important;
         }
 
         textarea {
@@ -70,8 +71,8 @@
             height: 80px;
         }
 
-        /* Styling untuk bagian Tiket Melati / Link URL */
-        .melati-wrapper {
+        /* Styling untuk opsi pilihan dengan input bersyarat */
+        .conditional-wrapper {
             display: flex;
             align-items: center;
             gap: 20px;
@@ -181,16 +182,30 @@
             <textarea id="kesimpulanPercakapan" required placeholder="Tuliskan kesimpulan dari percakapan..."></textarea>
         </div>
 
-        <!-- Input Baru: Tiket Melati/Link URL dengan Opsi Ya/Tidak -->
+        <!-- Input: Tiket Melati/Link URL -->
         <div class="form-group">
             <label>Tiket Melati / Link URL?</label>
-            <div class="melati-wrapper">
+            <div class="conditional-wrapper">
                 <div class="radio-group">
                     <label><input type="radio" name="pilihMelati" value="Ya" onclick="toggleMelati(true)"> Ya</label>
                     <label><input type="radio" name="pilihMelati" value="Tidak" checked onclick="toggleMelati(false)"> Tidak</label>
                 </div>
                 <div class="conditional-input" id="containerNomorMelati">
                     <input type="text" id="nomorTiketMelati" placeholder="Masukkan nomor tiket Melati / Link URL">
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Baru: Email (Sesuai Email Terdaftar / Email Lainnya) -->
+        <div class="form-group">
+            <label>Opsi Email:</label>
+            <div class="conditional-wrapper">
+                <div class="radio-group">
+                    <label><input type="radio" name="pilihEmail" value="Email Terdaftar" checked onclick="toggleEmail(true)"> Email Terdaftar</label>
+                    <label><input type="radio" name="pilihEmail" value="Email Lainnya" onclick="toggleEmail(false)"> Email Lainnya</label>
+                </div>
+                <div class="conditional-input" id="containerEmailInput" style="display: block;">
+                    <input type="email" id="inputEmail" placeholder="Masukkan alamat email...">
                 </div>
             </div>
         </div>
@@ -210,7 +225,7 @@
                     <th>Urutan</th>
                     <th>No. Ticket</th>
                     <th>Nama</th>
-                    <th>Pencatatan, Kesimpulan & Info Melati</th>
+                    <th>Pencatatan, Kesimpulan & Info Tambahan</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -225,7 +240,7 @@
 <script>
     let listPencatatan = [];
 
-    // Fungsi untuk menampilkan atau menyembunyikan input nomor tiket melati berdasarkan pilihan Ya/Tidak
+    // Toggle input nomor tiket Melati
     function toggleMelati(isYa) {
         const container = document.getElementById('containerNomorMelati');
         const inputMelati = document.getElementById('nomorTiketMelati');
@@ -239,12 +254,30 @@
         }
     }
 
+    // Toggle input email berdasarkan pilihan "Email Terdaftar" atau "Email Lainnya"
+    function toggleEmail(isTerdaftar) {
+        const container = document.getElementById('containerEmailInput');
+        const inputEmail = document.getElementById('inputEmail');
+        // Jika "Email Terdaftar" dipilih, tetap tampilkan kotak input untuk mengetikkan email terdaftarnya
+        container.style.display = 'block';
+        if (isTerdaftar) {
+            inputEmail.placeholder = "Masukkan email terdaftar...";
+        } else {
+            inputEmail.placeholder = "Masukkan email lainnya...";
+        }
+        inputEmail.focus();
+    }
+
     document.getElementById('recordForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
         // Ambil nilai opsi Melati
         const opsiMelati = document.querySelector('input[name="pilihMelati"]:checked').value;
         const nomorMelati = document.getElementById('nomorTiketMelati').value;
+
+        // Ambil nilai opsi Email
+        const opsiEmail = document.querySelector('input[name="pilihEmail"]:checked').value;
+        const alamatEmail = document.getElementById('inputEmail').value;
 
         // Ambil nilai dari input
         const dataBaru = {
@@ -255,4 +288,113 @@
             kesimpulanPercakapan: document.getElementById('kesimpulanPercakapan').value,
             tiketMelati: opsiMelati,
             nomorTiketMelati: opsiMelati === 'Ya' ? nomorMelati : '-',
+            tipeEmail: opsiEmail,
+            detailEmail: alamatEmail ? alamatEmail : '-',
             waktuInput: new Date().toLocaleTimeString()
+        };
+
+        // Masukkan ke array
+        listPencatatan.push(dataBaru);
+
+        // Update tampilan tabel
+        renderTable();
+
+        // Reset form input (mengembalikan ke kondisi default)
+        document.getElementById('urutanPencatatan').value = '';
+        document.getElementById('nomorTicket').value = '';
+        document.getElementById('namaDirekam').value = '';
+        document.getElementById('pencatatanPercakapan').value = '';
+        document.getElementById('kesimpulanPercakapan').value = '';
+        document.getElementById('inputEmail').value = '';
+        
+        document.querySelector('input[name="pilihMelati"][value="Tidak"]').checked = true;
+        toggleMelati(false);
+
+        document.querySelector('input[name="pilihEmail"][value="Email Terdaftar"]').checked = true;
+        toggleEmail(true);
+        
+        document.getElementById('urutanPencatatan').focus();
+    });
+
+    function renderTable() {
+        const tbody = document.getElementById('tableBody');
+        document.getElementById('totalData').innerText = listPencatatan.length;
+
+        if (listPencatatan.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" class="empty-row">Belum ada data yang dimasukkan.</td></tr>`;
+            return;
+        }
+
+        let html = '';
+        listPencatatan.forEach((item, index) => {
+            html += `
+                <tr>
+                    <td>${item.urutanPencatatan}</td>
+                    <td><strong>${item.nomorTicket}</strong></td>
+                    <td>${item.namaDirekam}</td>
+                    <td>
+                        <strong>Pencatatan:</strong> ${item.pencatatanPercakapan}<br>
+                        <strong>Kesimpulan:</strong> ${item.kesimpulanPercakapan}<br>
+                        <strong>Tiket Melati/URL:</strong> ${item.tiketMelati} ${item.tiketMelati === 'Ya' ? '(' + item.nomorTiketMelati + ')' : ''}<br>
+                        <strong>Email (${item.tipeEmail}):</strong> ${item.detailEmail}<br>
+                        <small style="color: #888;">Jam: ${item.waktuInput}</small>
+                    </td>
+                </tr>
+            `;
+        });
+        tbody.innerHTML = html;
+    }
+
+    function downloadBackup() {
+        if (listPencatatan.length === 0) {
+            alert("Belum ada data untuk di-backup!");
+            return;
+        }
+
+        let textContent = "=========================================\n";
+        textContent += `BACKUP PENCATATAN PERCAKAPAN\n`;
+        textContent += `Tanggal: ${new Date().toLocaleDateString()}\n`;
+        textContent += "=========================================\n\n";
+
+        listPencatatan.forEach((item, index) => {
+            textContent += `--- Data ke-${index + 1} ---\n`;
+            textContent += `Urutan Pencatatan   : ${item.urutanPencatatan}\n`;
+            textContent += `Nomor Ticket        : ${item.nomorTicket}\n`;
+            textContent += `Nama yang Direkam   : ${item.namaDirekam}\n`;
+            textContent += `Pencatatan Percakapan:\n${item.pencatatanPercakapan}\n\n`;
+            textContent += `Kesimpulan Percakapan:\n${item.kesimpulanPercakapan}\n`;
+            textContent += `Tiket Melati/URL    : ${item.tiketMelati}\n`;
+            if(item.tiketMelati === 'Ya') {
+                textContent += `No. Tiket Melati/URL: ${item.nomorTiketMelati}\n`;
+            }
+            textContent += `Tipe Email          : ${item.tipeEmail}\n`;
+            textContent += `Alamat Email        : ${item.detailEmail}\n`;
+            textContent += `-----------------------------------------\n\n`;
+        });
+
+        // Buat file blob untuk di-download
+        const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        
+        // Format nama file berdasarkan tanggal hari ini
+        const tgl = new Date().toISOString().slice(0, 10);
+        a.href = url;
+        a.download = `backup-pencatatan-${tgl}.txt`;
+        
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function clearData() {
+        if (confirm("Apakah Anda yakin ingin mereset semua data sesi ini?")) {
+            listPencatatan = [];
+            renderTable();
+        }
+    }
+</script>
+
+</body>
+</html>
