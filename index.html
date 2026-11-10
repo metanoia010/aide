@@ -505,16 +505,42 @@
             </div>
 
             <div id="aduanFields" style="display: none;">
+                <!-- PERINGATAN JENIS ADUAN -->
+                <div id="aduanJenisWarning" class="pap-warning-box" style="display: block;">
+                    ⚠️ <strong>Silakan pilih Jenis Aduan terlebih dahulu!</strong>
+                </div>
+                
+                <!-- PEMBUNGKUS SELURUH FORMULIR ADUAN -->
+                <div id="aduanFormContent" style="display: none;">
                 <div class="form-section-title">Identitas Pelapor</div>
                 
+                
                 <!-- STATUS PELAPOR -->
-                <div class="form-group" id="groupStatusPelapor" style="display: none;">
-                    <label for="statusPelapor">Apakah merupakan Kuasa atau Wajib Pajak yang bersangkutan?</label>
-                    <select id="statusPelapor" onchange="toggleKuasaFields(this.value)">
-                        <option value="Wajib Pajak yang Bersangkutan">Wajib Pajak yang bersangkutan</option>
-                        <option value="Kuasa">Kuasa</option>
-                    </select>
+                <div class="form-group-inline" id="groupStatusPelapor" style="display: none;">
+                
+                    <label for="statusPelapor">
+                        Apakah merupakan Kuasa atau Wajib Pajak yang bersangkutan?
+                    </label>
+                
+                    <div class="conditional-wrapper">
+                        <select
+                            id="statusPelapor"
+                            class="input-17ch"
+                            onchange="toggleKuasaFields(this.value)">
+                
+                            <option value="Wajib Pajak yang Bersangkutan">
+                                Wajib Pajak yang bersangkutan
+                            </option>
+                
+                            <option value="Kuasa">
+                                Kuasa
+                            </option>
+                
+                        </select>
+                    </div>
+                
                 </div>
+
                 
                 <div class="pap-container" id="anonimSection" style="display: none; margin-bottom: 15px;">
                     <div class="pap-question-row">
@@ -603,6 +629,8 @@
                     Saudara juga dapat mengetikkan detail informasi Identitas Pelapor,
                     Identitas Terlapor, dan Kronologi Kejadian secara detail pada email tersebut.
                 </div>
+                </div> <!-- Penutup aduanFormContent -->
+                </div> <!-- Penutup aduanFields -->
             </div>
             
             <div class="btn-container">
@@ -706,7 +734,7 @@
         } else {
             dynamicLabel.innerText = "Jenis Aduan:";
             dynamicContainer.innerHTML = `
-                <select id="jenisAduan" class="input-conditional-width" onchange="checkJenisAduan(this.value)">
+                <select id="jenisAduan" class="input-conditional-width" required onchange="checkJenisAduan(this.value)">
                     <option value="" disabled selected>-- Pilih Jenis Aduan --</option>
                     <option value="Tindak Pidana di Bidang Perpajakan">Tindak Pidana di Bidang Perpajakan</option>
                     <option value="Sarana dan Prasarana">Sarana dan Prasarana</option>
@@ -717,17 +745,52 @@
             papSection.style.display = "none";
             standardInfoFields.style.display = "none";
             aduanFields.style.display = "block";
+            
+            checkJenisAduan('');
         }
     }
 
+    
     function checkJenisAduan(val) {
-        const anonimSection = document.getElementById('anonimSection');
-        const statusPelapor = document.getElementById('groupStatusPelapor');
-        const catatanKuasa = document.getElementById('catatanSuratKuasa');
     
-        const kuasaFields = document.getElementById('kuasaFields');
+        const anonimSection =
+            document.getElementById('anonimSection');
     
-        // Reset tampilan Kuasa
+        const statusPelapor =
+            document.getElementById('groupStatusPelapor');
+    
+        const catatanKuasa =
+            document.getElementById('catatanSuratKuasa');
+    
+        const kuasaFields =
+            document.getElementById('kuasaFields');
+    
+        const aduanFormContent =
+            document.getElementById('aduanFormContent');
+    
+        const warning =
+            document.getElementById('aduanJenisWarning');
+    
+        // Jika jenis aduan belum dipilih
+        if (!val) {
+    
+            aduanFormContent.style.display = 'none';
+            warning.style.display = 'block';
+    
+            anonimSection.style.display = 'none';
+            statusPelapor.style.display = 'none';
+            catatanKuasa.style.display = 'none';
+            kuasaFields.style.display = 'none';
+    
+            return;
+        }
+    
+        // Jika jenis aduan sudah dipilih
+        aduanFormContent.style.display = 'block';
+        warning.style.display = 'none';
+    
+        // Reset tampilan kondisional
+        anonimSection.style.display = 'none';
         statusPelapor.style.display = 'none';
         catatanKuasa.style.display = 'none';
         kuasaFields.style.display = 'none';
@@ -742,11 +805,8 @@
     
             anonimSection.style.display = 'block';
     
-            // Tidak menggunakan pilihan Kuasa
-            statusPelapor.style.display = 'none';
-            catatanKuasa.style.display = 'none';
-    
             document.getElementById('pilihAnonim').value = 'Tidak';
+    
             toggleAnonimFields('Tidak');
     
         } else if (
@@ -754,26 +814,19 @@
             val === 'Kode Etik Pegawai'
         ) {
     
-            anonimSection.style.display = 'none';
-    
-            // Tampilkan pilihan status pelapor
-            statusPelapor.style.display = 'block';
-    
-            // Tampilkan catatan persyaratan
+            statusPelapor.style.display = 'flex';
             catatanKuasa.style.display = 'block';
     
             document.getElementById('pilihAnonim').value = 'Tidak';
+    
             toggleAnonimFields('Tidak');
     
         } else {
     
             anonimSection.style.display = 'none';
-    
-            document.getElementById('pilihAnonim').value = 'Tidak';
-            toggleAnonimFields('Tidak');
         }
     }
-    
+
     
     // MENAMPILKAN IDENTITAS KUASA
     function toggleKuasaFields(val) {
@@ -956,6 +1009,11 @@
     
         // RESET FORM
         document.getElementById('recordForm').reset();
+
+        // KEMBALIKAN TAMPILAN ADUAN KE KONDISI AWAL
+        if (currentSubTab === 'Aduan') {
+            checkJenisAduan('');
+        }
     
         // RESET TAMPILAN KONDISIONAL
         toggleMelati('Tidak');
@@ -990,6 +1048,7 @@
     }
 
     function renderTable() {
+    
         const tbody = document.getElementById('tableBody');
     
         document.getElementById('totalData').innerText =
@@ -1006,6 +1065,18 @@
             return;
         }
     
+        function escapeHTML(value) {
+            return String(value || '-').replace(/[&<>"']/g, function(char) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[char];
+            });
+        }
+    
         let html = '';
     
         listPencatatan.forEach((item, idx) => {
@@ -1015,40 +1086,48 @@
     
             if (item.subTab === 'Informasi') {
     
-                namaIdentitas = item.namaDirekam || '-';
+                namaIdentitas = escapeHTML(item.namaDirekam);
     
                 detailPencatatan =
-                    item.kesimpulanPercakapan || '-';
+                    'Percakapan: ' +
+                    escapeHTML(item.pencatatanPercakapan) +
+                    '\n\n' +
+                    'Kesimpulan: ' +
+                    escapeHTML(item.kesimpulanPercakapan);
     
             } else {
     
-                namaIdentitas = item.pelaporNama || '-';
+                namaIdentitas = escapeHTML(item.pelaporNama);
     
                 if (item.statusPelapor === 'Kuasa') {
+    
                     namaIdentitas +=
                         '<br><strong>Status:</strong> Kuasa' +
                         '<br><strong>Nama Kuasa:</strong> ' +
-                        (item.kuasaNama || '-') +
+                        escapeHTML(item.kuasaNama) +
                         '<br><strong>NIK/NPWP Kuasa:</strong> ' +
-                        (item.kuasaNikNpwp || '-');
+                        escapeHTML(item.kuasaNikNpwp);
+    
                 } else if (item.statusPelapor) {
+    
                     namaIdentitas +=
                         '<br><strong>Status:</strong> ' +
-                        item.statusPelapor;
+                        escapeHTML(item.statusPelapor);
                 }
     
+                // HANYA MENAMPILKAN HASIL REKAPITULASI
                 detailPencatatan =
-                    item.informasiKejadian || '-';
+                    escapeHTML(item.informasiKejadian);
             }
     
             html += `
                 <tr>
-                    <td>${item.subTab}</td>
+                    <td>${escapeHTML(item.subTab)}</td>
     
-                    <td>${item.urutanPencatatan}</td>
+                    <td>${escapeHTML(item.urutanPencatatan)}</td>
     
                     <td>
-                        <strong>${item.identifier || '-'}</strong>
+                        <strong>${escapeHTML(item.identifier)}</strong>
                     </td>
     
                     <td>${namaIdentitas}</td>
@@ -1070,6 +1149,7 @@
     
         tbody.innerHTML = html;
     }
+
 
     function downloadBackup() {
 
