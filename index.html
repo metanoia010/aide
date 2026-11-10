@@ -977,7 +977,9 @@
     
             dataBaru.pelaporNikNpwp =
                 document.getElementById('aduanPelaporNikNpwp').value;
-    
+
+            dataBaru.pelaporAlamat = '-';
+                
             dataBaru.kuasaNama =
                 document.getElementById('aduanKuasaNama').value;
     
@@ -1150,20 +1152,57 @@
     
         tbody.innerHTML = html;
     }
-
-
+    
     function downloadBackup() {
-
+    
         if (listPencatatan.length === 0) {
             alert("Belum ada data!");
             return;
         }
     
-        const textContent = JSON.stringify(
-            listPencatatan,
-            null,
-            2
-        );
+        let textContent = "";
+    
+        listPencatatan.forEach((item, index) => {
+    
+            textContent += `--- Data ke-${index + 1} [-- Sub-Tab: ${item.subTab} --]\n`;
+    
+            textContent += `Urutan Pencatatan   : ${item.urutanPencatatan || '-'}\n`;
+    
+            if (item.subTab === 'Informasi') {
+    
+                textContent += `Nomor Ticket CRM    : ${item.identifier || '-'}\n`;
+                textContent += `PAP Tidak Diperbolehkan: ${item.papInfo.replace('PAP: ', '') || '-'}\n`;
+                textContent += `Nama yang Direkam   : ${item.namaDirekam || '-'}\n`;
+                textContent += `Pencatatan Percakapan: ${item.pencatatanPercakapan || '-'}\n\n`;
+                textContent += `Kesimpulan Percakapan: ${item.kesimpulanPercakapan || '-'}\n`;
+                textContent += `Tiket Melati/URL    : ${item.melati || '-'}\n`;
+    
+            } else if (item.subTab === 'Aduan') {
+    
+                textContent += `Jenis Aduan         : ${item.identifier || '-'}\n`;
+    
+                let identitasPelapor = [
+                    item.pelaporNama,
+                    item.pelaporNikNpwp,
+                    item.pelaporAlamat
+                ].filter(Boolean).join(', ');
+    
+                textContent += `Identitas Pelapor   : ${identitasPelapor || '-'}\n`;
+    
+                let identitasTerlapor = [
+                    item.terlaporNama,
+                    item.terlaporNikNpwp,
+                    item.terlaporAlamat
+                ].filter(Boolean).join(', ');
+    
+                textContent += `Identitas Terlapor  : ${identitasTerlapor || '-'}\n`;
+    
+                textContent += `Kronologi Kejadian : ${item.informasiKejadian || '-'}\n`;
+            }
+    
+            textContent += `\n-----------------------------------------\n\n`;
+    
+        });
     
         const blob = new Blob(
             [textContent],
@@ -1176,8 +1215,13 @@
     
         a.href = url;
     
-        a.download =
-            `backup-daily-work-notes-${new Date().toISOString().slice(0,10)}.txt`;
+        const now = new Date();
+        const tanggal =
+            String(now.getDate()).padStart(2, '0') +
+            String(now.getMonth() + 1).padStart(2, '0') +
+            now.getFullYear();
+    
+        a.download = `${tanggal}.txt`;
     
         document.body.appendChild(a);
         a.click();
