@@ -386,6 +386,17 @@
             .btn-container { flex-direction: column; }
             .btn-container button { width: 100%; }
         }
+    .detail-item {
+        display: block;
+        text-align: left;
+        margin: 0;
+        padding: 0;
+        text-indent: 0;
+    }
+    
+    .detail-item strong {
+        font-weight: 700;
+    }
     </style>
 </head>
 <body data-theme="light">
@@ -1092,17 +1103,16 @@
                 namaIdentitas = escapeHTML(item.namaDirekam);
     
                 detailPencatatan =
-                    '<strong>Percakapan:</strong> ' +
-                    escapeHTML(item.pencatatanPercakapan)
-                        .replace(/^[\s\u00A0]+/gm, '')
-                        .trim() +
-                    '\n' +
-                    '<strong>Kesimpulan:</strong> ' +
-                    escapeHTML(item.kesimpulanPercakapan)
-                        .replace(/^[\s\u00A0]+/gm, '')
-                        .trim();
-
-                detailPencatatan = detailPencatatan.replace(/^[\s\u00A0]+/gm, '');
+                    `<div class="detail-item">
+                        <strong>Percakapan:</strong> ${
+                            escapeHTML(item.pencatatanPercakapan).trim()
+                        }
+                    </div>
+                    <div class="detail-item">
+                        <strong>Kesimpulan:</strong> ${
+                            escapeHTML(item.kesimpulanPercakapan).trim()
+                        }
+                    </div>`;
     
             } else {
     
@@ -1141,7 +1151,7 @@
     
                     <td>${namaIdentitas}</td>
     
-                    <td style="white-space: pre-wrap; text-align: left;">
+                    <td style="text-align: left; vertical-align: top;">
                         ${detailPencatatan}
                     </td>
     
