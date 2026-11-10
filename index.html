@@ -446,8 +446,8 @@
             <div class="pap-container" id="papSection">
                 <div class="pap-question-row">
                     <div class="pap-label-wrap">
-                        <p class="pap-main-question">Apakah percakapan terkait PAP yang tidak diperbolehkan?</p>
-                        <p class="pap-sub-text">seperti Perubahan Data WP, Pengaktifan Kembali WP Nonaktif, dll</p>
+                        <p class="pap-main-question">Apakah percakapan terkait PAP yang tidak dapat diproses oleh agen BO?</p>
+                        <p class="pap-sub-text">seperti Perubahan Data WP, Pengaktifan Kembali WP Nonaktif, Pendaftaran NPWP OP, dan Aktivasi NIK OP.</p>
                     </div>
                     <div style="width: 100%; max-width: 220px;">
                         <select id="pilihPap" class="input-17ch" onchange="togglePapWarning(this.value)">
@@ -507,6 +507,15 @@
             <div id="aduanFields" style="display: none;">
                 <div class="form-section-title">Identitas Pelapor</div>
                 
+                <!-- STATUS PELAPOR -->
+                <div class="form-group" id="groupStatusPelapor" style="display: none;">
+                    <label for="statusPelapor">Apakah merupakan Kuasa atau Wajib Pajak yang bersangkutan?</label>
+                    <select id="statusPelapor" onchange="toggleKuasaFields(this.value)">
+                        <option value="Wajib Pajak yang Bersangkutan">Wajib Pajak yang bersangkutan</option>
+                        <option value="Kuasa">Kuasa</option>
+                    </select>
+                </div>
+                
                 <div class="pap-container" id="anonimSection" style="display: none; margin-bottom: 15px;">
                     <div class="pap-question-row">
                         <div class="pap-label-wrap"><p class="pap-main-question">Memilih sebagai Anonim?</p></div>
@@ -527,6 +536,20 @@
                     <label for="aduanPelaporNikNpwp">NIK / NPWP Pelapor:</label>
                     <input type="text" id="aduanPelaporNikNpwp" placeholder="NIK/NPWP Pelapor">
                 </div>
+                <!-- IDENTITAS KUASA -->
+                <div id="kuasaFields" style="display: none;">
+                
+                    <div class="form-group">
+                        <label for="aduanKuasaNama">Nama Kuasa:</label>
+                        <input type="text" id="aduanKuasaNama" placeholder="Nama Kuasa">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="aduanKuasaNikNpwp">NIK / NPWP Kuasa:</label>
+                        <input type="text" id="aduanKuasaNikNpwp" placeholder="NIK/NPWP Kuasa">
+                    </div>
+                
+                </div>
                 <div class="form-group">
                     <label for="aduanPelaporTelp">Nomor Telepon:</label>
                     <input type="text" id="aduanPelaporTelp" placeholder="Nomor telepon">
@@ -536,6 +559,9 @@
                     <input type="email" id="aduanPelaporEmail" placeholder="Email konfirmasi">
                 </div>
 
+                <div class="info-note-box" id="catatanSuratKuasa" style="display: none;">
+                    Surat Kuasa atau memiliki status sebagai kuasa Wajib Pajak dalam coretax apabila bukan merupakan wajib pajak bersangkutan sesuai dengan undang-undang.
+                </div>
                 <div class="form-section-title">Identitas Terlapor</div>
                 <div class="form-group">
                     <label for="aduanTerlaporNama">Nama Terlapor:</label>
@@ -567,6 +593,15 @@
                 <div class="form-group">
                     <label for="aduanInformasiKejadian">Hasil Rekapitulasi Uraian Pengaduan:</label>
                     <textarea id="aduanInformasiKejadian" placeholder="Gabungan kronologi akan tampil di sini..."></textarea>
+                </div>
+                <!-- BUKTI DAN DOKUMEN PENDUKUNG -->
+                <div class="form-section-title">Bukti dan Dokumen Pendukung</div>
+                
+                <div class="info-note-box">
+                    bukti dan dokumen pendukung yang Saudara miliki sebagai kelengkapan Pengaduan Saudara, silakan dikirimkan ke email
+                    <strong>pengaduan@pajak.go.id</strong>.
+                    Saudara juga dapat mengetikkan detail informasi Identitas Pelapor,
+                    Identitas Terlapor, dan Kronologi Kejadian secara detail pada email tersebut.
                 </div>
             </div>
             
@@ -687,11 +722,71 @@
 
     function checkJenisAduan(val) {
         const anonimSection = document.getElementById('anonimSection');
+        const statusPelapor = document.getElementById('groupStatusPelapor');
+        const catatanKuasa = document.getElementById('catatanSuratKuasa');
+    
+        const kuasaFields = document.getElementById('kuasaFields');
+    
+        // Reset tampilan Kuasa
+        statusPelapor.style.display = 'none';
+        catatanKuasa.style.display = 'none';
+        kuasaFields.style.display = 'none';
+    
+        document.getElementById('statusPelapor').value =
+            'Wajib Pajak yang Bersangkutan';
+    
+        document.getElementById('aduanKuasaNama').value = '';
+        document.getElementById('aduanKuasaNikNpwp').value = '';
+    
         if (val === 'Tindak Pidana di Bidang Perpajakan') {
+    
             anonimSection.style.display = 'block';
-        } else {
-            anonimSection.style.display = 'none';
+    
+            // Tidak menggunakan pilihan Kuasa
+            statusPelapor.style.display = 'none';
+            catatanKuasa.style.display = 'none';
+    
             document.getElementById('pilihAnonim').value = 'Tidak';
+            toggleAnonimFields('Tidak');
+    
+        } else if (
+            val === 'Sarana dan Prasarana' ||
+            val === 'Kode Etik Pegawai'
+        ) {
+    
+            anonimSection.style.display = 'none';
+    
+            // Tampilkan pilihan status pelapor
+            statusPelapor.style.display = 'block';
+    
+            // Tampilkan catatan persyaratan
+            catatanKuasa.style.display = 'block';
+    
+            document.getElementById('pilihAnonim').value = 'Tidak';
+            toggleAnonimFields('Tidak');
+    
+        } else {
+    
+            anonimSection.style.display = 'none';
+    
+            document.getElementById('pilihAnonim').value = 'Tidak';
+            toggleAnonimFields('Tidak');
+        }
+    }
+    
+    
+    // MENAMPILKAN IDENTITAS KUASA
+    function toggleKuasaFields(val) {
+    
+        const kuasaFields = document.getElementById('kuasaFields');
+    
+        if (val === 'Kuasa') {
+            kuasaFields.style.display = 'block';
+        } else {
+            kuasaFields.style.display = 'none';
+    
+            document.getElementById('aduanKuasaNama').value = '';
+            document.getElementById('aduanKuasaNikNpwp').value = '';
         }
     }
 
@@ -771,31 +866,120 @@
 
     document.getElementById('recordForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        if (currentSubTab === 'Aduan') generateChronologySummary();
-
+    
+        if (currentSubTab === 'Aduan') {
+            generateChronologySummary();
+        }
+    
         let dataBaru = {
             subTab: currentSubTab,
             urutanPencatatan: document.getElementById('urutanPencatatan').value,
             waktuInput: new Date().toLocaleString()
         };
-
+    
+        // DATA INFORMASI
         if (currentSubTab === 'Informasi') {
-            dataBaru.identifier = document.getElementById('nomorTicket') ? document.getElementById('nomorTicket').value : '-';
-            dataBaru.papInfo = `PAP: ${document.getElementById('pilihPap').value}`;
-            dataBaru.namaDirekam = document.getElementById('namaDirekam').value;
-            dataBaru.pencatatanPercakapan = document.getElementById('pencatatanPercakapan').value;
-            dataBaru.kesimpulanPercakapan = document.getElementById('kesimpulanPercakapan').value;
-        } else {
-            dataBaru.identifier = document.getElementById('jenisAduan') ? document.getElementById('jenisAduan').value : '-';
-            dataBaru.pelaporNama = document.getElementById('aduanPelaporNama').value;
-            dataBaru.pelaporTelp = document.getElementById('aduanPelaporTelp').value;
-            dataBaru.terlaporNama = document.getElementById('aduanTerlaporNama').value;
-            dataBaru.informasiKejadian = document.getElementById('aduanInformasiKejadian').value;
+    
+            dataBaru.identifier =
+                document.getElementById('nomorTicket').value || '-';
+    
+            dataBaru.papInfo =
+                `PAP: ${document.getElementById('pilihPap').value}`;
+    
+            dataBaru.namaDirekam =
+                document.getElementById('namaDirekam').value;
+    
+            dataBaru.pencatatanPercakapan =
+                document.getElementById('pencatatanPercakapan').value;
+    
+            dataBaru.kesimpulanPercakapan =
+                document.getElementById('kesimpulanPercakapan').value;
+    
+            dataBaru.melati =
+                document.getElementById('pilihMelati').value;
+    
+            dataBaru.nomorTiketMelati =
+                document.getElementById('nomorTiketMelati').value;
+    
+            dataBaru.pilihanEmail =
+                document.getElementById('pilihEmail').value;
+    
+            dataBaru.emailLainnya =
+                document.getElementById('inputEmail').value;
+    
         }
-
+    
+        // DATA ADUAN
+        else {
+    
+            dataBaru.identifier =
+                document.getElementById('jenisAduan').value;
+    
+            dataBaru.statusPelapor =
+                document.getElementById('statusPelapor').value;
+    
+            dataBaru.pelaporNama =
+                document.getElementById('aduanPelaporNama').value;
+    
+            dataBaru.pelaporNikNpwp =
+                document.getElementById('aduanPelaporNikNpwp').value;
+    
+            dataBaru.kuasaNama =
+                document.getElementById('aduanKuasaNama').value;
+    
+            dataBaru.kuasaNikNpwp =
+                document.getElementById('aduanKuasaNikNpwp').value;
+    
+            dataBaru.pelaporTelp =
+                document.getElementById('aduanPelaporTelp').value;
+    
+            dataBaru.pelaporEmail =
+                document.getElementById('aduanPelaporEmail').value;
+    
+            dataBaru.terlaporNama =
+                document.getElementById('aduanTerlaporNama').value;
+    
+            dataBaru.terlaporNikNpwp =
+                document.getElementById('aduanTerlaporNikNpwp').value;
+    
+            dataBaru.terlaporAlamat =
+                document.getElementById('aduanTerlaporAlamat').value;
+    
+            dataBaru.informasiKejadian =
+                document.getElementById('aduanInformasiKejadian').value;
+        }
+    
+        // SIMPAN DATA
         listPencatatan.push(dataBaru);
+    
         renderTable();
+    
+        // RESET FORM
         document.getElementById('recordForm').reset();
+    
+        // RESET TAMPILAN KONDISIONAL
+        toggleMelati('Tidak');
+        toggleEmail('Email Terdaftar');
+        togglePapWarning('Tidak');
+        toggleAnonimFields('Tidak');
+        toggleKuasaFields('Wajib Pajak yang Bersangkutan');
+    
+        document.getElementById('anonimSection').style.display = 'none';
+        document.getElementById('groupStatusPelapor').style.display = 'none';
+        document.getElementById('catatanSuratKuasa').style.display = 'none';
+    
+        // RESET KRONOLOGI
+        document.getElementById('chronologyListContainer').innerHTML = `
+            <div class="chronology-item">
+                <input type="text" class="chrono-date" placeholder="Tanggal">
+                <input type="text" class="chrono-detail" placeholder="Detail kronologi...">
+                <button type="button" class="btn-small btn-danger"
+                    onclick="removeChronologyRow(this)" style="display:none;">
+                    Hapus
+                </button>
+            </div>
+        `;
+    
     });
 
     function deleteItem(index) {
@@ -807,42 +991,132 @@
 
     function renderTable() {
         const tbody = document.getElementById('tableBody');
-        document.getElementById('totalData').innerText = listPencatatan.length;
+    
+        document.getElementById('totalData').innerText =
+            listPencatatan.length;
+    
         if (listPencatatan.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" class="empty-row">Belum ada data yang dimasukkan.</td></tr>`;
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty-row">
+                        Belum ada data yang dimasukkan.
+                    </td>
+                </tr>
+            `;
             return;
         }
+    
         let html = '';
+    
         listPencatatan.forEach((item, idx) => {
+    
+            let namaIdentitas = '';
+            let detailPencatatan = '';
+    
+            if (item.subTab === 'Informasi') {
+    
+                namaIdentitas = item.namaDirekam || '-';
+    
+                detailPencatatan =
+                    item.kesimpulanPercakapan || '-';
+    
+            } else {
+    
+                namaIdentitas = item.pelaporNama || '-';
+    
+                if (item.statusPelapor === 'Kuasa') {
+                    namaIdentitas +=
+                        '<br><strong>Status:</strong> Kuasa' +
+                        '<br><strong>Nama Kuasa:</strong> ' +
+                        (item.kuasaNama || '-') +
+                        '<br><strong>NIK/NPWP Kuasa:</strong> ' +
+                        (item.kuasaNikNpwp || '-');
+                } else if (item.statusPelapor) {
+                    namaIdentitas +=
+                        '<br><strong>Status:</strong> ' +
+                        item.statusPelapor;
+                }
+    
+                detailPencatatan =
+                    item.informasiKejadian || '-';
+            }
+    
             html += `
                 <tr>
                     <td>${item.subTab}</td>
+    
                     <td>${item.urutanPencatatan}</td>
-                    <td><strong>${item.identifier}</strong></td>
-                    <td>${item.subTab === 'Informasi' ? item.namaDirekam : item.pelaporNama}</td>
-                    <td>${item.subTab === 'Informasi' ? item.kesimpulanPercakapan : item.informasiKejadian}</td>
-                    <td><button class="action-btn-danger" onclick="deleteItem(${idx})">Hapus</button></td>
+    
+                    <td>
+                        <strong>${item.identifier || '-'}</strong>
+                    </td>
+    
+                    <td>${namaIdentitas}</td>
+    
+                    <td style="white-space: pre-wrap;">
+                        ${detailPencatatan}
+                    </td>
+    
+                    <td>
+                        <button
+                            class="action-btn-danger"
+                            onclick="deleteItem(${idx})">
+                            Hapus
+                        </button>
+                    </td>
                 </tr>
             `;
         });
+    
         tbody.innerHTML = html;
     }
 
     function downloadBackup() {
-        if (listPencatatan.length === 0) { alert("Belum ada data!"); return; }
-        let textContent = JSON.stringify(listPencatatan, null, 2);
-        const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+
+        if (listPencatatan.length === 0) {
+            alert("Belum ada data!");
+            return;
+        }
+    
+        const textContent = JSON.stringify(
+            listPencatatan,
+            null,
+            2
+        );
+    
+        const blob = new Blob(
+            [textContent],
+            { type: 'text/plain;charset=utf-8' }
+        );
+    
         const url = URL.createObjectURL(blob);
+    
         const a = document.createElement('a');
+    
         a.href = url;
-        a.download = `backup-daily-work-notes.txt`;
+    
+        a.download =
+            `backup-daily-work-notes-${new Date().toISOString().slice(0,10)}.txt`;
+    
+        document.body.appendChild(a);
         a.click();
+        a.remove();
+    
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+        }, 1000);
     }
 
+    // FUNGSI RESET SESI
     function clearData() {
-        if (confirm("Reset semua data?")) {
+    
+        if (confirm("Apakah Anda yakin ingin menghapus seluruh data pencatatan?")) {
+    
             listPencatatan = [];
+    
             renderTable();
+    
+            alert("Seluruh data pencatatan berhasil direset.");
         }
     }
 </script>
