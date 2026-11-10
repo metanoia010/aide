@@ -1093,10 +1093,10 @@
     
                 detailPencatatan =
                     'Percakapan: ' +
-                    escapeHTML(item.pencatatanPercakapan) +
-                    '\n\n' +
+                    escapeHTML(item.pencatatanPercakapan).trim() +
+                    '\n' +
                     'Kesimpulan: ' +
-                    escapeHTML(item.kesimpulanPercakapan);
+                    escapeHTML(item.kesimpulanPercakapan).trim();
     
             } else {
     
@@ -1135,7 +1135,7 @@
     
                     <td>${namaIdentitas}</td>
     
-                    <td style="white-space: pre-wrap;">
+                    <td style="white-space: pre-wrap; text-align: left;">
                         ${detailPencatatan}
                     </td>
     
