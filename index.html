@@ -27,22 +27,22 @@
         }
 
         [data-theme="dark"] {
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --secondary: #94a3b8;
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-            --success: #059669;
-            --success-hover: #047857;
-            --danger: #dc2626;
-            --danger-hover: #b91c1c;
-            --warning-bg: #451a03;
-            --warning-border: #78350f;
-            --warning-text: #fde68a;
-            --input-bg: #0f172a;
+            --primary: #525252;
+            --primary-hover: #737373;
+            --secondary: #525252;
+            --bg-color: #090909;
+            --card-bg: #171717;
+            --text-main: #f5f5f5;
+            --text-muted: #a3a3a3;
+            --border-color: #333333;
+            --success: #525252;
+            --success-hover: #737373;
+            --danger: #737373;
+            --danger-hover: #a3a3a3;
+            --warning-bg: #262626;
+            --warning-border: #525252;
+            --warning-text: #f5f5f5;
+            --input-bg: #202020;
         }
 
         * {
@@ -188,10 +188,17 @@
         }
         .time-period {
             font-weight: 700;
-            color: #d97706;
+            color: #92400e;
             background: #fef3c7;
             padding: 2px 8px;
             border-radius: 4px;
+        }
+        
+        /* Indikator waktu Dark Mode */
+        [data-theme="dark"] .time-period {
+            color: #ffffff;
+            background: #404040;
+            border: 1px solid #666666;
         }
 
         .form-section-title {
@@ -386,7 +393,12 @@
 <div class="container">
     <div class="app-header">
         <h2>Daily Work Notes</h2>
-        <button class="theme-toggle-btn" type="button" onclick="toggleTheme()">🌙 Dark Mode</button>
+        <button
+            class="theme-toggle-btn"
+            type="button"
+            onclick="toggleTheme()"
+            aria-label="Aktifkan Dark Mode"
+            title="Aktifkan Dark Mode">🌙</button>
     </div>
 
     <div class="main-tabs">
@@ -400,14 +412,6 @@
     <div id="tabIntro" class="tab-pane active">
         <div class="welcome-box">
             <h3>Selamat Datang di Daily Work Notes</h3>
-            <p>Aplikasi ini dirancang khusus untuk mendokumentasikan percakapan harian, penanganan informasi, aduan, serta manajemen tugas secara presisi dan terstruktur secara lokal di browser Anda.</p>
-            <p><strong>Fitur Utama:</strong></p>
-            <ul>
-                <li>Widget waktu real-time dengan presisi milidetik dan indikator waktu (Pagi/Siang/Sore/Malam).</li>
-                <li>Pencatatan terintegrasi untuk kategori Informasi dan Aduan khusus.</li>
-                <li>Mode Terang & Gelap serta tata letak responsif untuk berbagai dimensi layar (16:9 / 9:16).</li>
-                <li>Backup data lengkap secara instan ke dalam file Notepad (.txt).</li>
-            </ul>
         </div>
     </div>
 
@@ -624,12 +628,17 @@
     function toggleTheme() {
         const body = document.body;
         const btn = document.querySelector('.theme-toggle-btn');
+    
         if (body.getAttribute('data-theme') === 'light') {
             body.setAttribute('data-theme', 'dark');
-            btn.innerText = '☀️ Light Mode';
+            btn.innerText = '☀️';
+            btn.setAttribute('aria-label', 'Aktifkan Light Mode');
+            btn.setAttribute('title', 'Aktifkan Light Mode');
         } else {
             body.setAttribute('data-theme', 'light');
-            btn.innerText = '🌙 Dark Mode';
+            btn.innerText = '🌙';
+            btn.setAttribute('aria-label', 'Aktifkan Dark Mode');
+            btn.setAttribute('title', 'Aktifkan Dark Mode');
         }
     }
 
