@@ -1092,11 +1092,17 @@
                 namaIdentitas = escapeHTML(item.namaDirekam);
     
                 detailPencatatan =
-                    'Percakapan: ' +
-                    escapeHTML(item.pencatatanPercakapan).trim() +
+                    '<strong>Percakapan:</strong> ' +
+                    escapeHTML(item.pencatatanPercakapan)
+                        .replace(/^[\s\u00A0]+/gm, '')
+                        .trim() +
                     '\n' +
-                    'Kesimpulan: ' +
-                    escapeHTML(item.kesimpulanPercakapan).trim();
+                    '<strong>Kesimpulan:</strong> ' +
+                    escapeHTML(item.kesimpulanPercakapan)
+                        .replace(/^[\s\u00A0]+/gm, '')
+                        .trim();
+
+                detailPencatatan = detailPencatatan.replace(/^[\s\u00A0]+/gm, '');
     
             } else {
     
