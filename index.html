@@ -805,26 +805,15 @@
     
             <iframe
                 id="bukuSakuViewer"
-                title="Buku Saku Agen"
-                src="about:blank"
+                src="https://kemenkeu-my.sharepoint.com/personal/suryadhiwangkara_kemenkeu_go_id/_layouts/15/embed.aspx?UniqueId=b01f4077-c59a-49ed-8a2c-58a119c02b28"
                 width="100%"
-                height="800"
-                style="border: none;"
-                allowfullscreen>
+                height="100%"
+                frameborder="0"
+                scrolling="no"
+                allowfullscreen
+                title="Buku Saku Operasional 012026">
             </iframe>
     
-        </div>
-    
-        <!-- LINK ALTERNATIF -->
-        <div class="buku-saku-fallback">
-            PDF tidak tampil?
-            <a
-                id="bukuSakuOpenLink"
-                href="https://kemenkeu-my.sharepoint.com/:b:/g/personal/suryadhiwangkara_kemenkeu_go_id/IQB3QB-wmsXtSYosWKEZwCsoAWtYvWke6lnofAlSj2jBFls?e=wRiHLq"
-                target="_blank"
-                rel="noopener noreferrer">
-                Buka langsung di OneDrive
-            </a>
         </div>
     
     </div>
@@ -1410,9 +1399,13 @@
     // =====================================
     
     const bukuSakuLinks = {
-        januari: "https://kemenkeu-my.sharepoint.com/:b:/g/personal/suryadhiwangkara_kemenkeu_go_id/IQB3QB-wmsXtSYosWKEZwCsoAWtYvWke6lnofAlSj2jBFls?e=wRiHLq",
     
-        februari: "https://kemenkeu-my.sharepoint.com/:b:/g/personal/suryadhiwangkara_kemenkeu_go_id/IQB3QB-wmsXtSYosWKEZwCsoAWtYvWke6lnofAlSj2jBFls?e=DBfJBa"
+        januari:
+        "https://kemenkeu-my.sharepoint.com/personal/suryadhiwangkara_kemenkeu_go_id/_layouts/15/embed.aspx?UniqueId=b01f4077-c59a-49ed-8a2c-58a119c02b28",
+    
+        februari:
+        "https://kemenkeu-my.sharepoint.com/personal/suryadhiwangkara_kemenkeu_go_id/_layouts/15/embed.aspx?UniqueId=b08a20fa-824e-44ee-9fe7-9e211f400cd5"
+    
     };
     
     function pilihBukuSaku(versi) {
@@ -1420,23 +1413,28 @@
         const viewer = document.getElementById('bukuSakuViewer');
     
         const btnJanuari = document.getElementById('btnJanuari');
+    
         const btnFebruari = document.getElementById('btnFebruari');
     
-        const openLink = document.getElementById('bukuSakuOpenLink');
+        if (!bukuSakuLinks[versi]) return;
     
-        // Ganti dokumen PDF
+        // Ganti PDF
         viewer.src = bukuSakuLinks[versi];
     
-        // Ganti link alternatif
-        openLink.href = bukuSakuLinks[versi];
+        // Ganti status tombol
+        btnJanuari.classList.toggle(
+            'active',
+            versi === 'januari'
+        );
     
-        // Atur tombol aktif
-        btnJanuari.classList.toggle('active', versi === 'januari');
+        btnFebruari.classList.toggle(
+            'active',
+            versi === 'februari'
+        );
     
-        btnFebruari.classList.toggle('active', versi === 'februari');
     }
     
-    // Tampilkan versi Januari 2026 saat pertama dibuka
+    // Default: Januari 2026
     pilihBukuSaku('januari');
 </script>
 
