@@ -1419,23 +1419,20 @@
         }
     }
     // ========================================
-    // BUKU SAKU AGEN - SISTEM PILIH VERSI
+    // BUKU SAKU AGEN - GOOGLE DRIVE
     // ========================================
     
     window.bukuSakuData = {
         januari: {
-            url: "https://kemenkeu-my.sharepoint.com/personal/suryadhiwangkara_kemenkeu_go_id/_layouts/15/embed.aspx?UniqueId=b01f4077-c59a-49ed-8a2c-58a119c02b28",
-            button: "btnJanuari"
+            url: "https://drive.google.com/file/d/1WBP5-sbWAYmbvXDx8v3msqnMWDt4wiyS/preview"
         },
     
         februari: {
-            url: "https://kemenkeu-my.sharepoint.com/personal/suryadhiwangkara_kemenkeu_go_id/_layouts/15/embed.aspx?UniqueId=b08a20fa-824e-44ee-9fe7-9e211f400cd5",
-            button: "btnFebruari"
+            url: "https://drive.google.com/file/d/1XqNr0yogS40HE7B5RX4IZ9UOUundG7i-/preview"
         }
     };
     
     window.versiBukuSakuAktif = 'januari';
-    
     
     window.pilihBukuSakuAgen = function(versi) {
     
@@ -1446,35 +1443,23 @@
         const viewer = document.getElementById('bukuSakuViewer');
     
         const btnJanuari = document.getElementById('btnJanuari');
-    
         const btnFebruari = document.getElementById('btnFebruari');
     
-        if (!viewer || !btnJanuari || !btnFebruari) return;
+        if (!viewer) return;
     
         window.versiBukuSakuAktif = versi;
     
-        // Ganti dokumen
         viewer.src = data.url;
     
-        // Atur tombol aktif
-        btnJanuari.classList.toggle(
-            'active',
-            versi === 'januari'
-        );
-    
-        btnFebruari.classList.toggle(
-            'active',
-            versi === 'februari'
-        );
+        btnJanuari.classList.toggle('active', versi === 'januari');
+        btnFebruari.classList.toggle('active', versi === 'februari');
     };
     
-    
-    // Muat ulang PDF ketika Tab Buku Saku dibuka
     window.muatBukuSakuAgen = function() {
     
-        const versi = window.versiBukuSakuAktif || 'januari';
-    
-        window.pilihBukuSakuAgen(versi);
+        window.pilihBukuSakuAgen(
+            window.versiBukuSakuAktif || 'januari'
+        );
     
     };
 </script>
