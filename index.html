@@ -450,17 +450,33 @@
     
     .buku-saku-viewer-container {
         width: 100%;
-        height: 800px;
+        height: 85vh;
+        min-height: 700px;
         overflow: hidden;
         border: 1px solid var(--border-color);
         border-radius: var(--radius);
-        background: white;
+        background: #ffffff;
+        position: relative;
     }
     
     .buku-saku-viewer-container iframe {
+        display: block;
         width: 100%;
         height: 100%;
-        display: block;
+        min-height: 700px;
+        border: none;
+        background: #ffffff;
+    }
+    
+    @media (max-width: 480px) {
+        .buku-saku-viewer-container {
+            height: 75vh;
+            min-height: 550px;
+        }
+    
+        .buku-saku-viewer-container iframe {
+            min-height: 550px;
+        }
     }
     
     .buku-saku-fallback {
@@ -779,14 +795,13 @@
             <h3>Buku Saku Agen</h3>
         </div>
     
-        <!-- PILIHAN VERSI -->
         <div class="buku-saku-selector">
     
             <button
                 type="button"
                 class="buku-saku-btn active"
                 id="btnJanuari"
-                onclick="pilihBukuSaku('januari')">
+                onclick="pilihBukuSakuAgen('januari')">
                 v. Januari 2026
             </button>
     
@@ -794,24 +809,23 @@
                 type="button"
                 class="buku-saku-btn"
                 id="btnFebruari"
-                onclick="pilihBukuSaku('februari')">
+                onclick="pilihBukuSakuAgen('februari')">
                 v. Februari 2025
             </button>
     
         </div>
     
-        <!-- TAMPILAN PDF -->
         <div class="buku-saku-viewer-container">
     
             <iframe
                 id="bukuSakuViewer"
-                src="https://kemenkeu-my.sharepoint.com/personal/suryadhiwangkara_kemenkeu_go_id/_layouts/15/embed.aspx?UniqueId=b01f4077-c59a-49ed-8a2c-58a119c02b28"
+                src="about:blank"
+                title="Buku Saku Agen"
                 width="100%"
                 height="100%"
                 frameborder="0"
-                scrolling="no"
-                allowfullscreen
-                title="Buku Saku Operasional 012026">
+                scrolling="yes"
+                allowfullscreen>
             </iframe>
     
         </div>
@@ -852,10 +866,20 @@
     }
 
     function switchMainTab(paneId, btnElement) {
-        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-pane')
+            .forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.main-tab-btn')
+            .forEach(b => b.classList.remove('active'));
         document.getElementById(paneId).classList.add('active');
         btnElement.classList.add('active');
+        // Muat PDF setelah Tab Buku Saku terlihat
+        if (paneId === 'tabBukuSaku') {
+            setTimeout(function() {
+                if (window.muatBukuSakuAgen) {
+                    window.muatBukuSakuAgen();
+                }
+            }, 300);
+        }
     }
 
     function switchSubTab(evt, subName) {
@@ -1394,21 +1418,30 @@
             alert("Seluruh data pencatatan berhasil direset.");
         }
     }
-    // =====================================
-    // BUKU SAKU AGEN - PILIH VERSI PDF
-    // =====================================
+    // ========================================
+    // BUKU SAKU AGEN - SISTEM PILIH VERSI
+    // ========================================
     
-    const bukuSakuLinks = {
+    window.bukuSakuData = {
+        januari: {
+            url: "https://kemenkeu-my.sharepoint.com/personal/suryadhiwangkara_kemenkeu_go_id/_layouts/15/embed.aspx?UniqueId=b01f4077-c59a-49ed-8a2c-58a119c02b28",
+            button: "btnJanuari"
+        },
     
-        januari:
-        "https://kemenkeu-my.sharepoint.com/personal/suryadhiwangkara_kemenkeu_go_id/_layouts/15/embed.aspx?UniqueId=b01f4077-c59a-49ed-8a2c-58a119c02b28",
-    
-        februari:
-        "https://kemenkeu-my.sharepoint.com/personal/suryadhiwangkara_kemenkeu_go_id/_layouts/15/embed.aspx?UniqueId=b08a20fa-824e-44ee-9fe7-9e211f400cd5"
-    
+        februari: {
+            url: "https://kemenkeu-my.sharepoint.com/personal/suryadhiwangkara_kemenkeu_go_id/_layouts/15/embed.aspx?UniqueId=b08a20fa-824e-44ee-9fe7-9e211f400cd5",
+            button: "btnFebruari"
+        }
     };
     
-    function pilihBukuSaku(versi) {
+    window.versiBukuSakuAktif = 'januari';
+    
+    
+    window.pilihBukuSakuAgen = function(versi) {
+    
+        const data = window.bukuSakuData[versi];
+    
+        if (!data) return;
     
         const viewer = document.getElementById('bukuSakuViewer');
     
@@ -1416,12 +1449,14 @@
     
         const btnFebruari = document.getElementById('btnFebruari');
     
-        if (!bukuSakuLinks[versi]) return;
+        if (!viewer || !btnJanuari || !btnFebruari) return;
     
-        // Ganti PDF
-        viewer.src = bukuSakuLinks[versi];
+        window.versiBukuSakuAktif = versi;
     
-        // Ganti status tombol
+        // Ganti dokumen
+        viewer.src = data.url;
+    
+        // Atur tombol aktif
         btnJanuari.classList.toggle(
             'active',
             versi === 'januari'
@@ -1431,11 +1466,17 @@
             'active',
             versi === 'februari'
         );
+    };
     
-    }
     
-    // Default: Januari 2026
-    pilihBukuSaku('januari');
+    // Muat ulang PDF ketika Tab Buku Saku dibuka
+    window.muatBukuSakuAgen = function() {
+    
+        const versi = window.versiBukuSakuAktif || 'januari';
+    
+        window.pilihBukuSakuAgen(versi);
+    
+    };
 </script>
 
 </body>
