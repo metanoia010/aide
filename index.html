@@ -453,28 +453,23 @@
             flex: 0 0 150px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 15px;
         }
-        .buku-saku-btn {
-            width: 100%;
-            padding: 12px 10px;
-            background: var(--border-color);
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            text-align: left;
+        .buku-saku-item {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
             font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
         }
-        .buku-saku-btn:hover {
-            opacity: 0.8;
-        } 
-        .buku-saku-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+        .buku-saku-item strong {
+            font-weight: 700;
+        }
+        .buku-saku-item span {
+            color: var(--text-muted);
+            font-size: 12px;
         }
         
         /* TAMPILAN PDF KANAN */
@@ -502,12 +497,9 @@
             }
             .buku-saku-sidebar {
                 width: 100%;
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-            .buku-saku-btn {
-                flex: 1 1 30%;
-                text-align: center;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
             }
             .buku-saku-viewer-container {
                 width: 100%;
@@ -828,33 +820,28 @@
         </div>
     
         <!-- NAVIGASI KIRI DAN PDF KANAN -->
-        <div class="bukusaku-layout">
+        <div class="bukusaku-layout">  
             <div class="buku-saku-sidebar">
-                <button type="button"
-                    class="buku-saku-btn"
-                    onclick="pilihHalamanPDF(11, this)">
-                    1. Alfabet
-                </button>
-                <button type="button"
-                    class="buku-saku-btn"
-                    onclick="pilihHalamanPDF(35, this)">
-                    2. Jackpot
-                </button>
-                <button type="button"
-                    class="buku-saku-btn"
-                    onclick="pilihHalamanPDF(36, this)">
-                    3. Callback
-                </button>
-                <button type="button"
-                    class="buku-saku-btn"
-                    onclick="pilihHalamanPDF(84, this)">
-                    4. Ekstensi
-                </button>
-                <button type="button"
-                    class="buku-saku-btn"
-                    onclick="pilihHalamanPDF(100, this)">
-                    5. Layanan
-                </button>
+                <div class="buku-saku-item">
+                    <strong>Alfabet</strong>
+                    <span>Halaman 11</span>
+                </div>
+                <div class="buku-saku-item">
+                    <strong>Jackpot</strong>
+                    <span>Halaman 35</span>
+                </div>
+                <div class="buku-saku-item">
+                    <strong>Callback</strong>
+                    <span>Halaman 36</span>
+                </div>
+                <div class="buku-saku-item">
+                    <strong>Ekstensi</strong>
+                    <span>Halaman 84</span>
+                </div>
+                <div class="buku-saku-item">
+                    <strong>Layanan</strong>
+                    <span>Halaman 100</span>
+                </div>
             </div>
     
             <!-- PDF VIEWER -->
@@ -1501,7 +1488,7 @@
     }
     
     // NAVIGASI HALAMAN PDF
-    function pilihHalamanPDF(nomorHalaman, tombol) {
+    function pilihHalamanPDF(nomorHalaman) {
         const viewer = document.getElementById('bukuSakuViewer');
         const data = window.bukuSakuData[
             window.versiBukuSakuAktif || 'januari'
@@ -1515,21 +1502,6 @@
         setTimeout(function() {
             viewer.src = urlPDF;
         }, 150);
-    
-        // Update tombol aktif
-        document.querySelectorAll('.buku-saku-btn')
-            .forEach(btn => btn.classList.remove('active'));
-        if (tombol) {
-            tombol.classList.add('active');
-        } else {
-            const daftarHalaman = [11, 35, 36, 84, 100];
-            const index = daftarHalaman.indexOf(nomorHalaman);
-            const tombolNavigasi =
-                document.querySelectorAll('.buku-saku-btn');
-            if (index !== -1 && tombolNavigasi[index]) {
-                tombolNavigasi[index].classList.add('active');
-            }
-        }
     }
 </script>
 
