@@ -394,122 +394,133 @@
             .btn-container { flex-direction: column; }
             .btn-container button { width: 100%; }
         }
-    .detail-item {
-        display: block;
-        text-align: left;
-        margin: 0;
-        padding: 0;
-        text-indent: 0;
-    }
-    
-    .detail-item strong {
-        font-weight: 700;
-    }
-    
-    /* BUKU SAKU AGEN */
-    .bukusaku-box {
-        margin-bottom: 18px;
-    }
-    
-    .bukusaku-box h3 {
-        font-size: 20px;
-        font-weight: 700;
-        color: var(--text-main);
-    }
-    
-    .buku-saku-selector {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 15px;
-        flex-wrap: wrap;
-    }
-    
-    .buku-saku-btn {
-        flex: 1;
-        min-width: 150px;
-        padding: 11px 16px;
-        background: var(--border-color);
-        color: var(--text-muted);
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius);
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    
-    .buku-saku-btn:hover {
-        opacity: 0.8;
-    }
-    
-    .buku-saku-btn.active {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
-    }
-    
-    .buku-saku-viewer-container {
-        position: relative;
-        width: 100%;
-        height: 65vh;
-        min-height: 0;
-        overflow: hidden;
-        background: #ffffff;
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius);
-    }
-    
-    .buku-saku-viewer-container iframe {
-        display: block;
-        width: 100%;
-        height: 100%;
-        min-height: 750px;
-        border: none;
-        margin: 0;
-        padding: 0;
-    }
-    
-    @media (max-width: 600px) {
-        .buku-saku-viewer-container {
-            height: 80vh;
-            min-height: 600px;
+        .detail-item {
+            display: block;
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
         }
-    
-        .buku-saku-viewer-container iframe {
-            min-height: 600px;
+        
+        .detail-item strong {
+            font-weight: 700;
         }
-    }
-    
-    .buku-saku-fallback {
-        margin-top: 12px;
-        font-size: 12px;
-        color: var(--text-muted);
-        text-align: center;
-    }
-    
-    .buku-saku-fallback a {
-        color: var(--primary);
-        font-weight: 600;
-        text-decoration: none;
-    }
-    
-    .buku-saku-fallback a:hover {
-        text-decoration: underline;
-    }
-    
-    @media (max-width: 480px) {
+        
+        /* BUKU SAKU AGEN */
+        .bukusaku-box {
+            margin-bottom: 18px;
+        }
+        .bukusaku-box h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        
+        /* PILIHAN VERSI PDF */
         .buku-saku-selector {
-            flex-direction: column;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
-    
-        .buku-saku-btn {
+        .buku-saku-version-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 11px 16px;
+            background: var(--border-color);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .buku-saku-version-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* LAYOUT NAVIGASI DAN PDF */
+        .bukusaku-layout {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
             width: 100%;
         }
-    
-        .buku-saku-viewer-container {
-            height: 650px;
+        
+        /* NAVIGASI KIRI */
+        .buku-saku-sidebar {
+            flex: 0 0 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
-    }
+        .buku-saku-btn {
+            width: 100%;
+            padding: 12px 10px;
+            background: var(--border-color);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .buku-saku-btn:hover {
+            opacity: 0.8;
+        } 
+        .buku-saku-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* TAMPILAN PDF KANAN */
+        .buku-saku-viewer-container {
+            flex: 1;
+            min-width: 0;
+            height: 65vh;
+            min-height: 500px;
+            overflow: hidden;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+        }
+        .buku-saku-viewer-container iframe {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* TAMPILAN MOBILE */
+        @media (max-width: 600px) {
+            .bukusaku-layout {
+                flex-direction: column;
+            }
+            .buku-saku-sidebar {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .buku-saku-btn {
+                flex: 1 1 30%;
+                text-align: center;
+            }
+            .buku-saku-viewer-container {
+                width: 100%;
+                height: 65vh;
+                min-height: 400px;
+            }
+            .buku-saku-selector {
+                flex-direction: column;
+            }
+            .buku-saku-version-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body data-theme="light">
@@ -790,44 +801,78 @@
     <!-- PENUTUP TAB 2: PERCAKAPAN -->
     
     <!-- TAB 3: BUKU SAKU -->
-    <div id="tabBukuSaku" class="tab-pane">
     
-        <div class="bukusaku-box">
-            <h3>Buku Saku Agen</h3>
-        </div>
-    
+<!-- TAB 3: BUKU SAKU -->
+<div id="tabBukuSaku" class="tab-pane">
+
+    <div class="bukusaku-box">
+        <h3>Buku Saku Agen</h3>
+    </div>
+
+        <!-- PILIHAN VERSI -->
         <div class="buku-saku-selector">
-    
             <button
                 type="button"
-                class="buku-saku-btn active"
+                class="buku-saku-version-btn active"
                 id="btnJanuari"
-                onclick="pilihBukuSakuAgen('januari')">
+                onclick="pilihVersiBukuSaku('januari', this)">
                 v. Januari 2026
             </button>
-    
             <button
                 type="button"
-                class="buku-saku-btn"
+                class="buku-saku-version-btn"
                 id="btnFebruari"
-                onclick="pilihBukuSakuAgen('februari')">
+                onclick="pilihVersiBukuSaku('februari', this)">
                 v. Februari 2025
             </button>
-    
         </div>
     
-        <div class="buku-saku-viewer-container">
-            <iframe
-                id="bukuSakuViewer"
-                src="about:blank"
-                title="Buku Saku Agen"
-                width="100%"
-                height="100%"
-                frameborder="0"
-                allowfullscreen>
-            </iframe>
+        <!-- NAVIGASI KIRI DAN PDF KANAN -->
+        <div class="bukusaku-layout">
+            <div class="buku-saku-sidebar">
+                <button type="button"
+                    class="buku-saku-btn"
+                    onclick="pilihHalamanPDF(11, this)">
+                    1. Alfabet
+                </button>
+                <button type="button"
+                    class="buku-saku-btn"
+                    onclick="pilihHalamanPDF(35, this)">
+                    2. Jackpot
+                </button>
+                <button type="button"
+                    class="buku-saku-btn"
+                    onclick="pilihHalamanPDF(36, this)">
+                    3. Callback
+                </button>
+                <button type="button"
+                    class="buku-saku-btn"
+                    onclick="pilihHalamanPDF(84, this)">
+                    4. Ekstensi
+                </button>
+                <button type="button"
+                    class="buku-saku-btn"
+                    onclick="pilihHalamanPDF(100, this)">
+                    5. Layanan
+                </button>
+            </div>
+    
+            <!-- PDF VIEWER -->
+            <div class="buku-saku-viewer-container">
+                <iframe
+                    id="bukuSakuViewer"
+                    src="about:blank"
+                    title="Buku Saku Agen"
+                    width="100%"
+                    height="100%"
+                    frameborder="0"
+                    allowfullscreen>
+                </iframe>
+            </div>
         </div>
     </div>
+    <!-- PENUTUP TAB 3 -->
+
 
     <!-- TAB 4: TAUTAN -->
     <div id="tabTautan" class="tab-pane">
@@ -1418,47 +1463,68 @@
     // ========================================
     // BUKU SAKU AGEN - GOOGLE DRIVE
     // ========================================
-    
     window.bukuSakuData = {
         januari: {
             url: "https://drive.google.com/file/d/1WBP5-sbWAYmbvXDx8v3msqnMWDt4wiyS/preview"
         },
-    
         februari: {
             url: "https://drive.google.com/file/d/1XqNr0yogS40HE7B5RX4IZ9UOUundG7i-/preview"
         }
+    
     };
     
+    // VERSI DAN HALAMAN AKTIF
     window.versiBukuSakuAktif = 'januari';
+    window.halamanBukuSakuAktif = 1;
     
-    window.pilihBukuSakuAgen = function(versi) {
+    // MEMBUKA PDF
+    function muatBukuSakuAgen() {
     
-        const data = window.bukuSakuData[versi];
-    
-        if (!data) return;
-    
-        const viewer = document.getElementById('bukuSakuViewer');
-    
-        const btnJanuari = document.getElementById('btnJanuari');
-        const btnFebruari = document.getElementById('btnFebruari');
-    
-        if (!viewer) return;
-    
-        window.versiBukuSakuAktif = versi;
-    
-        viewer.src = data.url;
-    
-        btnJanuari.classList.toggle('active', versi === 'januari');
-        btnFebruari.classList.toggle('active', versi === 'februari');
-    };
-    
-    window.muatBukuSakuAgen = function() {
-    
-        window.pilihBukuSakuAgen(
-            window.versiBukuSakuAktif || 'januari'
+        pilihHalamanPDF(
+            window.halamanBukuSakuAktif || 1,
+            null
         );
+    }
     
-    };
+    // MEMILIH VERSI PDF
+    function pilihVersiBukuSaku(versi, tombol) {
+        if (!window.bukuSakuData[versi]) return;
+        window.versiBukuSakuAktif = versi;
+        document.querySelectorAll('.buku-saku-version-btn')
+            .forEach(btn => btn.classList.remove('active'));
+        tombol.classList.add('active');
+        
+        // Pertahankan halaman yang sedang dipilih
+        pilihHalamanPDF(
+            window.halamanBukuSakuAktif || 1,
+            null
+        );
+    }
+    
+    // NAVIGASI HALAMAN PDF
+    function pilihHalamanPDF(nomorHalaman, tombol) {
+        const viewer = document.getElementById('bukuSakuViewer');
+        const data = window.bukuSakuData[
+            window.versiBukuSakuAktif || 'januari'
+        ];
+        if (!viewer || !data) return;
+        window.halamanBukuSakuAktif = nomorHalaman;
+        viewer.src = data.url + '#page=' + nomorHalaman;
+    
+        // Update tombol navigasi aktif
+        document.querySelectorAll('.buku-saku-btn')
+            .forEach(btn => btn.classList.remove('active'));
+        if (tombol) {
+            tombol.classList.add('active');
+        } else {
+            const tombolNavigasi = document.querySelectorAll('.buku-saku-btn');
+            const daftarHalaman = [11, 35, 36, 84, 100];
+            const index = daftarHalaman.indexOf(nomorHalaman);
+            if (index !== -1 && tombolNavigasi[index]) {
+                tombolNavigasi[index].classList.add('active');
+            }
+        }
+    }
 </script>
 
 </body>
