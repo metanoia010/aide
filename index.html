@@ -1509,17 +1509,24 @@
         ];
         if (!viewer || !data) return;
         window.halamanBukuSakuAktif = nomorHalaman;
-        viewer.src = data.url + '#page=' + nomorHalaman;
     
-        // Update tombol navigasi aktif
+        // Paksa PDF dimuat ulang dengan halaman tujuan
+        const urlPDF = data.url + '#page=' + nomorHalaman;
+        viewer.src = 'about:blank';
+        setTimeout(function() {
+            viewer.src = urlPDF;
+        }, 150);
+    
+        // Update tombol aktif
         document.querySelectorAll('.buku-saku-btn')
             .forEach(btn => btn.classList.remove('active'));
         if (tombol) {
             tombol.classList.add('active');
         } else {
-            const tombolNavigasi = document.querySelectorAll('.buku-saku-btn');
             const daftarHalaman = [11, 35, 36, 84, 100];
             const index = daftarHalaman.indexOf(nomorHalaman);
+            const tombolNavigasi =
+                document.querySelectorAll('.buku-saku-btn');
             if (index !== -1 && tombolNavigasi[index]) {
                 tombolNavigasi[index].classList.add('active');
             }
