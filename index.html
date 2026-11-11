@@ -440,42 +440,9 @@
             color: white;
         }
         
-        /* LAYOUT NAVIGASI DAN PDF */
-        .bukusaku-layout {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-            width: 100%;
-        }
-        
-        /* NAVIGASI KIRI */
-        .buku-saku-sidebar {
-            flex: 0 0 150px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .buku-saku-item {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            padding: 8px 10px;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-main);
-            font-size: 13px;
-        }
-        .buku-saku-item strong {
-            font-weight: 700;
-        }
-        .buku-saku-item span {
-            color: var(--text-muted);
-            font-size: 12px;
-        }
-        
-        /* TAMPILAN PDF KANAN */
+        /* TAMPILAN BUKU SAKU AGEN */
         .buku-saku-viewer-container {
-            flex: 1;
-            min-width: 0;
+            width: 100%;
             height: 65vh;
             min-height: 500px;
             overflow: hidden;
@@ -489,28 +456,10 @@
             height: 100%;
             border: none;
         }
-        
-        /* TAMPILAN MOBILE */
         @media (max-width: 600px) {
-            .bukusaku-layout {
-                flex-direction: column;
-            }
-            .buku-saku-sidebar {
-                width: 100%;
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
             .buku-saku-viewer-container {
-                width: 100%;
                 height: 65vh;
                 min-height: 400px;
-            }
-            .buku-saku-selector {
-                flex-direction: column;
-            }
-            .buku-saku-version-btn {
-                width: 100%;
             }
         }
     </style>
@@ -819,30 +768,16 @@
             </button>
         </div>
     
-        <!-- NAVIGASI KIRI DAN PDF KANAN -->
-        <div class="bukusaku-layout">  
-            <div class="buku-saku-sidebar">
-                <div class="buku-saku-item">
-                    <strong>Alfabet</strong>
-                    <span>Halaman 11</span>
-                </div>
-                <div class="buku-saku-item">
-                    <strong>Jackpot</strong>
-                    <span>Halaman 35</span>
-                </div>
-                <div class="buku-saku-item">
-                    <strong>Callback</strong>
-                    <span>Halaman 36</span>
-                </div>
-                <div class="buku-saku-item">
-                    <strong>Ekstensi</strong>
-                    <span>Halaman 84</span>
-                </div>
-                <div class="buku-saku-item">
-                    <strong>Layanan</strong>
-                    <span>Halaman 100</span>
-                </div>
-            </div>
+        <!-- TAMPILAN PDF -->
+        <div class="buku-saku-viewer-container">
+            <iframe
+                id="bukuSakuViewer"
+                src="https://drive.google.com/file/d/1WBP5-sbWAYmbvXDx8v3msqnMWDt4wiyS/preview"
+                title="Buku Saku Agen"
+                allow="autoplay"
+                allowfullscreen>
+            </iframe>
+        </div>
     
             <!-- PDF VIEWER -->
             <div class="buku-saku-viewer-container">
@@ -1448,43 +1383,23 @@
         }
     }
     // ========================================
-    // BUKU SAKU AGEN - GOOGLE DRIVE
+    // BUKU SAKU AGEN
     // ========================================
     window.bukuSakuData = {
         januari: {
-            url: "https://drive.google.com/uc?export=view&id=1WBP5-sbWAYmbvXDx8v3msqnMWDt4wiyS"
+            url: "https://drive.google.com/file/d/1WBP5-sbWAYmbvXDx8v3msqnMWDt4wiyS/preview"
         },
         februari: {
-            url: "https://drive.google.com/uc?export=view&id=1XqNr0yogS40HE7B5RX4IZ9UOUundG7i-"
+            url: "https://drive.google.com/file/d/1XqNr0yogS40HE7B5RX4IZ9UOUundG7i-/preview"
         }
     };
-    
-    // VERSI DAN HALAMAN AKTIF
-    window.versiBukuSakuAktif = 'januari';
-    window.halamanBukuSakuAktif = 1;
-    
-    // MEMBUKA PDF
-    function muatBukuSakuAgen() {
-    
-        pilihHalamanPDF(
-            window.halamanBukuSakuAktif || 1,
-            null
-        );
-    }
-    
-    // MEMILIH VERSI PDF
     function pilihVersiBukuSaku(versi, tombol) {
-        if (!window.bukuSakuData[versi]) return;
-        window.versiBukuSakuAktif = versi;
+        const data = window.bukuSakuData[versi];
+        if (!data) return;
+        document.getElementById('bukuSakuViewer').src = data.url;
         document.querySelectorAll('.buku-saku-version-btn')
             .forEach(btn => btn.classList.remove('active'));
         tombol.classList.add('active');
-        
-        // Pertahankan halaman yang sedang dipilih
-        pilihHalamanPDF(
-            window.halamanBukuSakuAktif || 1,
-            null
-        );
     }
     
     // NAVIGASI HALAMAN PDF
