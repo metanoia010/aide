@@ -618,7 +618,98 @@
                 font-size: 9px;
             }
         }
+        /* ========================================
+           PENGUMUMAN TAB 1
+        ======================================== */
         
+        .announcement-container {
+            margin-top: 24px;
+            padding: 20px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+        .announcement-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 16px;
+        }
+        .announcement-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid #f59e0b;
+            border-radius: 10px;
+            padding: 16px;
+        }
+        .announcement-issue {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+        .announcement-description {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+        .announcement-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+        .announcement-select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .announcement-content {
+            display: none;
+            margin-top: 14px;
+            padding: 16px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 13px;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+        .announcement-content.active {
+            display: block;
+        }
+        .announcement-content strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+        
+        /* DARK MODE */
+        [data-theme="dark"] .announcement-card {
+            background: #202020;
+            border-color: #525252;
+            border-left-color: #fbbf24;
+        }
+        [data-theme="dark"] .announcement-select {
+            background: #262626;
+            color: #f5f5f5;
+            border-color: #666666;
+        }
+        [data-theme="dark"] .announcement-content {
+            background: #262626;
+            color: #f5f5f5;
+            border-color: #666666;
+        }
+
         /* ========================================
            PERBAIKAN DARK MODE - TAB 4
            TAUTAN LAINNYA
@@ -681,12 +772,70 @@
         </div>
     </div>
 
+    
     <!-- TAB 1: INTRO -->
     <div id="tabIntro" class="tab-pane active">
+    
         <div class="welcome-box">
             <h3>Selamat Datang di Daily Work Notes</h3>
         </div>
+    
+        <!-- PENGUMUMAN -->
+        <div class="announcement-container">
+            <h3 class="announcement-title">
+                📢 Pengumuman Informasi
+            </h3>
+            <div class="announcement-card">
+                <div class="announcement-issue">
+                    ⚠️ Kendala submit eForm
+                </div>
+                <p class="announcement-description">
+                    Informasi kendala dan penanganan yang sedang berlangsung.
+                </p>
+                <label
+                    class="announcement-label"
+                    for="announcementSelect">
+                    Informasi penanganan / jawaban saat ini:
+                </label>
+                <select
+                    id="announcementSelect"
+                    class="announcement-select"
+                    onchange="showAnnouncement(this.value)">
+    
+                    <option value="">
+                        -- Pilih Informasi --
+                    </option>
+                    <option value="informasi1">
+                        Informasi 1
+                    </option>
+                    <option value="informasi2">
+                        Informasi 2
+                    </option>
+                </select>
+    
+                <!-- INFORMASI 1 -->
+                <div
+                    id="informasi1"
+                    class="announcement-content">
+                    <strong>Informasi 1</strong>
+                    Mohon maaf atas ketidaknyamanan yg dialami.
+                    Sampai dgn saat ini DJP masih melakukan pemeliharaan sistem, sehingga e-Form belum dapat digunakan untuk melakukan submit/pelaporan SPT Tahunan secara mandiri oleh Wajib Pajak.
+                    Apabila Kakak telah mengunduh dan mengisi formulir e-Form serta ingin segera menyampaikan SPT Tahunan, kami menyarankan agar Kakak dapat mengunjungi KPP terdekat untuk memperoleh bantuan dalam proses submit/pelaporan SPT Tahunan tersebut.
+                </div>
+    
+                <!-- INFORMASI 2 -->
+                <div
+                    id="informasi2"
+                    class="announcement-content">
+                    <strong>Infomrasi 2</strong>
+                    Mohon maaf atas ketidaknyamanan yg dialami.
+                    Sampai dgn saat ini DJP masih melakukan pemeliharaan sistem, sehingga Wajib Pajak belum dapat melakukan proses submit/pelaporan SPT Tahunan e-Form secara mandiri.
+                    Apabila Kakak telah mengunduh dan mengisi formulir e-Form serta ingin segera menyampaikan SPT Tahunan, kami menyarankan agar Kakak dapat mengunjungi KPP terdekat untuk memperoleh bantuan dalam proses submit/pelaporan SPT Tahunan tersebut.
+                </div>
+            </div>
+        </div>
     </div>
+
 
     <!-- TAB 2: PERCAKAPAN -->
     <div id="tabPercakapan" class="tab-pane">
@@ -1127,6 +1276,20 @@
             btn.innerText = '🌙';
             btn.setAttribute('aria-label', 'Aktifkan Dark Mode');
             btn.setAttribute('title', 'Aktifkan Dark Mode');
+        }
+    }
+    
+    // MENAMPILKAN INFORMASI PENGUMUMAN TAB 1
+    function showAnnouncement(value) {
+        document.querySelectorAll('.announcement-content')
+            .forEach(function(content) {
+                content.classList.remove('active');
+            });
+        if (value) {
+            const selectedInfo = document.getElementById(value);
+            if (selectedInfo) {
+                selectedInfo.classList.add('active');
+            }
         }
     }
 
