@@ -461,58 +461,79 @@
                 height: 65vh;
                 min-height: 400px;
             }
-        }
+        }  
+        
         /* INFORMASI NAVIGASI HALAMAN PDF */
         .pdf-navigation {
             width: 100%;
+            margin-top: 10px;
             margin-bottom: 15px;
-            padding: 12px;
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
+            padding: 14px;
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
             border-radius: var(--radius);
         }
-        
         .pdf-navigation-grid {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
             gap: 8px;
         }
-        
         .pdf-nav-item {
-            padding: 9px 4px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            padding: 10px 7px;
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
             border-radius: 6px;
             text-align: left;
-            color: var(--text-main);
+            color: #78350f;
             font-size: 12px;
+            cursor: pointer;
         }
-        
+        .pdf-nav-item:hover {
+            background: #fde68a;
+            border-color: #f59e0b;
+        }
         .pdf-nav-item strong {
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 7px;
         }
-        
         .pdf-nav-item span {
             display: block;
-            color: var(--text-muted);
+            color: #92400e;
             font-size: 11px;
         }
         
+        /* PENYESUAIAN DARK MODE */
+        [data-theme="dark"] .pdf-navigation {
+            background: #29200f;
+            border-color: #92400e;
+        }
+        [data-theme="dark"] .pdf-nav-item {
+            background: #3b2c13;
+            border-color: #92400e;
+            color: #fef3c7;
+        }
+        [data-theme="dark"] .pdf-nav-item span {
+            color: #fcd34d;
+        }
+        [data-theme="dark"] .pdf-nav-item:hover {
+            background: #57401a;
+        }
+        
+        /* RESPONSIVE MOBILE */
         @media (max-width: 480px) {
             .pdf-navigation {
                 padding: 8px;
             }
-        
             .pdf-navigation-grid {
-                gap: 4px;
+                gap: 5px;
             }
-        
             .pdf-nav-item {
-                padding: 7px 3px;
+                padding: 9px 3px;
                 font-size: 10px;
             }
-        
+            .pdf-nav-item strong {
+                margin-bottom: 7px;
+            }
             .pdf-nav-item span {
                 font-size: 9px;
             }
@@ -823,29 +844,34 @@
             </button>
         </div>
 
-        <!-- CATATAN HALAMAN BUKU SAKU -->
+        <!-- NAVIGASI HALAMAN BUKU SAKU -->
         <div class="pdf-navigation">
             <div class="pdf-navigation-grid">
-                <div class="pdf-nav-item">
+                <button type="button" class="pdf-nav-item"
+                    onclick="pilihHalamanPDF(11, 8)">
                     <strong>Alfabet</strong>
-                    <span>Halaman 11</span>
-                </div>
-                <div class="pdf-nav-item">
+                    <span id="halamanAlfabet">Halaman 11</span>
+                </button>
+                <button type="button" class="pdf-nav-item"
+                    onclick="pilihHalamanPDF(35, 32)">
                     <strong>Jackpot</strong>
-                    <span>Halaman 35</span>
-                </div>
-                <div class="pdf-nav-item">
+                    <span id="halamanJackpot">Halaman 35</span>
+                </button>
+                <button type="button" class="pdf-nav-item"
+                    onclick="pilihHalamanPDF(36, 33)">
                     <strong>Callback</strong>
-                    <span>Halaman 36</span>
-                </div>
-                <div class="pdf-nav-item">
+                    <span id="halamanCallback">Halaman 36</span>
+                </button>
+                <button type="button" class="pdf-nav-item"
+                    onclick="pilihHalamanPDF(84, 81)">
                     <strong>Ekstensi</strong>
-                    <span>Halaman 84</span>
-                </div>
-                <div class="pdf-nav-item">
+                    <span id="halamanEkstensi">Halaman 84</span>
+                </button>
+                <button type="button" class="pdf-nav-item"
+                    onclick="pilihHalamanPDF(100, 100)">
                     <strong>Layanan</strong>
-                    <span>Halaman 100</span>
-                </div>
+                    <span id="halamanLayanan">Halaman 100</span>
+                </button>
             </div>
         </div>
 
@@ -1460,15 +1486,35 @@
             url: "https://drive.google.com/file/d/1XqNr0yogS40HE7B5RX4IZ9UOUundG7i-/preview"
         }
     };
+    
     function pilihVersiBukuSaku(versi, tombol) {
         const data = window.bukuSakuData[versi];
         if (!data) return;
+    
+        window.versiBukuSakuAktif = versi;
         document.getElementById('bukuSakuViewer').src = data.url;
         document.querySelectorAll('.buku-saku-version-btn')
             .forEach(btn => btn.classList.remove('active'));
         tombol.classList.add('active');
-    }
     
+        // PERBARUI KETERANGAN HALAMAN
+        const halaman = versi === 'februari'
+            ? [8, 32, 33, 81, 100]
+            : [11, 35, 36, 84, 100];
+    
+        const elemenHalaman = [
+            'halamanAlfabet',
+            'halamanJackpot',
+            'halamanCallback',
+            'halamanEkstensi',
+            'halamanLayanan'
+        ];
+        elemenHalaman.forEach((id, index) => {
+            document.getElementById(id).innerText =
+                'Halaman ' + halaman[index];
+        });
+    }
+
     // NAVIGASI HALAMAN PDF
     function pilihHalamanPDF(nomorHalaman) {
         const viewer = document.getElementById('bukuSakuViewer');
