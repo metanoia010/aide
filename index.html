@@ -754,13 +754,14 @@
             aria-label="Aktifkan Dark Mode"
             title="Aktifkan Dark Mode">🌙</button>
     </div>
-    
+
     <!-- TAB NAVIGASI -->
     <div class="main-tabs">
         <button class="main-tab-btn tab-btn active" type="button" onclick="switchMainTab('tabIntro', this)">1. Intro</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">2. Percakapan</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">3. Buku Saku</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">4. Tautan Lainnya</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabUpdate', this)">2. Update</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">3. Percakapan</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">4. Buku Saku</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">5. Tautan Lainnya</button>
     </div>
         
     <!-- INDIKATOR WAKTU GLOBAL -->
@@ -852,8 +853,20 @@
         </div>
     </div>
 
+    
+    <!-- TAB 2: UPDATE -->
+    <div id="tabUpdate" class="tab-pane">
+    
+        <div class="welcome-box">
+            <h3>Update Informasi</h3>
+        </div>
+    
+        <p>Konten Update akan ditambahkan pada tahap berikutnya.</p>
+    
+    </div>
+    <!-- PENUTUP TAB 2: UPDATE -->
 
-    <!-- TAB 2: PERCAKAPAN -->
+    <!-- TAB 3: PERCAKAPAN -->
     <div id="tabPercakapan" class="tab-pane">
         <div class="sub-tabs">
             <button class="sub-tab-btn active" type="button" onclick="switchSubTab(event, 'Informasi')">Informasi</button>
@@ -1092,20 +1105,17 @@
             </div>
         </div>
     </div>
-    <!-- PENUTUP TAB 2: PERCAKAPAN -->
+    <!-- PENUTUP TAB 3: PERCAKAPAN -->
     
-    <!-- TAB 3: BUKU SAKU -->
-    
-<!-- TAB 3: BUKU SAKU -->
-<div id="tabBukuSaku" class="tab-pane">
-
-    <div class="bukusaku-box">
-        <h3>Buku Saku Agen</h3>
-    </div>
+    <!-- TAB 4: BUKU SAKU -->
+    <div id="tabBukuSaku" class="tab-pane">
+        <div class="bukusaku-box">
+            <h3>Buku Saku Agen</h3>
+        </div>
 
         <!-- PILIHAN VERSI -->
         <div class="buku-saku-selector">
-            <button
+             <button
                 type="button"
                 class="buku-saku-version-btn active"
                 id="btnJanuari"
@@ -1120,7 +1130,7 @@
                 v. Februari 2025
             </button>
         </div>
-
+    
         <!-- INFORMASI HALAMAN BUKU SAKU -->
         <div class="pdf-navigation">
             <div class="pdf-navigation-grid">
@@ -1146,7 +1156,7 @@
                 </div>
             </div>
         </div>
-
+    
         <!-- TAMPILAN PDF -->
         <div class="buku-saku-viewer-container">
             <iframe
@@ -1158,16 +1168,14 @@
             </iframe>
         </div>
     </div>
-    <!-- PENUTUP TAB 3 -->
+    <!-- PENUTUP TAB 4 -->
 
-
-    
-    <!-- TAB 4: TAUTAN -->
+    <!-- TAB 5: TAUTAN -->
     <div id="tabTautan" class="tab-pane">
         <div class="link-box">
             <h3>Tautan Lainnya & Referensi</h3>
             <div class="link-category-container">
-    
+        
                 <!-- CALL -->
                 <div class="link-category">
                     <div class="link-category-header">
@@ -1179,7 +1187,7 @@
                         <a href="https://crmapp.intranet.pajak.go.id/djp/pages/login.php" target="_blank" rel="noopener noreferrer">CRM</a>
                     </div>
                 </div>
-    
+        
                 <!-- EMAIL -->
                 <div class="link-category">
                     <div class="link-category-header">
@@ -1190,7 +1198,7 @@
                         <a href="https://emaildjp.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">emailDJP</a>
                     </div>
                 </div>
-    
+        
                 <!-- HELP -->
                 <div class="link-category">
                     <div class="link-category-header">
@@ -1201,7 +1209,7 @@
                         <a href="https://melati.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">melati</a>
                     </div>
                 </div>
-    
+        
                 <!-- INFORMATION -->
                 <div class="link-category">
                     <div class="link-category-header">
@@ -1216,7 +1224,7 @@
                         <a href="https://tkb-djp.intranet.pajak.go.id/tkb/" target="_blank" rel="noopener noreferrer">TKB</a>
                     </div>
                 </div>
-    
+        
                 <!-- TASK -->
                 <div class="link-category">
                     <div class="link-category-header">
@@ -1229,7 +1237,7 @@
                         <a href="https://kemenkeu.sharepoint.com/:x:/r/sites/BOKLIP/_layouts/15/Doc.aspx?sourcedoc=%7BE2BF3BB1-EC31-49A1-855E-FB560D158619%7D&file=2026%20Validasi%20Web%20dan%20Portal.xlsx&action=default&mobileredirect=true" target="_blank" rel="noopener noreferrer">Validasi Web dan Portal</a>
                     </div>
                 </div>
-    
+        
                 <!-- ABSENT -->
                 <div class="link-category">
                     <div class="link-category-header">
@@ -1241,7 +1249,7 @@
                         <a href="https://sikka-djp.intranet.pajak.go.id/" target="_blank" rel="noopener noreferrer">SIKKA</a>
                     </div>
                 </div>
-    
+        
                 <!-- AGENT -->
                 <div class="link-category">
                     <div class="link-category-header">
@@ -1254,7 +1262,7 @@
                         <a href="https://sikka-djp.intranet.pajak.go.id/" target="_blank" rel="noopener noreferrer">SIKKA</a>
                     </div>
                 </div>
-    
+        
                 <!-- OTHER -->
                 <div class="link-category">
                     <div class="link-category-header">
