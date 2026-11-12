@@ -670,6 +670,15 @@
         <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">2. Percakapan</button>
         <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">3. Buku Saku</button>
         <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">4. Tautan Lainnya</button>
+        
+        <!-- INDIKATOR WAKTU GLOBAL -->
+        <div class="live-clock-container">
+            <span>Waktu Sistem:</span>
+            <div>
+                <span id="liveClock">-</span>
+                <span id="timePeriod" class="time-period">-</span>
+            </div>
+        </div>
     </div>
 
     <!-- TAB 1: INTRO -->
@@ -681,14 +690,6 @@
 
     <!-- TAB 2: PERCAKAPAN -->
     <div id="tabPercakapan" class="tab-pane">
-        <div class="live-clock-container">
-            <span>Waktu Sistem:</span>
-            <div>
-                <span id="liveClock">-</span>
-                <span id="timePeriod" class="time-period">-</span>
-            </div>
-        </div>
-
         <div class="sub-tabs">
             <button class="sub-tab-btn active" type="button" onclick="switchSubTab(event, 'Informasi')">Informasi</button>
             <button class="sub-tab-btn" type="button" onclick="switchSubTab(event, 'Aduan')">Aduan</button>
