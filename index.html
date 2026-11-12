@@ -103,34 +103,43 @@
             opacity: 0.8;
         }
 
-        /* Navigasi Tab Utama (Rata Tengah & Proporsional) */
+        /* NAVIGASI TAB UTAMA */
         .main-tabs {
             display: flex;
-            justify-content: center;
-            gap: 10px;
+            align-items: stretch;
+            width: 100%;
+            gap: 8px;
             margin-bottom: 24px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
-            flex-wrap: wrap;
+            padding: 6px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            flex-wrap: nowrap;
         }
         .tab-btn {
-            padding: 10px 16px;
-            border: none;
-            background-color: var(--border-color);
+            flex: 1 1 0;
+            min-width: 0;
+            padding: 12px 8px;
+            border: 1px solid transparent;
+            background: transparent;
             color: var(--text-muted);
             font-weight: 600;
             font-size: 13px;
-            border-radius: var(--radius);
+            border-radius: 8px;
             cursor: pointer;
+            text-align: center;
+            white-space: nowrap;
             transition: all 0.2s ease;
         }
         .tab-btn:hover {
-            opacity: 0.8;
+            background: var(--border-color);
             color: var(--text-main);
         }
         .tab-btn.active {
-            background-color: var(--primary);
+            background: var(--primary);
             color: white;
+            border-color: var(--primary);
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.18);
         }
 
         .sub-tabs {
@@ -476,8 +485,16 @@
             .theme-toggle-btn { align-self: flex-end; }
             .form-group-inline { flex-direction: column; align-items: stretch; gap: 6px; }
             .form-group-inline label { width: 100%; }
-            .main-tabs { gap: 6px; }
-            .tab-btn { padding: 8px 10px; font-size: 12px; flex: 1; text-align: center; }
+            .main-tabs {
+                gap: 6px;
+                overflow-x: auto;
+                scrollbar-width: thin;
+            }
+            .tab-btn {
+                flex: 0 0 auto;
+                padding: 9px 12px;
+                font-size: 12px;
+            }
             .btn-container { flex-direction: column; }
             .btn-container button { width: 100%; }
         }
@@ -779,11 +796,11 @@
 
     <!-- TAB NAVIGASI -->
     <div class="main-tabs">
-        <button class="main-tab-btn tab-btn active" type="button" onclick="switchMainTab('tabIntro', this)">1. Intro</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabUpdate', this)">2. Update</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">3. Percakapan</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">4. Buku Saku</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">5. Tautan Lainnya</button>
+        <button class="main-tab-btn tab-btn active" type="button" onclick="switchMainTab('tabIntro', this)">Intro</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabUpdate', this)">Update</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">Percakapan</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">Buku Saku</button>
+        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">Tautan Lainnya</button>
     </div>
         
     <!-- INDIKATOR WAKTU GLOBAL -->
