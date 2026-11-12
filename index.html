@@ -462,6 +462,61 @@
                 min-height: 400px;
             }
         }
+        /* INFORMASI NAVIGASI HALAMAN PDF */
+        .pdf-navigation {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+        }
+        
+        .pdf-navigation-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 8px;
+        }
+        
+        .pdf-nav-item {
+            padding: 9px 4px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            text-align: left;
+            color: var(--text-main);
+            font-size: 12px;
+        }
+        
+        .pdf-nav-item strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .pdf-nav-item span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+        
+        @media (max-width: 480px) {
+            .pdf-navigation {
+                padding: 8px;
+            }
+        
+            .pdf-navigation-grid {
+                gap: 4px;
+            }
+        
+            .pdf-nav-item {
+                padding: 7px 3px;
+                font-size: 10px;
+            }
+        
+            .pdf-nav-item span {
+                font-size: 9px;
+            }
+        }
     </style>
 </head>
 <body data-theme="light">
@@ -767,7 +822,33 @@
                 v. Februari 2025
             </button>
         </div>
-    
+
+        <!-- CATATAN HALAMAN BUKU SAKU -->
+        <div class="pdf-navigation">
+            <div class="pdf-navigation-grid">
+                <div class="pdf-nav-item">
+                    <strong>Alfabet</strong>
+                    <span>Halaman 11</span>
+                </div>
+                <div class="pdf-nav-item">
+                    <strong>Jackpot</strong>
+                    <span>Halaman 35</span>
+                </div>
+                <div class="pdf-nav-item">
+                    <strong>Callback</strong>
+                    <span>Halaman 36</span>
+                </div>
+                <div class="pdf-nav-item">
+                    <strong>Ekstensi</strong>
+                    <span>Halaman 84</span>
+                </div>
+                <div class="pdf-nav-item">
+                    <strong>Layanan</strong>
+                    <span>Halaman 100</span>
+                </div>
+            </div>
+        </div>
+
         <!-- TAMPILAN PDF -->
         <div class="buku-saku-viewer-container">
             <iframe
