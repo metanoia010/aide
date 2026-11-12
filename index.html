@@ -373,6 +373,93 @@
         .link-list li { margin-bottom: 12px; }
         .link-list a { color: var(--primary); text-decoration: none; font-weight: 600; }
 
+        /* TAB 4 - TAUTAN DAN REFERENSI */
+        .link-box h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+        .link-category-container {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            width: 100%;
+        }
+        .link-category {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            min-width: 0;
+        }
+        .link-category-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .link-category-icon {
+            font-size: 23px;
+            cursor: help;
+        }
+        .link-category-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 9px;
+        }
+        .link-category-buttons a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1 1 100%;
+            min-width: 0;
+            padding: 10px 8px;
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .link-category-buttons a:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        @media (min-width: 600px) {
+            .link-category-buttons a {
+                flex: 1 1 calc(50% - 5px);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .link-category-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+            .link-category {
+                padding: 12px;
+            }
+            .link-category-buttons a {
+                font-size: 12px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .link-category-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .action-btn-danger {
             background: var(--danger);
             color: white;
@@ -877,16 +964,117 @@
     <!-- PENUTUP TAB 3 -->
 
 
+    
     <!-- TAB 4: TAUTAN -->
     <div id="tabTautan" class="tab-pane">
         <div class="link-box">
             <h3>Tautan Lainnya & Referensi</h3>
-            <ul class="link-list">
-                <li>🔗 <a href="https://www.google.com" target="_blank">Google Search</a></li>
-                <li>🔗 <a href="https://jdih.kemenkeu.go.id" target="_blank">JDIH Kementerian Keuangan</a></li>
-            </ul>
+            <div class="link-category-container">
+    
+                <!-- CALL -->
+                <div class="link-category">
+                    <div class="link-category-header">
+                        <span class="link-category-icon"
+                            title="CALL">📞</span>
+                    </div>
+                    <div class="link-category-buttons">
+                        <a href="https://djp-omni2.intranet.pajak.go.id/services/UnifiedAgentController/workspaces/#/home" target="_blank" rel="noopener noreferrer">Inbound</a>
+                        <a href="https://crmapp.intranet.pajak.go.id/djp/pages/login.php" target="_blank" rel="noopener noreferrer">CRM</a>
+                    </div>
+                </div>
+    
+                <!-- EMAIL -->
+                <div class="link-category">
+                    <div class="link-category-header">
+                        <span class="link-category-icon"
+                            title="EMAIL">📧</span>
+                    </div>
+                    <div class="link-category-buttons">
+                        <a href="https://emaildjp.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">emailDJP</a>
+                    </div>
+                </div>
+    
+                <!-- HELP -->
+                <div class="link-category">
+                    <div class="link-category-header">
+                        <span class="link-category-icon"
+                            title="HELP">🛟</span>
+                    </div>
+                    <div class="link-category-buttons">
+                        <a href="https://melati.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">melati</a>
+                    </div>
+                </div>
+    
+                <!-- INFORMATION -->
+                <div class="link-category">
+                    <div class="link-category-header">
+                        <span class="link-category-icon"
+                            title="INFORMATION">ℹ️</span>
+                    </div>
+                    <div class="link-category-buttons">
+                        <a href="https://coretax.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">CTAS</a>
+                        <a href="http://10.245.8.119/SIKLIP/login" target="_blank" rel="noopener noreferrer">SIKLIP</a>
+                        <a href="http://10.245.5.5:8080/login" target="_blank" rel="noopener noreferrer">Cek EFIN</a>
+                        <a href="https://djpforum.intranet.pajak.go.id/index.php" target="_blank" rel="noopener noreferrer">DJP Forum</a>
+                        <a href="https://tkb-djp.intranet.pajak.go.id/tkb/" target="_blank" rel="noopener noreferrer">TKB</a>
+                    </div>
+                </div>
+    
+                <!-- TASK -->
+                <div class="link-category">
+                    <div class="link-category-header">
+                        <span class="link-category-icon"
+                            title="TASK">📋</span>
+                    </div>
+                    <div class="link-category-buttons">
+                        <a href="https://coretax.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">CTAS</a>
+                        <a href="https://emaildjp.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">emailDJP</a>
+                        <a href="https://kemenkeu.sharepoint.com/:x:/r/sites/BOKLIP/_layouts/15/Doc.aspx?sourcedoc=%7BE2BF3BB1-EC31-49A1-855E-FB560D158619%7D&file=2026%20Validasi%20Web%20dan%20Portal.xlsx&action=default&mobileredirect=true" target="_blank" rel="noopener noreferrer">Validasi Web dan Portal</a>
+                    </div>
+                </div>
+    
+                <!-- ABSENT -->
+                <div class="link-category">
+                    <div class="link-category-header">
+                        <span class="link-category-icon"
+                            title="ABSENT">📅</span>
+                    </div>
+                    <div class="link-category-buttons">
+                        <a href="http://10.245.8.119/SIKLIP/login" target="_blank" rel="noopener noreferrer">SIKLIP</a>
+                        <a href="https://sikka-djp.intranet.pajak.go.id/" target="_blank" rel="noopener noreferrer">SIKKA</a>
+                    </div>
+                </div>
+    
+                <!-- AGENT -->
+                <div class="link-category">
+                    <div class="link-category-header">
+                        <span class="link-category-icon"
+                            title="AGENT">👥</span>
+                    </div>
+                    <div class="link-category-buttons">
+                        <a href="https://kemenkeu-my.sharepoint.com/:x:/r/personal/almiera_rs_kemenkeu_go_id/_layouts/15/Doc.aspx?sourcedoc=%7B80A38040-F16E-4004-86F2-8EC0E9664A42%7D&file=SUSUNAN%20TIM%20BO%20PENGADUAN%20PER%20APRIL%202026.xlsx&action=default&mobileredirect=true" target="_blank" rel="noopener noreferrer">Tim BO</a>
+                        <a href="http://10.245.8.119/SIKLIP/login" target="_blank" rel="noopener noreferrer">SIKLIP</a>
+                        <a href="https://sikka-djp.intranet.pajak.go.id/" target="_blank" rel="noopener noreferrer">SIKKA</a>
+                    </div>
+                </div>
+    
+                <!-- OTHER -->
+                <div class="link-category">
+                    <div class="link-category-header">
+                        <span class="link-category-icon"
+                            title="OTHER">📂</span>
+                    </div>
+                    <div class="link-category-buttons">
+                        <a href="https://satu.kemenkeu.go.id" target="_blank" rel="noopener noreferrer">Satu Kemenkeu</a>
+                        <a href="https://recapp.intranet.pajak.go.id/wfo" target="_blank" rel="noopener noreferrer">Record</a>
+                        <a href="https://mapping.pajak.go.id/v3/" target="_blank" rel="noopener noreferrer">Geometric Map</a>
+                        <a href="http://10.245.8.119/SIKLIP/url" target="_blank" rel="noopener noreferrer">URL</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <!-- PENUTUP TAB 4 -->
 </div>
 
 <script>
