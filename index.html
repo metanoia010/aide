@@ -648,6 +648,28 @@
             color: var(--text-main);
             margin-bottom: 6px;
         }
+        .announcement-issue-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .announcement-status {
+            display: inline-block;
+            background: #fff0d6;
+            color: #9a5b00;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        [data-theme="dark"] .announcement-status {
+            background: #493719;
+            color: #ffd58a;
+        }
         .announcement-description {
             font-size: 13px;
             color: var(--text-muted);
@@ -801,8 +823,13 @@
             </h3>
     
             <div class="announcement-card">
-                <div class="announcement-issue">
-                    ⚠️ Kendala submit eForm
+                <div class="announcement-issue-row">
+                    <div class="announcement-issue">
+                        ⚠️ Kendala submit eForm
+                    </div>
+                    <span class="announcement-status">
+                        ● Ongoing
+                    </span>
                 </div>
                 <p class="announcement-description">
                     Informasi kendala dan penanganan yang sedang berlangsung.
