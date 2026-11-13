@@ -622,10 +622,73 @@
                 font-size: 9px;
             }
         }
+        
+        /* ========================================
+           PEMBERITAHUAN DOWNTIME
+        ======================================== */
+        .downtime-container {
+            margin-top: 24px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+        .downtime-content {
+            display: none;
+            margin-top: 14px;
+            padding: 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        .downtime-content.active {
+            display: block;
+        }
+        .downtime-content strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: var(--text-main);
+        }
+        .downtime-content p {
+            margin-bottom: 12px;
+        }
+        .downtime-content ol {
+            padding-left: 22px;
+            margin-bottom: 12px;
+        }
+        .downtime-content li {
+            padding-left: 4px;
+            margin-bottom: 10px;
+        }
+        .downtime-content a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        .downtime-source {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+        
+        /* DARK MODE */
+        [data-theme="dark"] .downtime-content {
+            background: #202020;
+            border-color: #525252;
+        }
+        [data-theme="dark"] .downtime-content a {
+            color: #93c5fd;
+        }
+
         /* ========================================
            PENGUMUMAN TAB 1
         ======================================== */
-        
         .announcement-container {
             margin-top: 24px;
             padding: 20px;
@@ -1405,6 +1468,20 @@
     // MENAMPILKAN INFORMASI PENGUMUMAN TAB 1
     function showAnnouncement(value) {
         document.querySelectorAll('.announcement-content')
+            .forEach(function(content) {
+                content.classList.remove('active');
+            });
+        if (value) {
+            const selectedInfo = document.getElementById(value);
+            if (selectedInfo) {
+                selectedInfo.classList.add('active');
+            }
+        }
+    }
+    
+    // MENAMPILKAN INFORMASI DOWNTIME
+    function showDowntime(value) {
+        document.querySelectorAll('.downtime-content')
             .forEach(function(content) {
                 content.classList.remove('active');
             });
