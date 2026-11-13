@@ -25,7 +25,6 @@
             --input-bg: #ffffff;
             --radius: 8px;
         }
-
         [data-theme="dark"] {
             --primary: #525252;
             --primary-hover: #737373;
@@ -44,13 +43,11 @@
             --warning-text: #f5f5f5;
             --input-bg: #202020;
         }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         body {
             font-family: 'Inter', 'Segoe UI', sans-serif;
             background-color: var(--bg-color);
@@ -59,7 +56,6 @@
             line-height: 1.5;
             transition: background-color 0.3s, color 0.3s;
         }
-
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -70,7 +66,14 @@
             border: 1px solid var(--border-color);
             transition: background-color 0.3s, border-color 0.3s;
         }
-
+        /* PEMBUNGKUS HEADER STICKY */
+        .top-sticky-area {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--card-bg);
+            padding-top: 1px;
+        }
         /* Header & Theme Toggle */
         .app-header {
             display: flex;
@@ -102,7 +105,6 @@
         .theme-toggle-btn:hover {
             opacity: 0.8;
         }
-
         /* NAVIGASI TAB UTAMA */
         .main-tabs {
             display: flex;
@@ -141,7 +143,6 @@
             border-color: var(--primary);
             box-shadow: 0 2px 6px rgba(37, 99, 235, 0.18);
         }
-
         .sub-tabs {
             display: flex;
             gap: 8px;
@@ -168,14 +169,12 @@
             color: var(--text-main);
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-
         .tab-pane {
             display: none;
         }
         .tab-pane.active {
             display: block;
         }
-
         .live-clock-container {
             background-color: var(--bg-color);
             border: 1px solid var(--border-color);
@@ -202,14 +201,12 @@
             padding: 2px 8px;
             border-radius: 4px;
         }
-        
         /* Indikator waktu Dark Mode */
         [data-theme="dark"] .time-period {
             color: #ffffff;
             background: #404040;
             border: 1px solid #666666;
         }
-
         .form-section-title {
             font-size: 15px;
             font-weight: 700;
@@ -218,7 +215,6 @@
             padding-left: 10px;
             margin: 24px 0 16px 0;
         }
-
         .form-group {
             margin-bottom: 18px;
         }
@@ -235,7 +231,6 @@
             font-weight: 600;
             font-size: 14px;
         }
-        
         label {
             display: block;
             margin-bottom: 6px;
@@ -243,7 +238,6 @@
             font-size: 14px;
             color: var(--text-main);
         }
-        
         input[type="text"],
         input[type="number"],
         input[type="email"],
@@ -260,13 +254,11 @@
             color: var(--text-main);
             background-color: var(--input-bg);
         }
-
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
-        
         .input-17ch { max-width: 100%; }
         .input-conditional-width { max-width: 100%; }
         textarea { resize: vertical; min-height: 80px; }
@@ -275,7 +267,6 @@
             .input-17ch { max-width: 260px; }
             .input-conditional-width { max-width: 320px; }
         }
-
         .conditional-wrapper {
             display: flex;
             align-items: center;
@@ -312,7 +303,6 @@
             font-size: 13px;
             margin-top: 12px;
         }
-
         .info-note-box {
             background: var(--bg-color);
             border: 1px solid var(--border-color);
@@ -322,7 +312,6 @@
             font-size: 13px;
             margin-bottom: 18px;
         }
-
         .chronology-item {
             display: flex;
             gap: 10px;
@@ -331,19 +320,16 @@
             flex-wrap: nowrap;
             width: 100%;
         }
-        
         .chrono-date {
             flex: 0 0 125px;
             width: 125px;
             max-width: 125px;
         }
-        
         .chrono-detail {
             flex: 1;
             min-width: 0;
             width: auto;
         }
-
         .btn-small { padding: 8px 12px; font-size: 12px; }
         .btn-danger { background-color: var(--danger); color: white; }
         .btn-secondary { background-color: var(--secondary); color: white; }
@@ -784,53 +770,56 @@
 <body data-theme="light">
 
 <div class="container">
-    <div class="app-header">
-        <h2>Daily Work Notes</h2>
-        <button
-            class="theme-toggle-btn"
-            type="button"
-            onclick="toggleTheme()"
-            aria-label="Aktifkan Dark Mode"
-            title="Aktifkan Dark Mode">🌙</button>
-    </div>
 
-    <!-- TAB NAVIGASI -->
-    <div class="main-tabs">
-        <button class="main-tab-btn tab-btn active" type="button" onclick="switchMainTab('tabIntro', this)">Intro</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabUpdate', this)">Update</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">Percakapan</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">Buku Saku</button>
-        <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">Tautan Lainnya</button>
-    </div>
-        
-    <!-- INDIKATOR WAKTU GLOBAL -->
-    <div class="live-clock-container">
-        <span>Waktu Sistem:</span>
-        <div>
-            <span id="liveClock">-</span>
-            <span id="timePeriod" class="time-period">-</span>
-        </div>
-    </div>
-
-    <!-- TAB 1: INTRO -->
-    <div id="tabIntro" class="tab-pane active">
-        <div class="welcome-box">
-            <h3>Selamat datang</h3>
+    <!-- PEMBUNGKUS BAGIAN ATAS STICKY -->
+    <div class="top-sticky-area">
+        <div class="app-header">
+            <h2>Daily Work Notes</h2>
+            <button
+                class="theme-toggle-btn"
+                type="button"
+                onclick="toggleTheme()"
+                aria-label="Aktifkan Dark Mode"
+                title="Aktifkan Dark Mode">🌙</button>
         </div>
 
-        <div class="info-note-box">
-            <p>
-                Laman ini dibuat ditujukan untuk membantu dan memindahkan proses pencatatan, pencarian dasar, dan menghubungkan laman
-                yang digunakan, agar dapat membantu pembuat dan pengguna pada saat melakukan pekerjaan. Laman ini akan terus dilakukan
-                update oleh pembuat. Apabila terdapat masukan, dapat menginformasikan pembuat.
-            </p>
-            <br>
-            <p>
-                Semoga dapat membantu, baik untuk pembuat dan/atau yang ikut menggunakan.
-            </p>
+        <!-- TAB NAVIGASI -->
+        <div class="main-tabs">
+            <button class="main-tab-btn tab-btn active" type="button" onclick="switchMainTab('tabIntro', this)">Intro</button>
+            <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabUpdate', this)">Update</button>
+            <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">Percakapan</button>
+            <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">Buku Saku</button>
+            <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">Tautan Lainnya</button>
         </div>
-    </div>
-    <!-- PENUTUP TAB 1: INTRO -->
+            
+        <!-- INDIKATOR WAKTU GLOBAL -->
+        <div class="live-clock-container">
+            <span>Waktu Sistem:</span>
+            <div>
+                <span id="liveClock">-</span>
+                <span id="timePeriod" class="time-period">-</span>
+            </div>
+        </div>
+
+        <!-- TAB 1: INTRO -->
+        <div id="tabIntro" class="tab-pane active">
+            <div class="welcome-box">
+                <h3>Selamat datang</h3>
+            </div>
+    
+            <div class="info-note-box">
+                <p>
+                    Laman ini dibuat ditujukan untuk membantu dan memindahkan proses pencatatan, pencarian dasar, dan menghubungkan laman
+                    yang digunakan, agar dapat membantu pembuat dan pengguna pada saat melakukan pekerjaan. Laman ini akan terus dilakukan
+                    update oleh pembuat. Apabila terdapat masukan, dapat menginformasikan pembuat.
+                </p>
+                <br>
+                <p>
+                    Semoga dapat membantu, baik untuk pembuat dan/atau yang ikut menggunakan.
+                </p>
+            </div>
+        </div>
+        <!-- PENUTUP TAB 1: INTRO -->
     
     <!-- TAB 2: UPDATE -->
     <div id="tabUpdate" class="tab-pane">
