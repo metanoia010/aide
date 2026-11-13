@@ -70,9 +70,10 @@
         .top-sticky-area {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
             background: var(--card-bg);
             padding-top: 1px;
+            width: 100%;
         }
         /* Header & Theme Toggle */
         .app-header {
@@ -800,26 +801,28 @@
                 <span id="timePeriod" class="time-period">-</span>
             </div>
         </div>
+    </div>
+    <!-- PENUTUP PEMBUNGKUS BAGIAN ATAS STICKY -->
 
-        <!-- TAB 1: INTRO -->
-        <div id="tabIntro" class="tab-pane active">
-            <div class="welcome-box">
-                <h3>Selamat datang</h3>
-            </div>
-    
-            <div class="info-note-box">
-                <p>
-                    Laman ini dibuat ditujukan untuk membantu dan memindahkan proses pencatatan, pencarian dasar, dan menghubungkan laman
-                    yang digunakan, agar dapat membantu pembuat dan pengguna pada saat melakukan pekerjaan. Laman ini akan terus dilakukan
-                    update oleh pembuat. Apabila terdapat masukan, dapat menginformasikan pembuat.
-                </p>
-                <br>
-                <p>
-                    Semoga dapat membantu, baik untuk pembuat dan/atau yang ikut menggunakan.
-                </p>
-            </div>
+    <!-- TAB 1: INTRO -->
+    <div id="tabIntro" class="tab-pane active">
+        <div class="welcome-box">
+            <h3>Selamat datang</h3>
         </div>
-        <!-- PENUTUP TAB 1: INTRO -->
+    
+        <div class="info-note-box">
+            <p>
+                Laman ini dibuat ditujukan untuk membantu dan memindahkan proses pencatatan, pencarian dasar, dan menghubungkan laman
+                yang digunakan, agar dapat membantu pembuat dan pengguna pada saat melakukan pekerjaan. Laman ini akan terus dilakukan
+                update oleh pembuat. Apabila terdapat masukan, dapat menginformasikan pembuat.
+            </p>
+            <br>
+            <p>
+                Semoga dapat membantu, baik untuk pembuat dan/atau yang ikut menggunakan.
+            </p>
+        </div>
+    </div>
+    <!-- PENUTUP TAB 1: INTRO -->
     
     <!-- TAB 2: UPDATE -->
     <div id="tabUpdate" class="tab-pane">
