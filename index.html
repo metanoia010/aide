@@ -818,7 +818,102 @@
             color: #f5f5f5;
             border-color: #666666;
         }
-
+        /* ========================================
+           PEMBERITAHUAN LAINNYA
+        ======================================== */
+        .other-announcement-container {
+            margin-top: 24px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+        .other-announcement-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+        }
+        .other-announcement-content {
+            display: none;
+            margin-top: 14px;
+            padding: 16px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        .other-announcement-content.active {
+            display: block;
+        }
+        .other-announcement-content h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+        .other-announcement-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .other-announcement-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: var(--border-color);
+            color: var(--text-main);
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .other-announcement-content ol {
+            padding-left: 22px;
+            margin: 12px 0;
+        }
+        .other-announcement-content ol ol {
+            margin-top: 6px;
+        }
+        .other-announcement-content li {
+            padding-left: 4px;
+            margin-bottom: 10px;
+        }
+        .other-announcement-content a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        .other-announcement-source {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+        [data-theme="dark"] .other-announcement-card {
+            background: #202020;
+            border-color: #525252;
+        }
+        [data-theme="dark"] .other-announcement-content {
+            background: #262626;
+            border-color: #666666;
+        }
+        [data-theme="dark"] .other-announcement-content a {
+            color: #93c5fd;
+        }
+        @media (max-width: 480px) {
+            .other-announcement-container {
+                padding: 12px;
+            }
+            .other-announcement-card {
+                padding: 12px;
+            }
+            .other-announcement-content {
+                padding: 12px;
+            }
+        }
         /* ========================================
            PERBAIKAN DARK MODE - TAB 4
            TAUTAN LAINNYA
@@ -918,8 +1013,7 @@
                 📢 Pemberitahuan Downtime
             </h3>
             <p class="announcement-description">
-                Informasi jadwal pemeliharaan dan waktu henti
-                sistem teknologi informasi dan komunikasi DJP.
+                Informasi jadwal pemeliharaan dan waktu henti sistem teknologi informasi dan komunikasi DJP.
             </p>
             <label class="announcement-label" for="downtimeSelect">
                 Pilih Tanggal Downtime:
@@ -929,8 +1023,8 @@
                 class="announcement-select"
                 onchange="showDowntime(this.value)">
                 <option value="">-- Pilih Tanggal Downtime --</option>
-                <option value="downtime07112026">7–8 November 2026 > Coretax</option>
-                <option value="downtime02112026">2–9 November 2026 > e-Form</option>
+                <option value="downtime07112026">7–8 November 2026 > Coretax (PENG-61/PJ.09/2026 - 04112026)</option>
+                <option value="downtime02112026">2–9 November 2026 > e-Form (PENG-60/PJ.09/2026 - 02112026)</option>
                 <option value="downtime24102026">24 Oktober 2026 > Penyetoran Pajak</option>
             </select>
         
@@ -1075,6 +1169,102 @@
             </div>
         </div>
     </div>
+    <!-- ========================================
+            PEMBERITAHUAN LAINNYA
+    ======================================== -->
+    <div class="other-announcement-container">
+        <h3 class="announcement-title">
+            📢 Pemberitahuan Lainnya
+        </h3>
+        <p class="announcement-description">
+            Informasi dan pengumuman resmi DJP lainnya.
+        </p>
+        <div class="other-announcement-card">
+            <label class="announcement-label" for="otherAnnouncementSelect">
+                Pilih Pemberitahuan:
+            </label>
+            <select
+                id="otherAnnouncementSelect"
+                class="announcement-select"
+                onchange="showOtherAnnouncement(this.value)">
+                <option value="">-- Pilih Pemberitahuan --</option>
+                <option value="peng620pj2026">PENG-62/PJ.09/2026 - 10 November 2026 (Email Blast)</option>
+            </select>
+
+            <!-- PENG-62/PJ.09/2026 -->
+            <div id="peng620pj2026" class="other-announcement-content">
+                    <p>
+                        Dalam rangka membantu wajib pajak agar dapat memenuhi kewajiban perpajakannya sesuai dengan ketentuan yang berlaku, Direktorat Jenderal Pajak (DJP) telah mengirimkan email resmi kepada wajib pajak yang terindikasi menghapus bukti pemotongan Pajak Penghasilan (PPh) pada Surat Pemberitahuan (SPT) Tahunan PPh Orang Pribadi Tahun Pajak 2025. Sehubungan dengan hal tersebut, kami sampaikan hal-hal sebagai berikut:
+                    </p>
+                    <ol>
+                        <li>
+                            Apabila wajib pajak mendapatkan email tersebut, pastikan pengirim email adalah DJP, dengan domain email pengirim <strong>@pajak.go.id</strong>. Domain email selain @pajak.go.id dapat dipastikan sebagai penipuan.
+                        </li>
+                        <li>
+                            Email tersebut berisi imbauan kepada wajib pajak yang terindikasi menghapus bukti pemotongan PPh pada SPT Tahunan PPh Orang Pribadi Tahun Pajak 2025 untuk melakukan penelitian, verifikasi, dan  pencocokan kembali atas data penghasilan dan bukti pemotongan PPh yang telah dilaporkan dalam SPT Tahunan PPh Orang Pribadi Tahun Pajak 2025.
+                        </li>
+                        <li>
+                            Dalam hal terdapat penghasilan atau informasi perpajakan yang belum dilaporkan sehingga mengakibatkan SPT Tahunan yang dilaporkan tidak mencerminkan kondisi yang sebenarnya, wajib pajak diimbau untuk melakukan pembetulan SPT sesuai dengan ketentuan peraturan perundang-undangan perpajakan yang berlaku.
+                        </li>
+                        <li>
+                            Adapun langkah pembetulan SPT lebih terperinci tercantum pada badan email.
+                        </li>
+                        <li>
+                            Wajib pajak perlu memastikan agar seluruh penghasilan, kredit pajak, bukti pemotongan PPh, dan/atau informasi perpajakan lainnya telah dilaporkan dengan benar, lengkap, dan jelas dalam SPT Tahunan yang disampaikan.
+                        </li>
+                        <li>
+                            SPT yang diisi dengan tidak benar, tidak lengkap, dan/atau tidak jelas dapat menimbulkan sanksi sesuai ketentuan yang berlaku.
+                        </li>
+                        <li>
+                            Kami mengingatkan wajib pajak untuk tetap waspada terhadap penipuan yang mengatasnamakan DJP. Untuk itu, wajib pajak perlu memperhatikan hal-hal berikut ini:
+                            <ol type="a">
+                                <li>
+                                    Email resmi yang dikirim DJP hanya menggunakan domain @pajak.go.id.
+                                </li>
+                                <li>
+                                    Seluruh layanan DJP tidak dipungut biaya apapun.
+                                </li>
+                                <li>
+                                    DJP tidak pernah meminta pembayaran apapun ke rekening pribadi dan tidak pernah  mengirimkan tautan di luar situs resmi.
+                                </li>
+                                <li>
+                                    DJP juga tidak pernah meminta wajib pajak untuk memberikan password, one time passcode (OTP), membagikan layar perangkat, dan/atau informasi lainnya yang bersifat rahasia.
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            Untuk informasi lebih lanjut, wajib pajak dapat menghubungi saluran layanan resmi DJP sebagai berikut:
+                            <ol type="a">
+                                <li>
+                                    Account representative di kantor pelayanan pajak (KPP) tempat wajib pajak terdaftar.
+                                </li>
+                                <li>
+                                    Penyuluh pajak atau petugas helpdesk di KPP/kantor pelayanan, penyuluhan, dan konsultasi perpajakan (KP2KP) terdekat.
+                                </li>
+                                <li>
+                                    Live chat di <a href="https://pajak.go.id" target="_blank" rel="noopener noreferrer"> https://pajak.go.id</a>.
+                                </li>
+                                <li>Kring Pajak 1500200.</li>
+                                <li>X @kring_pajak.</li>
+                                <li>Email informasi@pajak.go.id.</li>
+                            </ol>
+                        </li>
+                    </ol>
+                    <p>
+                        Demikian disampaikan untuk menjadi perhatian dan agar dapat disebarluaskan.
+                    </p>
+
+                    <div class="other-announcement-source">
+                        Informasi resmi pada laman, dapat klik
+                        <a
+                            href="https://pajak.go.id/id/pengumuman/penyampaian-email-blast-direktorat-jenderal-pajak-terkait-imbauan-pembetulan-spt-tahunan" target="_blank" rel="noopener noreferrer"> di sini</a>.
+                    </div>
+                </div>
+                <!-- PENUTUP PENG-62/PJ.09/2026 -->
+            
+            </div>
+        </div>
+        <!-- PENUTUP PEMBERITAHUAN LAINNYA -->
     <!-- PENUTUP TAB 2: UPDATE -->
 
 
@@ -1532,6 +1722,20 @@
     // MENAMPILKAN INFORMASI DOWNTIME
     function showDowntime(value) {
         document.querySelectorAll('.downtime-content')
+            .forEach(function(content) {
+                content.classList.remove('active');
+            });
+        if (value) {
+            const selectedInfo = document.getElementById(value);
+            if (selectedInfo) {
+                selectedInfo.classList.add('active');
+            }
+        }
+    }
+    
+    // MENAMPILKAN PEMBERITAHUAN LAINNYA
+    function showOtherAnnouncement(value) {
+        document.querySelectorAll('.other-announcement-content')
             .forEach(function(content) {
                 content.classList.remove('active');
             });
