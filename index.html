@@ -119,6 +119,15 @@
             border-radius: 12px;
             flex-wrap: nowrap;
         }
+        .main-tabs .theme-toggle-btn {
+            flex: 0 0 44px;
+            width: 44px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
         .tab-btn {
             flex: 1 1 0;
             min-width: 0;
@@ -481,6 +490,12 @@
                 flex: 0 0 auto;
                 padding: 9px 12px;
                 font-size: 12px;
+            }
+            .main-tabs .theme-toggle-btn {
+                flex: 0 0 40px;
+                width: 40px;
+                min-width: 40px;
+                padding: 6px;
             }
             .btn-container { flex-direction: column; }
             .btn-container button { width: 100%; }
@@ -952,15 +967,6 @@
 
     <!-- PEMBUNGKUS BAGIAN ATAS STICKY -->
     <div class="top-sticky-area">
-        <div class="app-header">
-            <h2>Daily Work Notes</h2>
-            <button
-                class="theme-toggle-btn"
-                type="button"
-                onclick="toggleTheme()"
-                aria-label="Aktifkan Dark Mode"
-                title="Aktifkan Dark Mode">🌙</button>
-        </div>
 
         <!-- TAB NAVIGASI -->
         <div class="main-tabs">
@@ -969,6 +975,12 @@
             <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabPercakapan', this)">Percakapan</button>
             <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabBukuSaku', this)">Buku Saku</button>
             <button class="main-tab-btn tab-btn" type="button" onclick="switchMainTab('tabTautan', this)">Tautan Lainnya</button>
+            <button
+                class="theme-toggle-btn"
+                type="button"
+                onclick="toggleTheme()"
+                aria-label="Aktifkan Dark Mode"
+                title="Aktifkan Dark Mode">🌙</button>
         </div>
             
         <!-- INDIKATOR WAKTU GLOBAL -->
