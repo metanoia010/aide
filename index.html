@@ -670,6 +670,26 @@
             font-weight: 700;
             white-space: nowrap;
         }
+        /* PEMBUNGKUS LABEL SUMBER DAN STATUS */
+        .announcement-badges {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        /* LABEL SUMBER INFORMASI */
+        .announcement-source {
+            display: inline-block;
+            background: var(--bg-color);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
         [data-theme="dark"] .announcement-status {
             background: #493719;
             color: #ffd58a;
@@ -836,9 +856,14 @@
                     <div class="announcement-issue">
                         ⚠️ Kendala submit eForm
                     </div>
-                    <span class="announcement-status">
-                        ● Ongoing
-                    </span>
+                    <div class="announcement-badges">
+                        <span class="announcement-source">
+                            pajak.go.id
+                        </span>
+                        <span class="announcement-status">
+                            ● Ongoing
+                        </span>
+                    </div>
                 </div>
                 <p class="announcement-description">
                     Informasi kendala dan penanganan yang sedang berlangsung.
