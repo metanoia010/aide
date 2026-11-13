@@ -972,6 +972,27 @@
             outline: 2px solid #60a5fa;
             outline-offset: 3px;
         }
+        /* ========================================
+        WATERMARK FOOTER
+        ======================================== */
+        .app-watermark {
+            width: 100%;
+            margin-top: 24px;
+            padding: 16px 8px 4px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        @media (max-width: 480px) {
+            .app-watermark {
+                font-size: 9px;
+                letter-spacing: 0.2px;
+                padding-top: 14px;
+            }
+        }
     </style>
 </head>
 <body data-theme="light">
@@ -1709,6 +1730,11 @@
     <!-- PENUTUP TAB 4 -->
 </div>
 
+<!-- WATERMARK FOOTER -->
+<footer class="app-watermark">
+    INTERNAL USAGE PURPOSE ONLY | Version 1.0.0 | © 2026 Kara
+</footer>
+    
 <script>
     let listPencatatan = [];
     let currentSubTab = "Informasi";
