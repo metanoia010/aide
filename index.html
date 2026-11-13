@@ -845,7 +845,59 @@
     <!-- PENUTUP TAB 1: INTRO -->
     
     <!-- TAB 2: UPDATE -->
-    <div id="tabUpdate" class="tab-pane">
+    <div id="tabUpdate" class="tab-pane">   
+        <!-- ========================================
+             PEMBERITAHUAN DOWNTIME
+        ======================================== -->
+        <div class="downtime-container">
+        
+            <h3 class="announcement-title">
+                📢 Pemberitahuan Downtime
+            </h3>
+            <p class="announcement-description">
+                Informasi jadwal pemeliharaan dan waktu henti
+                sistem teknologi informasi dan komunikasi DJP.
+            </p>
+            <label class="announcement-label" for="downtimeSelect">
+                Pilih Tanggal Downtime:
+            </label>
+            <select
+                id="downtimeSelect"
+                class="announcement-select"
+                onchange="showDowntime(this.value)">
+                <option value="">-- Pilih Tanggal Downtime --</option>
+                <option value="downtime24102026">24 Oktober 2026</option>
+            </select>
+        
+            <!-- DOWNTIME 24 OKTOBER 2026 -->
+            <div id="downtime24102026" class="downtime-content">
+                <p>
+                    Dalam rangka peningkatan keamanan, keandalan, dan performa sistem teknologi informasi dan komunikasi (TIK) Direktorat Jenderal Pajak (DJP), kami sampaikan hal-hal sebagai berikut:
+                </p>
+                <ol>
+                    <li>
+                        1. DJP akan melaksanakan pemeliharaan sistem yang mengakibatkan waktu henti (downtime) pada Sabtu, 24 Oktober 2026 pukul 11.00 s.d. 20.00 WIB.
+                    </li>
+                    <li>
+                        2. Waktu henti akan berdampak pada tidak dapat diaksesnya seluruh aplikasi DJP yang diakses melalui pihak ketiga baik penyedia jasa aplikasi perpajakan (PJAP) dan bank/pos persepsi.
+                    </li>
+                    <li>
+                        3. Sistem Coretax DJP (<a href="https://coretaxdjp.pajak.go.id" target="_blank" rel="noopener noreferrer"> https://coretaxdjp.pajak.go.id </a>) masih dapat diakses, namun menu transaksi yang berkaitan dengan poin nomor 2 tidak dapat dilanjutkan prosesnya selama waktu henti sebagaimana dimaksud dalam poin nomor 1.
+                    </li>
+                    <li>
+                        4. Berkaitan dengan hal tersebut, kami sampaikan permohonan maaf atas ketidaknyamanan yang ditimbulkan.
+                    </li>
+                </ol>
+                <p>
+                    Demikian disampaikan untuk menjadi perhatian dan agar dapat disebarluaskan.
+                </p>
+                <div class="downtime-source">
+                    Informasi resmi pada laman, dapat klik <a href="https://pajak.go.id/id/pengumuman/pemberitahuan-waktu-henti-downtime-10" target="_blank" rel="noopener noreferrer"> disini </a>.
+                </div>
+            </div>
+        </div>
+        <!-- PENUTUP PEMBERITAHUAN DOWNTIME -->
+        
         <div class="announcement-container">
             <h3 class="announcement-title">
                 📢 Pengumuman Informasi
