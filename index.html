@@ -929,6 +929,19 @@
                 padding: 12px;
             }
         }
+        /* IKON BINTANG TOMBOL FAVORIT */
+        .link-category-buttons a {
+            position: relative;
+        }
+        .link-category-buttons a.has-star::after {
+            content: "★";
+            position: absolute;
+            top: 3px;
+            right: 6px;
+            font-size: 11px;
+            color: #eab308;
+            line-height: 1;
+        }
         /* ========================================
            PERBAIKAN DARK MODE - TAB 4
            TAUTAN LAINNYA
@@ -1596,8 +1609,8 @@
                             title="CALL">📞</span>
                     </div>
                     <div class="link-category-buttons">
-                        <a href="https://djp-omni2.intranet.pajak.go.id/services/UnifiedAgentController/workspaces/#/home" target="_blank" rel="noopener noreferrer">Inbound</a>
-                        <a href="https://crmapp.intranet.pajak.go.id/djp/pages/login.php" target="_blank" rel="noopener noreferrer">CRM</a>
+                        <a class="has-star" href="https://djp-omni2.intranet.pajak.go.id/services/UnifiedAgentController/workspaces/#/home" target="_blank" rel="noopener noreferrer">Inbound</a>
+                        <a class="has-star" href="https://crmapp.intranet.pajak.go.id/djp/pages/login.php" target="_blank" rel="noopener noreferrer">CRM</a>
                     </div>
                 </div>
         
@@ -1608,7 +1621,7 @@
                             title="EMAIL">📧</span>
                     </div>
                     <div class="link-category-buttons">
-                        <a href="https://emaildjp.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">emailDJP</a>
+                        <a class="has-star" href="https://emaildjp.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">emailDJP</a>
                     </div>
                 </div>
         
@@ -1619,7 +1632,7 @@
                             title="HELP">🛟</span>
                     </div>
                     <div class="link-category-buttons">
-                        <a href="https://melati.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">melati</a>
+                        <a class="has-star" href="https://melati.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">melati</a>
                     </div>
                 </div>
         
@@ -1630,11 +1643,12 @@
                             title="INFORMATION">ℹ️</span>
                     </div>
                     <div class="link-category-buttons">
-                        <a href="https://coretax.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">CTAS</a>
-                        <a href="http://10.245.8.119/SIKLIP/login" target="_blank" rel="noopener noreferrer">SIKLIP</a>
+                        <a class="has-star" href="https://coretax.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">CTAS</a>
+                        <a class="has-star" href="http://10.245.8.119/SIKLIP/login" target="_blank" rel="noopener noreferrer">SIKLIP</a>
                         <a href="http://10.245.5.5:8080/login" target="_blank" rel="noopener noreferrer">Cek EFIN</a>
                         <a href="https://djpforum.intranet.pajak.go.id/index.php" target="_blank" rel="noopener noreferrer">DJP Forum</a>
-                        <a href="https://tkb-djp.intranet.pajak.go.id/tkb/" target="_blank" rel="noopener noreferrer">TKB</a>
+                        <a class="has-star" href="https://tkb-djp.intranet.pajak.go.id/tkb/" target="_blank" rel="noopener noreferrer">TKB</a>
+                        <a href="https://djpknowledge.intranet.pajak.go.id/" target="_blank" rel="noopener noreferrer">Kompatriot</a>
                     </div>
                 </div>
         
@@ -1645,8 +1659,8 @@
                             title="TASK">📋</span>
                     </div>
                     <div class="link-category-buttons">
-                        <a href="https://coretax.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">CTAS</a>
-                        <a href="https://emaildjp.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">emailDJP</a>
+                        <a class="has-star" href="https://coretax.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">CTAS</a>
+                        <a class="has-star" href="https://emaildjp.intranet.pajak.go.id" target="_blank" rel="noopener noreferrer">emailDJP</a>
                         <a href="https://kemenkeu.sharepoint.com/:x:/r/sites/BOKLIP/_layouts/15/Doc.aspx?sourcedoc=%7BE2BF3BB1-EC31-49A1-855E-FB560D158619%7D&file=2026%20Validasi%20Web%20dan%20Portal.xlsx&action=default&mobileredirect=true" target="_blank" rel="noopener noreferrer">Validasi Web dan Portal</a>
                     </div>
                 </div>
@@ -1658,7 +1672,7 @@
                             title="ABSENT">📅</span>
                     </div>
                     <div class="link-category-buttons">
-                        <a href="http://10.245.8.119/SIKLIP/login" target="_blank" rel="noopener noreferrer">SIKLIP</a>
+                        <a class="has-star" href="http://10.245.8.119/SIKLIP/login" target="_blank" rel="noopener noreferrer">SIKLIP</a>
                         <a href="https://sikka-djp.intranet.pajak.go.id/" target="_blank" rel="noopener noreferrer">SIKKA</a>
                     </div>
                 </div>
@@ -1671,7 +1685,7 @@
                     </div>
                     <div class="link-category-buttons">
                         <a href="https://kemenkeu-my.sharepoint.com/:x:/r/personal/almiera_rs_kemenkeu_go_id/_layouts/15/Doc.aspx?sourcedoc=%7B80A38040-F16E-4004-86F2-8EC0E9664A42%7D&file=SUSUNAN%20TIM%20BO%20PENGADUAN%20PER%20APRIL%202026.xlsx&action=default&mobileredirect=true" target="_blank" rel="noopener noreferrer">Tim BO</a>
-                        <a href="http://10.245.8.119/SIKLIP/login" target="_blank" rel="noopener noreferrer">SIKLIP</a>
+                        <a class="has-star" href="http://10.245.8.119/SIKLIP/login" target="_blank" rel="noopener noreferrer">SIKLIP</a>
                         <a href="https://sikka-djp.intranet.pajak.go.id/" target="_blank" rel="noopener noreferrer">SIKKA</a>
                     </div>
                 </div>
