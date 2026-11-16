@@ -816,6 +816,67 @@
             font-size: 14px;
             color: var(--text-main);
         }
+        /* ========================================
+           INFORMASI SOSIAL MEDIA - EFORM
+        ======================================== */
+        .social-media-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+            gap: 20px;
+            align-items: start;
+            white-space: normal;
+        }
+        
+        /* GAMBAR */
+        .social-media-image {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+        }
+        .social-media-image a {
+            display: block;
+        }
+        .social-media-image img {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        /* INFORMASI */
+        .social-media-text {
+            min-width: 0;
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+        .social-media-text strong {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+        .social-media-text p {
+            margin-bottom: 12px;
+        }
+        .social-media-text a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        
+        /* MOBILE */
+        @media (max-width: 600px) {
+            .social-media-layout {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .social-media-image {
+                max-width: 100%;
+            }
+        }
         
         /* DARK MODE */
         [data-theme="dark"] .announcement-card {
@@ -1188,6 +1249,7 @@
                     <option value="informasi1">Informasi 1</option>
                     <option value="informasi2">Informasi 2</option>
                     <option value="peng60pj2026">Pengumuman Maintenance</option>
+                    <option value="informasiSosialMedia">Sosial Media</option>
                 </select>
     
                 <!-- INFORMASI 1 -->
@@ -1216,6 +1278,42 @@
     
                     Lebih lanjut klik <a href="https://pajak.go.id/id/pengumuman/pemberitahuan-downtime-waktu-henti-aplikasi-e-form" target="_blank" rel="noopener noreferrer">disini</a>.
                 </div>
+
+                <!-- INFORMASI SOSIAL MEDIA -->
+                <div id="informasiSosialMedia" class="announcement-content">
+                    <div class="social-media-layout">
+                
+                        <!-- GAMBAR SOSIAL MEDIA -->
+                        <div class="social-media-image">
+                            <a
+                                href="https://drive.google.com/file/d/1Xbugus7EReGccAuGywDQ62Dyk17_qFsM/view?usp=sharing"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <img
+                                    src="https://drive.google.com/uc?export=view&id=1Xbugus7EReGccAuGywDQ62Dyk17_qFsM"
+                                    alt="Informasi downtime e-Form dari Instagram DJP">
+                            </a>
+                        </div>
+                
+                        <!-- INFORMASI SOSIAL MEDIA -->
+                        <div class="social-media-text">
+                            <strong>Sumber: IG @ditjenpajakri</strong>
+                            <p>
+                                #KawanPajak, saat ini layanan e-Form sedang mengalami pemeliharaan atau downtime.
+                            </p>
+                            <p>
+                                Untuk sementara, pengunduhan formulir SPT elektronik (e-Form) tetap dapat dilakukan melalui DJP Online di <a href="https://djponline.pajak.go.id" target="_blank" rel="noopener noreferrer"> djponline.pajak.go.id </a>. Sementara itu, pengunggahan SPT dapat dilakukan melalui aplikasi e-Form di Kantor Pelayanan Pajak (KPP) terdekat.
+                            </p>
+                            <p>
+                                Kondisi ini berlangsung sampai dengan pemberitahuan selanjutnya.
+                            </p>
+                            <p>
+                                Mohon maaf atas ketidaknyamanan yang ditimbulkan.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- PENUTUP INFORMASI SOSIAL MEDIA -->
             </div>
         </div>
     <!-- ========================================
