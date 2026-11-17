@@ -810,6 +810,59 @@
         .announcement-content.active {
             display: block;
         }
+        
+        /* ========================================
+           INFORMASI GABUNGAN E-FORM
+        ======================================== */
+        .informasi-gabungan-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            width: 100%;
+        }
+        .informasi-gabungan-card {
+            min-width: 0;
+            padding: 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-align: justify;
+            text-justify: inter-word;
+            line-height: 1.8;
+        }
+        .informasi-gabungan-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+        .informasi-gabungan-card p {
+            font-size: 13px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        .informasi-gabungan-card p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* DARK MODE */
+        [data-theme="dark"] .informasi-gabungan-card {
+            background: #202020;
+            border-color: #525252;
+        }
+        
+        /* MOBILE */
+        @media (max-width: 600px) {
+            .informasi-gabungan-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
         .announcement-content strong {
             display: block;
             margin-bottom: 10px;
@@ -1246,24 +1299,43 @@
                     class="announcement-select"
                     onchange="showAnnouncement(this.value)">
                     <option value="">-- Pilih Informasi --</option>
-                    <option value="informasi1">Informasi 1</option>
-                    <option value="informasi2">Informasi 2</option>
+                    <option value="informasi1">Informasi</option>
                     <option value="peng60pj2026">Pengumuman Maintenance</option>
                     <option value="informasiSosialMedia">Sosial Media</option>
                 </select>
     
-                <!-- INFORMASI 1 -->
-                <div id="informasi1" class="announcement-content">
-                    Mohon maaf atas ketidaknyamanan yg dialami.
-                    Sampai dengan saat ini, DJP masih melakukan pemeliharaan sistem, sehingga e-Form belum dapat digunakan untuk melakukan submit/pelaporan SPT Tahunan secara mandiri oleh Wajib Pajak.
-                    Apabila Saudara telah mengunduh dan mengisi formulir e-Form, serta ingin segera menyampaikan SPT Tahunan, kami menyarankan agar Saudara dapat mengunjungi KPP terdekat untuk memperoleh bantuan dalam proses submit/pelaporan SPT Tahunan tersebut.
-                </div>
-    
-                <!-- INFORMASI 2 -->
-                <div id="informasi2" class="announcement-content">
-                    Mohon maaf atas ketidaknyamanan yg dialami.
-                    Sampai dengan saat ini DJP masih melakukan pemeliharaan sistem, sehingga Wajib Pajak belum dapat melakukan proses submit/pelaporan SPT Tahunan e-Form secara mandiri.
-                    Apabila Saudara telah mengunduh dan mengisi formulir e-Form, serta ingin segera menyampaikan SPT Tahunan, kami menyarankan agar Saudara dapat mengunjungi KPP terdekat untuk memperoleh bantuan dalam proses submit/pelaporan SPT Tahunan tersebut.
+                <!-- INFORMASI GABUNGAN -->
+                <div id="informasiGabungan" class="announcement-content">
+                    <div class="informasi-gabungan-grid">
+                
+                        <!-- KOTAK INFORMASI 1 -->
+                        <div class="informasi-gabungan-card">
+                            <h4>Informasi 1</h4>
+                            <p>
+                                Mohon maaf atas ketidaknyamanan yg dialami.
+                            </p>
+                            <p>
+                                Sampai dengan saat ini, DJP masih melakukan pemeliharaan sistem, sehingga e-Form belum dapat digunakan untuk melakukan submit/pelaporan SPT Tahunan secara mandiri oleh Wajib Pajak.
+                            </p>
+                            <p>
+                                Apabila Saudara telah mengunduh dan mengisi formulir e-Form, serta ingin segera menyampaikan SPT Tahunan, kami menyarankan agar Saudara dapat mengunjungi KPP terdekat untuk memperoleh bantuan dalam proses submit/pelaporan SPT Tahunan tersebut.
+                            </p>
+                        </div>
+                
+                        <!-- KOTAK INFORMASI 2 -->
+                        <div class="informasi-gabungan-card">
+                            <h4>Informasi 2</h4>
+                            <p>
+                                Mohon maaf atas ketidaknyamanan yg dialami.
+                            </p>
+                            <p>
+                                Sampai dengan saat ini DJP masih melakukan pemeliharaan sistem, sehingga Wajib Pajak belum dapat melakukan proses submit/pelaporan SPT Tahunan e-Form secara mandiri.
+                            </p>
+                            <p>
+                                Apabila Saudara telah mengunduh dan mengisi formulir e-Form, serta ingin segera menyampaikan SPT Tahunan, kami menyarankan agar Saudara dapat mengunjungi KPP terdekat untuk memperoleh bantuan dalam proses submit/pelaporan SPT Tahunan tersebut.
+                            </p>
+                        </div>
+                    </div>
                 </div>
     
                 <!-- PENGUMUMAN MAINTENANCE -->
